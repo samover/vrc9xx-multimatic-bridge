@@ -18,15 +18,21 @@ custom:
   webpackIncludeModules: true
 
 functions:
+  authFn:
+    handler: src/auth-fn.handler
   hello:
     handler: src/function1.handler
     events:
-     - http:
-         path: hello
-         method: get
-  hello2:
-    handler: src/function2.handler
-    events:
       - http:
-          path: hello2
+          path: hello
+          authorizer: auth
           method: get
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token

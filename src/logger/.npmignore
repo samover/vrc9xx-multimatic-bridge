@@ -1,6 +1,0 @@
-*.log
-src
-coverage
-__tests__
-tsconfig.*
-jest*

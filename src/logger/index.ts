@@ -9,5 +9,5 @@ const getLogLevel = (): Logger.LogLevel => {
 
 export const LOGGER: Logger = Logger.createLogger({
     level: getLogLevel(),
-    name: 'JMC',
+    name: 'MultiMatic',
 });
