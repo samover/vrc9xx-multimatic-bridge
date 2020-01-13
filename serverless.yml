@@ -1,0 +1,32 @@
+service: vrc9xx-multimatic-bridge
+
+app: nodejs-multimatic
+org: samover
+
+provider:
+  name: aws
+  region: eu-west-1
+  runtime: nodejs12.x
+
+plugins:
+  - serverless-webpack
+
+package:
+  individually: true
+
+custom:
+  webpackIncludeModules: true
+
+functions:
+  hello:
+    handler: src/function1.handler
+    events:
+     - http:
+         path: hello
+         method: get
+  hello2:
+    handler: src/function2.handler
+    events:
+      - http:
+          path: hello2
+          method: get
