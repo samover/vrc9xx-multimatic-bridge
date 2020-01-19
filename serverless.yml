@@ -18,21 +18,11 @@ custom:
   webpackIncludeModules: true
 
 functions:
-  authFn:
-    handler: src/auth-fn.handler
-  hello:
-    handler: src/function1.handler
+  authorizerFn:
+    handler: src/cognitoAuthorizerFn.handler
+  profileFn:
+    handler: src/profileFn.handler
     events:
       - http:
-          path: hello
-          authorizer: auth
+          path: profile/edit
           method: get
-          cors:
-            origins:
-              - '*'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token

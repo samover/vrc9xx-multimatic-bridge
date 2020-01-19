@@ -9,9 +9,19 @@
     "experimentalDecorators": true,
     "resolveJsonModule": true,
     "noImplicitAny": true,
-    "baseUrl": "."
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "paths": {
+      "logger": ["src/logger"],
+      "lambda-core": ["src/lambda-core"],
+      "errors": ["src/errors"],
+      "url-builder": ["src/url-builder"],
+      "security": ["src/security"],
+      "utils": ["src/utils"],
+      "openid": ["src/openid"],
+      "class-validator-wrapper": ["src/class-validator-wrapper"]
+    }
   },
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": [ "node_modules" ],
+  "include": ["src/*"]
 }

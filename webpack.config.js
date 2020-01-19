@@ -3,6 +3,7 @@ const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 const slsw = require('serverless-webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 const isLocal = slsw.lib.webpack.isLocal;
 
@@ -12,7 +13,8 @@ module.exports = {
   externals: [nodeExternals()],
   devtool: 'source-map',
   resolve: {
-    extensions: [ '.js', '.jsx', '.json', '.ts', '.tsx' ]
+    extensions: [ '.js', '.jsx', '.json', '.ts', '.tsx' ],
+    plugins: [new TsconfigPathsPlugin({ configFile: './tsconfig.json' })]
   },
   output: {
     libraryTarget: 'commonjs2',
@@ -23,7 +25,6 @@ module.exports = {
   module: {
     rules: [
       {
-        // Include ts, tsx, js, and jsx files.
         test: /\.(ts|js)x?$/,
         exclude: /node_modules/,
         use: [
@@ -33,10 +34,16 @@ module.exports = {
               cacheDirectory: path.resolve('.webpackCache')
             }
           },
-          'babel-loader'
+          'babel-loader',
         ]
       }
     ]
   },
-  plugins: [new ForkTsCheckerWebpackPlugin()]
-};;
+  plugins: [
+    new ForkTsCheckerWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      template: './views/index.ejs',
+      hash: true,
+    })
+  ]
+};
