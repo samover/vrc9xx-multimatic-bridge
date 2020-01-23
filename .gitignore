@@ -2,6 +2,9 @@
 node_modules
 jspm_packages
 
+serverless.dev.config.yml
+
 # Serverless directories
 .serverless
 .webpack*
+.env*

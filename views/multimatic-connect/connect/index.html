@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vaillant Multimatic Connect</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css">
+    <link rel="stylesheet" href="../assets/css/connect.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js"></script>
+</head>
+
+<body class="cyan">
+
+
+
+<div class="row">
+    <div class="col s12 z-depth-4 card-panel">
+        <form id="vaillant-connect-form">
+            <div class="row">
+                <div class="input-field col s12 center">
+                    <img src="../assets/images/vaillant-logo.png" alt="vaillant logo" width="200px" class="responsive-img valign">
+                    <p class="flow-text disclaimer">Vaillant Connect has no link to Vaillant.  </p>
+                </div>
+            </div>
+            <div class="row margin">
+                <div class="input-field col s12">
+                    <i class="mdi-social-person-outline prefix"></i>
+                    <input id="username" name="username" type="text" required>
+                    <label for="username" class="center-align">Vaillant Username</label>
+                </div>
+            </div>
+            <div class="row margin">
+                <div class="input-field col s12">
+                    <i class="mdi-action-lock-outline prefix"></i>
+                    <input id="password" type="password" name="new-password" required>
+                    <label for="password">Vaillant Password</label>
+                </div>
+            </div>
+            <div class = "row">
+                <div class = "input-field col s12">
+                    <input id="terms" type="checkbox" name="terms" required />
+                    <label for="terms">I agree to the Terms and Conditions</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input class="btn waves-effect waves-light col s12" type="submit" value="Connect">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
+
+<script>
+    function setButtonsDisabled(buttons, disabled) {
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].disabled = disabled;
+        }
+    }
+
+    $(document).ready(function() {
+        const vaillantConnectForm = $('#vaillant-connect-form');
+
+        const url = new URL(window.location.href);
+        const apiUrl = 'https://z55al0vgn1.execute-api.eu-west-1.amazonaws.com/dev';
+        const continueUrl = new URL('https://samover.eu.auth0.com/continue');
+        continueUrl.href += `?state=${url.searchParams.get('state')}`;
+
+        console.log('urls', url, continueUrl, apiUrl);
+
+        vaillantConnectForm.submit(function(e) {
+            e.preventDefault();
+
+            const buttons = vaillantConnectForm.find('button:submit');
+            setButtonsDisabled(buttons, true);
+
+            const buildData = (serializedData) => {
+                const jsondata = {};
+                serializedData.forEach((item) => { jsondata[item.name] = item.value; });
+                return {
+                    username: jsondata.username,
+                    password: jsondata['new-password'],
+                    hasAcceptedTerms: jsondata.terms === 'on',
+                }
+            };
+
+            $.ajax({
+                type: 'post',
+                url: `${apiUrl}/connect`,
+                headers: {
+                    authorization: `Bearer ${url.searchParams.get('token')}`
+                },
+                data: buildData($(this).serializeArray()),
+                success: function(response, status){
+                    console.log('succcess', response, status);
+                    window.location = continueUrl.href;
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    console.log('ERROR', textStatus, errorThrown)
+                },
+                complete: function() {
+                    setButtonsDisabled(buttons, false);
+                    console.log('All is well on the western front');
+                }
+            });
+        });
+    });
+
+</script>

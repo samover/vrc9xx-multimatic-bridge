@@ -5,24 +5,140 @@ org: samover
 
 provider:
   name: aws
+  stage: ${opt:stage, 'dev'}
   region: eu-west-1
   runtime: nodejs12.x
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+      Resource: !GetAtt MultimaticConnectTable.Arn
 
 plugins:
   - serverless-webpack
+  - serverless-s3-sync
 
 package:
   individually: true
 
-custom:
-  webpackIncludeModules: true
+custom: ${file(./serverless.${self:provider.stage}.config.yml)} # You can reference the entire file
 
 functions:
   authorizerFn:
     handler: src/cognitoAuthorizerFn.handler
-  profileFn:
-    handler: src/profileFn.handler
+    name: authorizerFn-${self:provider.stage}
+  connectFn:
+    handler: src/connectFn.handler
+    name: connectFn-${self:provider.stage}
+    environment:
+      WEB_APP_URI: ${self:custom.siteName}
+      OAUTH0_URI: ${self:custom.oauth0Url}
+      ONETIME_TOKEN_SECRET: ${ssm:/multimaticConnect/${self:provider.stage}/onetime-token-secret~true}
+      CRYPTO_KEY: ${ssm:/multimaticConnect/${self:provider.stage}/crypto-key~true}
+      MULTIMATIC_TABLE: ${self:custom.multimaticTableName}
     events:
       - http:
-          path: profile/edit
-          method: get
+          path: connect
+          method: post
+          cors: true
+resources:
+  Resources:
+    ## Specifying the S3 Bucket
+    MultimaticConnectS3Bucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.s3Bucket}
+        AccessControl: PublicRead
+        WebsiteConfiguration:
+          IndexDocument: index.html
+          ErrorDocument: index.html
+    ## Specifying the policies to make sure all files inside the Bucket are avaialble to CloudFront
+    MultimaticConnectS3BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket:
+          Ref: MultimaticConnectS3Bucket
+        PolicyDocument:
+          Statement:
+            - Sid: PublicReadGetObject
+              Effect: Allow
+              Principal:
+                CanonicalUser: !GetAtt MultimaticConnectCloudFrontIdentity.S3CanonicalUserId
+              Action:
+                - s3:GetObject
+              Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
+    ## Specifying the CloudFront Distribution to server your Web Application
+    MultimaticConnectCloudFrontIdentity:
+      Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+      Properties:
+        CloudFrontOriginAccessIdentityConfig:
+          Comment: Restrict MulticmaticConnect S3 access
+    MultimaticConnectCloudFrontDistribution:
+      Type: AWS::CloudFront::Distribution
+      Properties:
+        DistributionConfig:
+          Origins:
+            - DomainName: ${self:custom.s3Bucket}.s3.amazonaws.com
+              ## An identifier for the origin which must be unique within the distribution
+              Id: MultimaticConnect
+              S3OriginConfig:
+                OriginAccessIdentity:
+                  Fn::Join:
+                    - '/'
+                    - - origin-access-identity
+                      - cloudfront
+                      - Ref: MultimaticConnectCloudFrontIdentity
+          Enabled: 'true'
+          Aliases:
+            - ${self:custom.siteName} # https://multimatic.huddle.be/connect
+          DefaultRootObject: error.html
+          CustomErrorResponses:
+            - ErrorCode: 404
+              ResponseCode: 200
+              ResponsePagePath: /error.html
+          DefaultCacheBehavior:
+            DefaultTTL: 0
+            MaxTTL: 0
+            MinTTL: 0
+            AllowedMethods:
+              - DELETE
+              - GET
+              - HEAD
+              - OPTIONS
+              - PATCH
+              - POST
+              - PUT
+            ## The origin id defined above
+            TargetOriginId: MultimaticConnect
+            ## Defining if and how the QueryString and Cookies are forwarded to the origin which in this case is S3
+            ForwardedValues:
+              QueryString: true
+              Cookies:
+                Forward: none
+            ## The protocol that users can use to access the files in the origin. To allow HTTP use `allow-all`
+            ViewerProtocolPolicy: redirect-to-https
+          ## The certificate to use when viewers use HTTPS to request objects.
+          ViewerCertificate:
+            AcmCertificateArn: ${self:custom.certificateArn}
+            SslSupportMethod: sni-only
+            MinimumProtocolVersion: TLSv1.1_2016
+    MultimaticConnectTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.multimaticTableName}
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+
+  ## In order to print out the hosted domain via `serverless info` we need to define the DomainName output for CloudFormation
+  Outputs:
+    MultimaticConnectCloudFrontDistributionOutput:
+      Value:
+        'Fn::GetAtt': [ MultimaticConnectCloudFrontDistribution, DomainName ]
