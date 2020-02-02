@@ -1,0 +1,1 @@
+export { RoomTemperature } from './roomTemperature';

@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "declaration": true,
+        "moduleResolution": "node",
+        "target": "es2017",
+        "sourceMap": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "resolveJsonModule": true
+    },
+    "exclude": [
+        "node_modules", "lib", "*/**.spec.ts"
+    ]
+}
