@@ -8,6 +8,8 @@ provider:
   stage: ${opt:stage, 'dev'}
   region: eu-west-1
   runtime: nodejs12.x
+  environment:
+    LOG_LEVEL: debug
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -20,7 +22,6 @@ provider:
 plugins:
   - serverless-webpack
   - serverless-s3-sync
-
 package:
   individually: true
 
@@ -31,7 +32,10 @@ functions:
     handler: functions/alexaSkillFn/index.handler
     name: alexaSkillFn-${self:provider.stage}
     events:
-      - alexaSkill: amzn1.ask.skill.03426def-fb30-4635-8782-d501a95ef574
+#      - alexaSkill: amzn1.ask.skill.03426def-fb30-4635-8782-d501a95ef574
+      - alexaSmartHome: amzn1.ask.skill.b23dfb87-b42a-4226-bd5d-c9dca047c38e
+    environment:
+      MULTIMATIC_API_PATH: https://z55al0vgn1.execute-api.eu-west-1.amazonaws.com/dev
   authorizerFn:
     handler: functions/cognitoAuthorizerFn.handler
     name: authorizerFn-${self:provider.stage}
@@ -60,8 +64,33 @@ functions:
       MULTIMATIC_TABLE: ${self:custom.multimaticTableName}
     events:
       - http:
-          path: room/temperature
-          method: post
+          path: rooms
+          method: get
+          authorizer: authorizerFn
+          cors: true
+      - http:
+          path: zones
+          method: get
+          authorizer: authorizerFn
+          cors: true
+      - http: # fetch room details
+          path: facilities/{facilityId}/rooms/{roomId}
+          method: get
+          authorizer: authorizerFn
+          cors: true
+      - http: # fetch room details
+          path: facilities/{facilityId}/zones/{zoneId}
+          method: get
+          authorizer: authorizerFn
+          cors: true
+      - http:
+          path: facilities/{facilityId}/rooms/{roomId}/temperature
+          method: put
+          authorizer: authorizerFn
+          cors: true
+      - http:
+          path: facilities/{facilityId}/rooms/{roomId}/temperature
+          method: delete
           authorizer: authorizerFn
           cors: true
 
@@ -157,7 +186,6 @@ resources:
           - AttributeName: userId
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
-
   ## In order to print out the hosted domain via `serverless info` we need to define the DomainName output for CloudFormation
   Outputs:
     MultimaticConnectCloudFrontDistributionOutput:

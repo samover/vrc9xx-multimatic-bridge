@@ -1,10 +1,10 @@
-import {Handler, Middleware, Post, Request, Response, ResponseBody, ValidateBody} from '../../modules/lambda-core';
-import {LOGGER} from '../../modules/logger';
-import {encrypt, Token} from "../../modules/security";
+import {Handler, Middleware, Post, Request, Response, ResponseBody, ValidateBody} from 'lambda-core';
+import {LOGGER} from 'logger';
+import {encrypt, Token} from "security";
 import {PostConnectRequestBody} from "./dtos/postConnectRequestBody";
-import {BadRequestError, InternalServerError, UnauthorizedError} from "../../modules/errors";
-import { Authentication } from "../../modules/vaillant-api";
-import { Table } from '../../modules/dynamodb/Table';
+import {BadRequestError, InternalServerError, UnauthorizedError} from "errors";
+import { Authentication } from "vaillant-api";
+import { Table } from 'dynamodb';
 import uuid from 'uuid/v4';
 
 const webUri = process.env.WEB_APP_URI;
@@ -39,12 +39,19 @@ export class ConnectController extends Handler {
 
             // Test Multimatic Connect
             const smartphoneId = uuid();
-            const authentication = new Authentication(body.username, body.password, smartphoneId);
+            const authentication = new Authentication({ username: body.username, smartphoneId, sessionId: null, authToken: null });
+            await authentication.login(body.password);
             await authentication.authenticate();
 
             // Save Multimatic Credentials in dynamoDB
             const table = new Table(process.env.MULTIMATIC_TABLE);
-            const secret = encrypt(JSON.stringify({ username: body.username, password: body.password, smartphoneId }));
+            const secret = encrypt(JSON.stringify({
+                authToken: authentication.getAuthToken(),
+                sessionId: authentication.getSessionId(),
+                smartphoneId,
+                username: body.username,
+            }));
+
             await table.putItem({ userId: userInfo.sub, hasAcceptedTerms: body.hasAcceptedTerms, secret: JSON.stringify(secret) });
 
             return Response.noContent(request).send();

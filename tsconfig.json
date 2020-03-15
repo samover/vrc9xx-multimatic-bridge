@@ -20,7 +20,9 @@
       "utils": ["modules/utils"],
       "openid": ["modules/openid"],
       "class-validator-wrapper": ["modules/class-validator-wrapper"],
-      "vaillant-api": ["modules/vaillant-api"]
+      "vaillant-api": ["modules/vaillant-api"],
+      "dynamodb": ["modules/dynamodb"],
+      "models": ["modules/models"]
     }
   },
   "exclude": [ "node_modules" ],

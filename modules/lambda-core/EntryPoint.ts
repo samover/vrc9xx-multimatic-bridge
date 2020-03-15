@@ -36,6 +36,8 @@ export abstract class LambdaEntryPoint {
 
         try {
             request = new Request(event);
+            LOGGER.debug(request instanceof Request, 'Entrypoint.handle: request is instanceof Request');
+            LOGGER.debug(JSON.stringify(request.getResource(), null, 2), '@@@@@ RESOURCE');
 
             if (Objects.isEmpty(event)) {
                 return LambdaEntryPoint.heartBeatResponse(request);

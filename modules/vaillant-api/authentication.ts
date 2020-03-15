@@ -1,8 +1,9 @@
-import axios, {AxiosRequestConfig, AxiosResponse} from "axios";
+import axios, {AxiosError, AxiosRequestConfig, AxiosResponse} from "axios";
 import {errorHandler} from "./errorHandler";
 import { ApiPath } from "./ApiPath";
 import * as cookie from 'cookie';
 import {VaillantApiResponse} from "./common/interfaces/vaillantApiResponse.interface";
+import {Credentials} from "./common/interfaces/vaillantCredentials.interface";
 
 export interface AuthToken {
     authToken: string;
@@ -15,22 +16,22 @@ export interface SessionId {
 
 export class Authentication {
     private username: string;
-    private password: string;
     private smartphoneId: string;
     private authToken: string;
-    public sessionId: string;
+    private sessionId: string;
 
-    constructor(username: string, password: string, smartphoneId: string) {
-        this.username = username;
-        this.password = password;
-        this.smartphoneId = smartphoneId;
+    constructor(credentials: Credentials) {
+        this.username = credentials.username;
+        this.smartphoneId = credentials.smartphoneId;
+        this.authToken = credentials.authToken;
+        this.sessionId = credentials.sessionId;
     }
 
-    private login = async (): Promise<void> => {
+    public login = async (password: string): Promise<void> => {
         try {
             const requestConfig: AxiosRequestConfig = {
                 url: ApiPath.newToken(),
-                data: { username: this.username, password: this.password, smartphoneId: this.smartphoneId },
+                data: { username: this.username, password, smartphoneId: this.smartphoneId },
                 method: 'POST',
             };
 
@@ -43,9 +44,7 @@ export class Authentication {
 
     public authenticate = async (): Promise<void> => {
         try {
-            if (!this.authToken) await this.login();
-            if (this.sessionId) return null;
-
+            // use sessionId
             const requestConfig: AxiosRequestConfig = {
                 url: ApiPath.authenticate(),
                 data: { username: this.username, authToken: this.authToken, smartphoneId: this.smartphoneId },
@@ -58,5 +57,13 @@ export class Authentication {
         } catch (e) {
             errorHandler(e);
         }
+    };
+
+    public getAuthToken(): string {
+        return this.authToken;
+    }
+
+    public getSessionId(): string {
+        return this.sessionId;
     }
 }

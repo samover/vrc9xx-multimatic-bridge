@@ -19,7 +19,11 @@ export class Token {
         }
     }
 
-    public static decode(token: string): Promise<UserInfo> {
-        return
+    public static decode(token: string): UserInfo {
+        try {
+            return decode(token) as UserInfo;
+        } catch (e) {
+            throw new InternalServerError(e.message);
+        }
     }
 }

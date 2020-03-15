@@ -38,7 +38,7 @@ export interface TimeProgramModel {
     sunday: SetPointModel[],
 }
 
-export interface RoomModel {
+export interface RoomApiModel {
     roomIndex: number;
     configuration: RoomConfigurationModel;
     timeprogram: TimeProgramModel;
@@ -53,7 +53,7 @@ export class Room {
         this.facilitySerialNumber = facilitySerialNumber;
     }
 
-    public getList = async (): Promise<RoomModel[]> => {
+    public getList = async (): Promise<RoomApiModel[]> => {
         try {
             const requestConfig: AxiosRequestConfig = {
                 url: ApiPath.rooms(this.facilitySerialNumber),
@@ -70,12 +70,45 @@ export class Room {
         }
     };
 
-    public quickVeto = async(roomIndex: number, temperature: number, duration: number): Promise<void> => {
+    public getDetails = async (roomId: string): Promise<RoomApiModel> => {
         try {
             const requestConfig: AxiosRequestConfig = {
-                url: ApiPath.roomQuickVeto(this.facilitySerialNumber, `${roomIndex}`),
+                url: ApiPath.room(this.facilitySerialNumber, roomId),
+                method: 'GET',
+                headers: {
+                    Cookie: `JSESSIONID=${this.sessionId}`,
+                }
+            };
+
+            const response =  await axios.request<VaillantApiResponse>(requestConfig);
+            return response.data && response.data.body;
+        } catch (e) {
+            errorHandler(e);
+        }
+    };
+
+    public quickVeto = async(roomId: string, temperature: number, duration: number): Promise<void> => {
+        try {
+            const requestConfig: AxiosRequestConfig = {
+                url: ApiPath.roomQuickVeto(this.facilitySerialNumber, `${roomId}`),
                 method: 'PUT',
                 data: { temperatureSetpoint: temperature, duration },
+                headers: {
+                    Cookie: `JSESSIONID=${this.sessionId}`,
+                }
+            };
+
+            await axios.request<VaillantApiResponse>(requestConfig);
+        } catch (e) {
+            errorHandler(e);
+        }
+    };
+
+    public deleteQuickVeto = async(roomId: string): Promise<void> => {
+        try {
+            const requestConfig: AxiosRequestConfig = {
+                url: ApiPath.roomQuickVeto(this.facilitySerialNumber, `${roomId}`),
+                method: 'DELETE',
                 headers: {
                     Cookie: `JSESSIONID=${this.sessionId}`,
                 }

@@ -1,22 +1,16 @@
-import { SkillBuilders } from 'ask-sdk-core';
-import {HelpIntentHandler} from "./intentHandlers/helpIntentHandler";
-import {SetRoomTemperatureIntentHandler} from "./intentHandlers/setRoomTemperatureIntentHandler";
-import {HomeScheduleIntentHandler} from "./intentHandlers/homeScheduleIntentHandler";
-import {CancelAndStopIntentHandler} from "./intentHandlers/cancelAndStopIntentHandler";
-import {LaunchRequestHandler} from "./intentHandlers/launchRequestHandler";
-import {SessionEndedRequestHandler} from "./intentHandlers/sessionEndedRequestHandler";
-import {ErrorHandler} from "./intentHandlers/errorHandler";
+import {AlexaContext} from "./common/interfaces/alexaContext.interface";
+import {AlexaRequestDirective} from "./common/interfaces/alexaEvent.interface";
+import {directiveFactory} from "./directives/directiveFactory";
+import {LOGGER} from 'logger';
 
-export const handler = SkillBuilders.custom()
-    .addRequestHandlers(
-        LaunchRequestHandler,
-        HelpIntentHandler,
-        CancelAndStopIntentHandler,
-        SessionEndedRequestHandler,
+export const handler = async function (event: AlexaRequestDirective, context: AlexaContext) {
+    LOGGER.debug(event, '*** Received Directive');
+    LOGGER.debug(context, '*** Received Context');
 
-        // custom intents
-        HomeScheduleIntentHandler,
-        SetRoomTemperatureIntentHandler,
-        )
-    .addErrorHandlers(ErrorHandler)
-    .lambda();
+    const directive = directiveFactory.create(event.directive);
+    const response = await directive.handle();
+    LOGGER.debug(response, '*** Alexa response');
+
+    return response;
+};
+

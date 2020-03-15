@@ -75,8 +75,8 @@ export class Response<T> {
         return response;
     }
 
-    public static ok(request: Request, options?: ResponseOptions): Response<JsonObject> {
-        return Response.response<JsonObject>(200, request, options);
+    public static ok<T>(request: Request, options?: ResponseOptions): Response<T> {
+        return Response.response<T>(200, request, options);
     }
 
     public static created(request: Request, options?: ResponseOptions): Response<JsonObject> {

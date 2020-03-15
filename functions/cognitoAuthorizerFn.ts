@@ -36,7 +36,7 @@ interface CognitoAuthorizerEvent {
 
 // Reusable Authorizer function, set on `authorizer` field in serverless.yml
 export const handler = async (event: CognitoAuthorizerEvent) => {
-    LOGGER.info('Auth function invoked');
+    LOGGER.info(JSON.stringify(event, null, 2), 'Auth function invoked');
 
     if (!event.authorizationToken) {
         throw new UnauthorizedError('Unauthorized');
@@ -47,7 +47,7 @@ export const handler = async (event: CognitoAuthorizerEvent) => {
         const token = event.authorizationToken.substring(7);
 
         // Make a request to the iss + .well-known/jwks.json URL:
-        const response = await axios.get(`${iss}/.well-known/jwks.json`);
+        const response = await axios.get(`${iss}.well-known/jwks.json`);
         const keys = response.data;
 
         // Based on the JSON of `jwks` create a Pem:

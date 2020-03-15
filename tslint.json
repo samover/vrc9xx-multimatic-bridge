@@ -26,7 +26,19 @@
                 "allow-pascal-case"
             ]
         },
-        "member-ordering": [true, {"order": "fields-first"}]
+        "member-ordering": [true, {"order": "fields-first"}],
+        "no-implicit-dependencies": [
+            true,
+            [
+                "models",
+                "errors",
+                "logger",
+                "lambda-core",
+                "vaillant-api"
+            ],
+            "dev"
+        ],
+        "object-literal-sort-keys": false
     },
     "rulesDirectory": []
 }

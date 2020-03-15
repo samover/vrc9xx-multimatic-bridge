@@ -64,6 +64,7 @@ export abstract class Handler implements HandlerInterface {
      */
     public async handle(request: Request): Promise<ResponseBody> {
         try {
+            LOGGER.debug('Handling request', JSON.stringify(request, null, 2));
             this.action = this.getRouteConfig(request);
             const middlewareResponse = await Promises.resolvePromiseChain(this.middleware.map((middleware: Middleware) => () => middleware(request, this.action)));
             const prematureResponse = middlewareResponse.find((resp: any) => resp instanceof ResponseBody);
@@ -83,6 +84,7 @@ export abstract class Handler implements HandlerInterface {
      * @throws {Error} Unknown Route error
      */
     protected getRouteConfig(request: Request): HandlerAction {
+        LOGGER.debug('@@@@@ REQUEST 123', request);
         const path: string = request.getResource();
         const method: HttpMethod = request.getMethod();
         LOGGER.debug({
