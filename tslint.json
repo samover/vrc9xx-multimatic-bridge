@@ -34,7 +34,10 @@
                 "errors",
                 "logger",
                 "lambda-core",
-                "vaillant-api"
+                "vaillant-api",
+                "dynamodb",
+                "security",
+                "class-validator-wrapper"
             ],
             "dev"
         ],

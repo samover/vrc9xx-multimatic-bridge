@@ -1,4 +1,5 @@
 /* tslint:disable:object-literal-sort-keys */
+import cookie from 'cookie';
 import {
     ApiError,
     BadRequestError,
@@ -10,7 +11,6 @@ import {
     ValidationError
 } from '../errors';
 import { Strings } from '../utils';
-import cookie from 'cookie';
 import { ContentType } from './common/enums/contentType.enum';
 import { Request } from './Request';
 import { ResponseBody, ResponseBodyInput } from './ResponseBody';

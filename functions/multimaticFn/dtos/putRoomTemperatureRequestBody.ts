@@ -1,10 +1,10 @@
-import {IsString, ValidationClass} from "class-validator-wrapper";
-import {IsNumber} from "class-validator";
+import { IsNumber } from 'class-validator';
+import { IsString, ValidationClass } from 'class-validator-wrapper';
 
 export class PutRoomTemperatureRequestBody extends ValidationClass {
     @IsNumber()
-    temperature: number;
+    public temperature: number;
 
     @IsNumber()
-    duration: number;
+    public duration: number;
 }

@@ -1,7 +1,7 @@
-import axios, {AxiosRequestConfig, AxiosResponse} from "axios";
-import {errorHandler} from "./errorHandler";
-import { ApiPath } from "./ApiPath";
-import {VaillantApiResponse} from "./common/interfaces/vaillantApiResponse.interface";
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { ApiPath } from './ApiPath';
+import { VaillantApiResponse } from './common/interfaces/vaillantApiResponse.interface';
+import { errorHandler } from './errorHandler';
 
 export interface FacilityModel {
     serialNumber: string;

@@ -1,8 +1,8 @@
-import axios, {AxiosRequestConfig, AxiosResponse} from "axios";
-import {errorHandler} from "./errorHandler";
-import { ApiPath } from "./ApiPath";
-import {VaillantApiResponse} from "./common/interfaces/vaillantApiResponse.interface";
-import {RoomApiModel} from "./room";
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { ApiPath } from './ApiPath';
+import { VaillantApiResponse } from './common/interfaces/vaillantApiResponse.interface';
+import { errorHandler } from './errorHandler';
+import { RoomApiModel } from './room';
 
 export interface DeviceModel {
     name: string;

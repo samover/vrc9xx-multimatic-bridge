@@ -1,11 +1,11 @@
-import {Handler, Middleware, Post, Request, Response, ResponseBody, ValidateBody} from 'lambda-core';
-import {LOGGER} from 'logger';
-import {encrypt, Token} from "security";
-import {PostConnectRequestBody} from "./dtos/postConnectRequestBody";
-import {BadRequestError, InternalServerError, UnauthorizedError} from "errors";
-import { Authentication } from "vaillant-api";
 import { Table } from 'dynamodb';
+import { BadRequestError, InternalServerError, UnauthorizedError } from 'errors';
+import { Handler, Middleware, Post, Request, Response, ResponseBody, ValidateBody } from 'lambda-core';
+import { LOGGER } from 'logger';
+import { encrypt, Token } from 'security';
 import uuid from 'uuid/v4';
+import { Authentication } from 'vaillant-api';
+import { PostConnectRequestBody } from './dtos/postConnectRequestBody';
 
 const webUri = process.env.WEB_APP_URI;
 const oauth0Uri = process.env.OAUTH0_URI;
@@ -58,9 +58,9 @@ export class ConnectController extends Handler {
         } catch (e) {
             LOGGER.error(e, 'ProfileEdit Route failed');
             let errorMessage: string;
-            if (e instanceof UnauthorizedError) errorMessage = 'Token invalid or expired';
-            else if (e instanceof InternalServerError) errorMessage = 'Critical service error';
-            else errorMessage = 'Invalid Multimatic Credentials';
+            if (e instanceof UnauthorizedError) { errorMessage = 'Token invalid or expired'; }
+            else if (e instanceof InternalServerError) { errorMessage = 'Critical service error'; }
+            else { errorMessage = 'Invalid Multimatic Credentials'; }
 
             return Response.fromError(request, new BadRequestError(errorMessage));
         }

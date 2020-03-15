@@ -1,6 +1,6 @@
+import camelCase from 'lodash.camelcase';
 import { LOGGER } from '../logger';
 import { Promises } from '../utils';
-import camelCase from 'lodash.camelcase';
 import { ROUTES_METADATA } from './common/constants';
 import { HttpMethod } from './common/types';
 import { Request } from './Request';

@@ -1,7 +1,7 @@
 import { DynamoDB } from 'aws-sdk'
-import {LOGGER} from "../logger";
-import {InternalServerError} from "../errors";
-import {AttributeMap, AttributeValue} from "aws-sdk/clients/dynamodb";
+import { AttributeMap, AttributeValue } from 'aws-sdk/clients/dynamodb';
+import { InternalServerError } from '../errors';
+import { LOGGER } from '../logger';
 
 type DynamoDBDataType = 'N'|'S'|'BOOL';
 interface Json { [key: string]: any; }
@@ -32,7 +32,7 @@ export class Table {
 
     public async getItem(key: object) {
         try {
-            var params = {
+            const params = {
                 TableName: this.tableName,
                 Key: this.transformJsonToAttributeMap(key),
             };
@@ -48,7 +48,6 @@ export class Table {
     private transformJsonToAttributeMap(json: Json): AttributeMap {
         const data: Json = {};
         Object.keys(json).forEach((key: string) => {
-            let itemType: DynamoDBDataType;
             if (typeof json[key] === 'number') {
                 data[key] = { N: json[key] };
             } else if (`${json[key]}` === 'true' || `${json[key]}` === 'false') {
@@ -67,9 +66,9 @@ export class Table {
         Object.keys(map).forEach((key: string) => {
             const attribute: AttributeValue = map[key];
             let value: boolean|number|string;
-            if (Object.keys(attribute)[0] === 'S') value = Object.values(attribute)[0];
-            if (Object.keys(attribute)[0] === 'N') value = parseFloat(Object.values(attribute)[0]);
-            if (Object.keys(attribute)[0] === 'BOOL') value = Object.values(attribute)[0] === 'true';
+            if (Object.keys(attribute)[0] === 'S') { value = Object.values(attribute)[0]; }
+            if (Object.keys(attribute)[0] === 'N') { value = parseFloat(Object.values(attribute)[0]); }
+            if (Object.keys(attribute)[0] === 'BOOL') { value = Object.values(attribute)[0] === 'true'; }
             data[key] = value;
         });
 

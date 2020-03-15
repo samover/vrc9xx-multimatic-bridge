@@ -1,5 +1,5 @@
-import { InternalServerError, UnauthorizedError } from '../errors';
 import { decode, sign, verify } from 'jsonwebtoken';
+import { InternalServerError, UnauthorizedError } from '../errors';
 import { UserInfo } from './common/interfaces';
 
 /** Token class for signing and verifying a JWT token */

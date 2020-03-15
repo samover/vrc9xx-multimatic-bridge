@@ -1,6 +1,6 @@
+import { Context } from 'aws-lambda';
 import { LOGGER } from '../logger';
 import { Objects } from '../utils';
-import { Context } from 'aws-lambda';
 import { Handler } from './Handler';
 import { LambdaProxyEvent, Request } from './Request';
 import { Response } from './Response';

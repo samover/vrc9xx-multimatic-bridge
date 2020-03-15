@@ -1,8 +1,7 @@
-import {encrypt, UserInfo} from "security";
-import {decrypt, Token} from "security";
-import {LOGGER} from "logger";
-import {Table} from "dynamodb";
-import {Credentials} from "vaillant-api";
+import { Table } from 'dynamodb';
+import { LOGGER } from 'logger';
+import { decrypt, encrypt, Token, UserInfo } from 'security';
+import { Credentials } from 'vaillant-api';
 
 export class VaillantCredentials {
     public static async get(jwtToken: string): Promise<Credentials> {

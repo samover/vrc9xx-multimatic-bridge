@@ -9,7 +9,7 @@ const iss = 'https://samover.eu.auth0.com/';
 interface Policy {
     principalId: string;
     policyDocument: {
-        Version: String;
+        Version: string;
         Statement: Array<{ Action: string; Effect: string; Resource: string }>;
     }
 }

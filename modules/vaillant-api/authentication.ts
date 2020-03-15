@@ -1,9 +1,9 @@
-import axios, {AxiosError, AxiosRequestConfig, AxiosResponse} from "axios";
-import {errorHandler} from "./errorHandler";
-import { ApiPath } from "./ApiPath";
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import * as cookie from 'cookie';
-import {VaillantApiResponse} from "./common/interfaces/vaillantApiResponse.interface";
-import {Credentials} from "./common/interfaces/vaillantCredentials.interface";
+import { ApiPath } from './ApiPath';
+import { VaillantApiResponse } from './common/interfaces/vaillantApiResponse.interface';
+import { Credentials } from './common/interfaces/vaillantCredentials.interface';
+import { errorHandler } from './errorHandler';
 
 export interface AuthToken {
     authToken: string;

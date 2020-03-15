@@ -1,6 +1,6 @@
-import {LOGGER} from "../logger";
-import {AxiosError} from "axios";
-import {UnauthorizedError} from "errors";
+import { AxiosError } from 'axios';
+import { UnauthorizedError } from 'errors';
+import { LOGGER } from '../logger';
 
 export const errorHandler = (error: AxiosError, errorMessage?: string) => {
     LOGGER.debug(error.config, 'VAILLANT-API :: ERROR :: RequestConfig');
