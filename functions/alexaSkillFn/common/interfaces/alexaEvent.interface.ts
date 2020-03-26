@@ -34,6 +34,7 @@ export interface AlexaRequestDirective {
 
 export interface ContextProperty {
     namespace: string;
+    instance?: string;
     name: string;
     value: string | { value: number | string, scale?: string };
     timeOfSample: string;

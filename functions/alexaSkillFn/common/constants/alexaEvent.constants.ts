@@ -5,6 +5,9 @@ export const NAMESPACES = {
     AlexaThermostatController: 'Alexa.ThermostatController',
     AlexaEndpointHealth: 'Alexa.EndpointHealth',
     AlexaTemperatureSensor: 'Alexa.TemperatureSensor',
+    AlexaModeController: 'Alexa.ModeController',
+    ThermostatEcoMode: 'Thermostat.EcoMode',
+    ThermostatQuickMode: 'Thermostat.QuickMode',
 };
 
 export const REQUESTS = {
@@ -42,7 +45,17 @@ export const INTERFACE_PROPERTIES = {
     },
     EndpointHealth: {
         Connectivity: 'connectivity',
-    }
+    },
+};
+
+export const MODE_CONTROLLER_VALUES = {
+    QuickModeNormal: 'QuickMode.Normal',
+    QuickModeParty: 'QuickMode.Party',
+    QuickModeVentilationBoost: 'QuickMode.VentilationBoost',
+    QuickModeDayAtHome: 'QuickMode.DayAtHome',
+    QuickModeAwayFromHome: 'QuickMode.AwayFromHome',
+    EcoModeOn: 'EcoMode.On',
+    EcoModeOff: 'EcoMode.Off',
 };
 
 export const SCALES = {

@@ -2,7 +2,7 @@ import { decode, sign, verify } from 'jsonwebtoken';
 import { InternalServerError, UnauthorizedError } from '../errors';
 import { UserInfo } from './common/interfaces';
 
-/** Token class for signing and verifying a JWT token */
+/** Token class for verifying and decoding a JWT token */
 export class Token {
     /**
      * @throws {UnauthorizedError} Unable to verify token

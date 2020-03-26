@@ -11,16 +11,6 @@ export class ZonePropertiesBuilder implements PropertiesBuilder {
         return [
             {
                 namespace: NAMESPACES.AlexaThermostatController,
-                name: INTERFACE_PROPERTIES.ThermostatController.TargetSetpoint,
-                value: {
-                    value: zone.temperatureSetpoint,
-                    scale: SCALES.Celsius,
-                },
-                timeOfSample: timestamp,
-                uncertaintyInMilliseconds: 6000,
-            },
-            {
-                namespace: NAMESPACES.AlexaThermostatController,
                 name: INTERFACE_PROPERTIES.ThermostatController.ThermostatMode,
                 value: this.parseThermostatMode(zone.mode),
                 timeOfSample: timestamp,

@@ -1,15 +1,9 @@
-import {INTERFACE_PROPERTIES, NAMESPACES, SCALES} from "../common/constants/alexaEvent.constants";
-import {RoomModel} from "models";
-import {PropertiesBuilder} from "../common/interfaces/builder";
-import {ContextProperty} from "../common/interfaces/alexaEvent.interface";
+import { RoomModel } from 'models';
+import { INTERFACE_PROPERTIES, NAMESPACES, SCALES } from '../common/constants/alexaEvent.constants';
+import { ContextProperty } from '../common/interfaces/alexaEvent.interface';
+import { PropertiesBuilder } from '../common/interfaces/builder';
 
 export class RoomPropertiesBuilder implements PropertiesBuilder {
-    private parseThermostatMode(operationMode: string) {
-        if (operationMode === 'AUTO') return 'AUTO';
-        if (operationMode === 'OFF') return 'OFF';
-        return 'HEAT';
-    }
-
     public build(room: RoomModel): ContextProperty[] {
         const timestamp = (new Date()).toISOString();
 
@@ -51,5 +45,10 @@ export class RoomPropertiesBuilder implements PropertiesBuilder {
                 uncertaintyInMilliseconds: 6000
             }
         ];
+    }
+    private parseThermostatMode(operationMode: string) {
+        if (operationMode === 'AUTO') { return 'AUTO'; }
+        if (operationMode === 'OFF') { return 'OFF'; }
+        return 'HEAT';
     }
 }

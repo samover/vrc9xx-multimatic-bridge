@@ -64,6 +64,11 @@ functions:
       MULTIMATIC_TABLE: ${self:custom.multimaticTableName}
     events:
       - http:
+          path: systems
+          method: get
+          authorizer: authorizerFn
+          cors: true
+      - http:
           path: rooms
           method: get
           authorizer: authorizerFn
@@ -75,6 +80,11 @@ functions:
           cors: true
       - http: # fetch room details
           path: facilities/{facilityId}/rooms/{roomId}
+          method: get
+          authorizer: authorizerFn
+          cors: true
+      - http: # fetch system details
+          path: facilities/{facilityId}/system
           method: get
           authorizer: authorizerFn
           cors: true

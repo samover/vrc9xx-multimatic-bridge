@@ -8,10 +8,10 @@ import {
     NotFoundError,
     UnauthorizedError,
     ValidationError
-} from '../../src/modules/errors';
+} from '../../../modules/errors';
 
 
-describe('@jmc/errors', () => {
+describe('modules/errors', () => {
     describe('#ApiError', () => {
         const errorMessage = 'message';
         const errorCode = ErrorCode.BadRequest;

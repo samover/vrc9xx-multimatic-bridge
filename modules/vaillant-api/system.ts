@@ -29,7 +29,7 @@ export interface SystemTimeProgramModel {
     sunday: SystemSetPointModel[],
 }
 
-export interface SystemStatusModel {
+export interface SystemStatusApiModel {
     datetime: Date;
     outside_temperature: number;
 }
@@ -45,13 +45,18 @@ export interface DomesticHotWaterModel {
     }
 }
 
-export interface SystemModel {
-    body: {
-        configuration: SystemConfigurationModel;
-        status: SystemStatusModel;
-        zones: ZoneApiModel[];
-        dhw: DomesticHotWaterModel[];
-    }
+export interface SystemApiModel {
+    configuration: SystemConfigurationModel;
+    status: SystemStatusApiModel;
+    zones: ZoneApiModel[];
+    dhw: DomesticHotWaterModel[];
+}
+
+export enum QuickModeApiEnum { NO_QUICK_MODE, QM_PARTY, QM_VENTILATION_BOOST, QM_ONE_DAY_AT_HOME, QM_ONE_DAY_AWAY, }
+
+export interface SystemQuickModeApiModel {
+    quickmode: QuickModeApiEnum;
+    duration: number;
 }
 
 export class System {
@@ -63,7 +68,31 @@ export class System {
         this.facilitySerialNumber = facilitySerialNumber;
     }
 
-    public getDetails = async (): Promise<SystemModel> => {
+    public getQuickMode = async (): Promise<SystemQuickModeApiModel> => {
+        try {
+            const requestConfig: AxiosRequestConfig = {
+                headers: {
+                    Cookie: `JSESSIONID=${this.sessionId}`,
+                },
+                method: 'GET',
+                url: ApiPath.systemQuickmode(this.facilitySerialNumber),
+            };
+
+            try {
+                const response =  await axios.request<VaillantApiResponse>(requestConfig);
+                return response.data && response.data.body;
+            } catch (e) {
+                if (e.response.status === 409) {
+                    return { quickmode: QuickModeApiEnum.NO_QUICK_MODE, duration: 0 };
+                }
+                throw e;
+            }
+        } catch (e) {
+            errorHandler(e);
+        }
+    };
+
+    public getDetails = async (): Promise<SystemApiModel> => {
         try {
             const requestConfig: AxiosRequestConfig = {
                 headers: {

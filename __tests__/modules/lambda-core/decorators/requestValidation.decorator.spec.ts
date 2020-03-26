@@ -1,10 +1,9 @@
 /* tslint:disable:max-classes-per-file */
-
 import { apiGatewayProxyEvent } from '@jmc-dev/test-helper';
-import { IsNumber, IsString, validate, ValidationClass, ValidationError, ValidatorOptions } from '@jmc/class-validator';
-import { ValidationError as ApiValidationError } from '@jmc/errors';
-import { RequestValidationOptions, ValidateBody } from '../../src/common/decorators';
-import { Request } from '../../src/Request';
+import { IsNumber, IsString, ValidationClass } from '../../../../modules/class-validator-wrapper';
+import { ValidationError as ApiValidationError } from '../../../../modules/errors';
+import { ValidateBody } from '../../../../modules/lambda-core/common/decorators';
+import { Request } from '../../../../modules/lambda-core/Request';
 
 class Body extends ValidationClass {
     @IsString()

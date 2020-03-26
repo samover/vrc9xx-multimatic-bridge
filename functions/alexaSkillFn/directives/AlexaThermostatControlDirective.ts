@@ -1,19 +1,22 @@
-import {AlexaEvent, ContextProperty} from "../common/interfaces/alexaEvent.interface";
-import {AbstractDirective} from "./AbstractDirective";
-import {NAMESPACES, REQUESTS, RESPONSES} from "../common/constants/alexaEvent.constants";
-import {Room, Zone} from "../multimatic-api";
-import {RoomModel, ZoneModel} from "models";
-import {RoomPropertiesBuilder} from "./RoomPropertiesBuilder";
-import * as duration from "duration-fns";
-import {THERMOSTAT} from "../common/constants/thermostat.constants";
-import {LOGGER} from "logger";
+import * as duration from 'duration-fns';
+import { LOGGER } from 'logger';
+import { RoomModel, ZoneModel } from 'models';
+import { RoomPropertiesBuilder } from '../builders/RoomPropertiesBuilder';
+import { ZonePropertiesBuilder } from '../builders/ZonePropertiesBuilder';
+import { NAMESPACES, REQUESTS, RESPONSES } from '../common/constants/alexaEvent.constants';
+import { THERMOSTAT } from '../common/constants/thermostat.constants';
+import { AlexaEvent, ContextProperty } from '../common/interfaces/alexaEvent.interface';
+import { Room, Zone } from '../multimatic-api';
+import { AbstractDirective } from './AbstractDirective';
 
 export class AlexaThermostatControlDirective extends AbstractDirective {
     private roomPropertiesBuilder: RoomPropertiesBuilder;
+    private zonePropertiesBuilder: ZonePropertiesBuilder;
 
     constructor(event: AlexaEvent) {
         super(event);
         this.roomPropertiesBuilder = new RoomPropertiesBuilder();
+        this.zonePropertiesBuilder = new ZonePropertiesBuilder();
     }
 
     public async handle(): Promise<{ event: AlexaEvent }> {

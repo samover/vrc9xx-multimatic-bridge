@@ -8,6 +8,11 @@ import { AlexaResponseEvent } from '../common/interfaces/alexaEvent.interface';
 import { Systems } from '../multimatic-api';
 import { AbstractDirective } from './AbstractDirective';
 
+/*
+    - all room thermostats
+    - outside thermostat sensor
+    - main thermostat: resume schedule, turn off/on,
+ */
 export class AlexaDiscoveryDirective extends AbstractDirective {
     public async handle(): Promise<AlexaResponseEvent> {
         this.updateResponseHeader(RESPONSES.Discover);

@@ -5,7 +5,7 @@ const AUTHENTICATE = BASE_AUTHENTICATE + '/authenticate';
 const NEW_TOKEN = BASE_AUTHENTICATE + '/token/new';
 const LOGOUT = BASE_AUTHENTICATE + '/logout';
 
-// FacilityModel details//
+// FacilityApiModel details//
 const FACILITIES_LIST = BASE + '/facilities';
 const FACILITIES = FACILITIES_LIST + '/{serialNumber}';
 const FACILITIES_DETAILS = FACILITIES + '/system/v1/details';

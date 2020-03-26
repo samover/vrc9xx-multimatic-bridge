@@ -16,6 +16,11 @@ export enum SystemOverrideEnum {
     DayAwayFromHome = 'QM_ONE_DAY_AWAY',
 }
 
+/*
+ VAILLANT: QM_ONE_DAY_AT_HOME
+
+ STATUS: 'QuickMode.DayAtHome'
+ */
 export enum OperationModeModel {
     On = 'ON',
     Off = 'OFF',
@@ -28,18 +33,22 @@ export interface DomesticHotWaterModel {
     operationMode: OperationModeModel,
 }
 
-export interface SystemModel {
+export interface SystemStatusModel {
     id: string;
-    name: string;
-    manufacturer: string;
-    controller: string;
     outsideTemperature: number;
     datetime: Date;
     systemOverride: SystemOverrideEnum,
     ecoMode: boolean;
     holidayMode: HolidayModeModel;
+}
+
+export interface SystemModel extends SystemStatusModel {
+    name: string;
+    manufacturer: string;
+    controller: string;
     rooms: RoomModel[];
     zones: ZoneModel[];
     dhw: [];
 }
+
 

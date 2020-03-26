@@ -1,4 +1,5 @@
 import { SystemModel, ZoneModel } from 'models';
+import { MODE_CONTROLLER_VALUES, NAMESPACES } from '../common/constants/alexaEvent.constants';
 
 export class SystemEndpointsBuilder {
     public static build(system: SystemModel) {
@@ -7,13 +8,111 @@ export class SystemEndpointsBuilder {
             manufacturerName: system.manufacturer,
             description: system.controller,
             friendlyName: `${system.name} thermostat`,
-            displayCategories: ['THERMOSTAT', 'TEMPERATURE_SENSOR'],
+            displayCategories: ['OTHER'],
             cookie: {},
             capabilities: [
                 {
                     type: 'AlexaInterface',
-                    interface: 'Alexa.ModeController',
-                    instance: 'Thermostat.QuickMode',
+                    interface: NAMESPACES.AlexaModeController,
+                    instance: NAMESPACES.ThermostatQuickMode,
+                    version: '3',
+                    properties: {
+                        supported: [
+                            { name: 'mode' }
+                        ],
+                        retrievable: true,
+                        proactivelyReported: true,
+                        nonControllable: false
+                    },
+                    capabilityResources: {
+                        friendlyNames: [
+                            {
+                                '@type': 'text',
+                                value: { text: 'override', locale: 'en-US' }
+                            },
+                            {
+                                '@type': 'text',
+                                value: { text: 'quick mode', locale: 'en-US' }
+                            },
+                        ]
+                    },
+                    configuration: {
+                        ordered: false,
+                        supportedModes: [
+                            {
+                                value: MODE_CONTROLLER_VALUES.QuickModeNormal,
+                                modeResources: {
+                                    friendlyNames: [
+                                        {
+                                            '@type': 'text',
+                                            value: { text: 'normal', locale: 'en-US' }
+                                        },
+                                        {
+                                            '@type': 'text',
+                                            value: { text: 'no quickmode', locale: 'en-US' }
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                value: MODE_CONTROLLER_VALUES.QuickModeParty,
+                                modeResources: {
+                                    friendlyNames: [
+                                        {
+                                            '@type': 'text',
+                                            value: { text: 'party', locale: 'en-US' }
+                                        },
+                                    ]
+                                }
+                            },
+                            {
+                                value: MODE_CONTROLLER_VALUES.QuickModeVentilationBoost,
+                                modeResources: {
+                                    friendlyNames: [
+                                        {
+                                            '@type': 'text',
+                                            value: { text: 'ventilation boost', locale: 'en-US' }
+                                        },
+                                    ]
+                                }
+                            },
+                            {
+                                value: MODE_CONTROLLER_VALUES.QuickModeDayAtHome,
+                                modeResources: {
+                                    friendlyNames: [
+                                        {
+                                            '@type': 'text',
+                                            value: { text: 'at home', locale: 'en-US' }
+                                        },
+                                        {
+                                            '@type': 'text',
+                                            value: { text: 'one day at home', locale: 'en-US' }
+                                        },
+                                    ]
+                                }
+                            },
+                            {
+                                value: MODE_CONTROLLER_VALUES.QuickModeAwayFromHome,
+                                modeResources: {
+                                    friendlyNames: [
+                                        {
+                                            '@type': 'text',
+                                            value: { text: 'away from home', locale: 'en-US' }
+                                        },
+                                        {
+                                            '@type': 'text',
+                                            value: { text: 'one day away', locale: 'en-US' }
+                                        },
+                                    ]
+                                }
+                            },
+                        ]
+                    }
+                },
+                {
+                    type: 'AlexaInterface',
+                    interface: NAMESPACES.AlexaModeController,
+                    instance: NAMESPACES.ThermostatEcoMode,
                     version: '3',
                     properties: {
                         supported: [
@@ -29,10 +128,7 @@ export class SystemEndpointsBuilder {
                         friendlyNames: [
                             {
                                 '@type': 'text',
-                                value: {
-                                    text: 'mode',
-                                    locale: 'en-US'
-                                }
+                                value: { text: 'eco mode', locale: 'en-US' }
                             },
                         ]
                     },
@@ -40,152 +136,23 @@ export class SystemEndpointsBuilder {
                         ordered: false,
                         supportedModes: [
                             {
-                                value: 'Thermostat.Normal',
+                                value: MODE_CONTROLLER_VALUES.EcoModeOn,
                                 modeResources: {
                                     friendlyNames: [
                                         {
                                             '@type': 'text',
-                                            value: {
-                                                text: 'normal',
-                                                locale: 'en-US'
-                                            }
-                                        },
-                                        {
-                                            '@type': 'text',
-                                            value: {
-                                                text: 'no quickmode',
-                                                locale: 'en-US'
-                                            }
-                                        }
-                                    ]
-                                }
-                            },
-                            {
-                                value: 'Thermostat.Party',
-                                modeResources: {
-                                    friendlyNames: [
-                                        {
-                                            '@type': 'text',
-                                            value: {
-                                                text: 'party',
-                                                locale: 'en-US'
-                                            }
+                                            value: { text: 'on', locale: 'en-US' }
                                         },
                                     ]
                                 }
                             },
                             {
-                                value: 'Thermostat.VentilationBoost',
+                                value: MODE_CONTROLLER_VALUES.EcoModeOff,
                                 modeResources: {
                                     friendlyNames: [
                                         {
                                             '@type': 'text',
-                                            value: {
-                                                text: 'ventilation boost',
-                                                locale: 'en-US'
-                                            }
-                                        },
-                                    ]
-                                }
-                            },
-                            {
-                                value: 'Thermostat.DayAtHome',
-                                modeResources: {
-                                    friendlyNames: [
-                                        {
-                                            '@type': 'text',
-                                            value: {
-                                                text: 'at home',
-                                                locale: 'en-US'
-                                            }
-                                        },
-                                        {
-                                            '@type': 'text',
-                                            value: {
-                                                text: 'one day at home',
-                                                locale: 'en-US'
-                                            }
-                                        },
-                                    ]
-                                }
-                            },
-                            {
-                                value: 'Thermostat.AwayFromHome',
-                                modeResources: {
-                                    friendlyNames: [
-                                        {
-                                            '@type': 'text',
-                                            value: {
-                                                text: 'away from home',
-                                                locale: 'en-US'
-                                            }
-                                        },
-                                        {
-                                            '@type': 'text',
-                                            value: {
-                                                text: 'one day away',
-                                                locale: 'en-US'
-                                            }
-                                        },
-                                    ]
-                                }
-                            },
-                        ]
-                    }
-                },
-                {
-                    type: 'AlexaInterface',
-                    interface: 'Alexa.ModeController',
-                    instance: 'Thermostat.EcoMode',
-                    version: '3',
-                    properties: {
-                        supported: [
-                            {
-                                name: 'ecoMode'
-                            }
-                        ],
-                        retrievable: true,
-                        proactivelyReported: true,
-                        nonControllable: false
-                    },
-                    capabilityResources: {
-                        friendlyNames: [
-                            {
-                                '@type': 'text',
-                                value: {
-                                    text: 'ecoMode',
-                                    locale: 'en-US'
-                                }
-                            },
-                        ]
-                    },
-                    configuration: {
-                        ordered: false,
-                        supportedModes: [
-                            {
-                                value: 'Thermostat.On',
-                                modeResources: {
-                                    friendlyNames: [
-                                        {
-                                            '@type': 'text',
-                                            value: {
-                                                text: 'on',
-                                                locale: 'en-US'
-                                            }
-                                        },
-                                    ]
-                                }
-                            },
-                            {
-                                value: 'Thermostat.Off',
-                                modeResources: {
-                                    friendlyNames: [
-                                        {
-                                            '@type': 'text',
-                                            value: {
-                                                text: 'off',
-                                                locale: 'en-US'
-                                            }
+                                            value: { text: 'off', locale: 'en-US' }
                                         },
                                     ]
                                 }

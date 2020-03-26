@@ -3,7 +3,7 @@ import { ApiPath } from './ApiPath';
 import { VaillantApiResponse } from './common/interfaces/vaillantApiResponse.interface';
 import { errorHandler } from './errorHandler';
 
-export interface FacilityModel {
+export interface FacilityApiModel {
     serialNumber: string;
     name: string;
     capabilities: string[],
@@ -16,7 +16,7 @@ export class Facility {
         this.sessionId = sessionId;
     }
 
-    public getList = async (): Promise<FacilityModel[]> => {
+    public getList = async (): Promise<FacilityApiModel[]> => {
         try {
             const requestConfig: AxiosRequestConfig = {
                 url: ApiPath.facilitiesList(),

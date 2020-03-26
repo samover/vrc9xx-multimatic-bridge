@@ -1,9 +1,9 @@
 import { BadRequestError, InternalServerError, UnauthorizedError } from 'errors';
 import { Delete, Get, Handler, Middleware, Put, Request, Response, ResponseBody, ValidateBody } from 'lambda-core';
 import { LOGGER } from 'logger';
-import { RoomModel, SystemModel, ZoneModel } from 'models';
+import { RoomModel, SystemModel, SystemStatusModel, ZoneModel } from 'models';
 import { Authentication, Facility, Room, System, Zone } from 'vaillant-api';
-import { FacilityModel } from '../../modules/vaillant-api/facility';
+import { FacilityApiModel } from '../../modules/vaillant-api/facility';
 import { RoomBuilder } from './builders/RoomBuilder';
 import { ZoneBuilder } from './builders/ZoneBuilder';
 import { PutRoomTemperatureRequestBody } from './dtos/putRoomTemperatureRequestBody';
@@ -47,13 +47,13 @@ export class MultimaticController extends Handler {
         return facilitiesList[0].serialNumber;
     }
 
-    private async getFacilities(sessionId: string): Promise<FacilityModel[]> {
+    private async getFacilities(sessionId: string): Promise<FacilityApiModel[]> {
         const facilities = new Facility(sessionId);
         return facilities.getList();
     }
 
     @Get('/systems')
-    private async getSystem(request: Request): Promise<ResponseBody> {
+    private async getSystems(request: Request): Promise<ResponseBody> {
         LOGGER.debug(request, 'entrypoint get /system');
         const token: string = this.parseToken(request);
 
@@ -63,7 +63,32 @@ export class MultimaticController extends Handler {
             const systems: SystemModel[] = await Promise.all(facilities.map(facility => SystemService.getSystem(sessionId, facility)));
             return Response.ok<SystemModel[]>(request).send(systems);
         } catch (e) {
-            LOGGER.error(e, 'Get Rooms Route failed');
+            LOGGER.error(e, 'Get systems Route failed');
+            let errorMessage: string;
+            if (e instanceof UnauthorizedError) {
+                LOGGER.debug('@@@@@@@@@@ getSystem Unauthorized. Try ', this.retryCount);
+                await this.reAuthenticate(token);
+                return this.getSystem(request);
+            }
+            else if (e instanceof InternalServerError) { errorMessage = 'Critical service error'; }
+            else { errorMessage = 'Invalid Multimatic Credentials'; }
+
+            return Response.fromError(request, new BadRequestError(errorMessage));
+        }
+    }
+
+    @Get('/facilities/{facilityId}/system')
+    private async getSystemDetails(request: Request): Promise<ResponseBody> {
+        LOGGER.debug(request, 'entrypoint get /system');
+        const token: string = this.parseToken(request);
+        const facilityId: string = request.getPathParam('facilityId') as string;
+
+        try {
+            const sessionId: string = await this.getSessionId(token);
+            const systemStatus: SystemStatusModel = await SystemService.getSystemStatus(sessionId, facilityId);
+            return Response.ok<SystemStatusModel>(request).send(systemStatus);
+        } catch (e) {
+            LOGGER.error(e, 'Get systemDetails Route failed');
             let errorMessage: string;
             if (e instanceof UnauthorizedError) {
                 LOGGER.debug('@@@@@@@@@@ getSystem Unauthorized. Try ', this.retryCount);
@@ -121,7 +146,7 @@ export class MultimaticController extends Handler {
             const responseBody: RoomModel = RoomBuilder.build(facilityId, room);
             return Response.ok<RoomModel>(request).send(responseBody);
         } catch (e) {
-            LOGGER.error(e, 'Get Rooms Route failed');
+            LOGGER.error(e, 'Get facility/room Route failed');
             let errorMessage: string;
             if (e instanceof UnauthorizedError) {
                 LOGGER.debug('@@@@@@@@@@ GETROOM Unauthorized. Try ', this.retryCount);
@@ -249,7 +274,7 @@ export class MultimaticController extends Handler {
             const responseBody: ZoneModel = ZoneBuilder.build(facilityId, zone);
             return Response.ok<ZoneModel>(request).send(responseBody);
         } catch (e) {
-            LOGGER.error(e, 'Get Rooms Route failed');
+            LOGGER.error(e, 'Get facility/zone Route failed');
             let errorMessage: string;
             if (e instanceof UnauthorizedError) {
                 LOGGER.debug('@@@@@@@@@@ GETROOM Unauthorized. Try ', this.retryCount);
