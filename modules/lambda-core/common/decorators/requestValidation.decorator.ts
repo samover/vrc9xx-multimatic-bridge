@@ -6,7 +6,7 @@ import { Request } from '../../Request';
 import { RequestParams } from '../enums';
 
 const getValidationObject = (request: Request, paramType: RequestParams): object => {
-    switch(paramType) {
+    switch (paramType) {
         case RequestParams.BODY:
             return request.getBody();
         case RequestParams.QUERY:
@@ -37,7 +37,7 @@ export const RequestValidation = (Klass: new() => ValidationClass, paramType: Re
             }
 
             return originalMethod.call(target, request, ...args);
-        }
+        };
     };
 };
 
@@ -50,4 +50,3 @@ const createMappingDecorator = (paramType: RequestParams) => (klass: new() => Va
 export const ValidateBody = createMappingDecorator(RequestParams.BODY);
 export const ValidateQuery = createMappingDecorator(RequestParams.QUERY);
 export const ValidatePath = createMappingDecorator(RequestParams.PATH);
-

@@ -12,6 +12,6 @@ export class RoomBuilder {
             name: room.configuration.name,
             operationMode: room.configuration.operationMode,
             temperatureSetpoint: room.configuration.temperatureSetpoint,
-        }
+        };
     }
 }

@@ -1,10 +1,11 @@
-import {errorHandler} from "./errorHandler";
-import axios, {AxiosRequestConfig} from "axios";
-import {LOGGER} from "logger";
-import {RoomModel} from "models";
+import axios, { AxiosRequestConfig } from 'axios';
+import { LOGGER } from 'logger';
+import { RoomModel } from 'models';
+import { errorHandler } from './errorHandler';
 
 export class Room {
     private path: string;
+
     private authToken: string;
 
     constructor(facilityId: string, roomId: string) {
@@ -23,7 +24,7 @@ export class Room {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${this.authToken}`,
-                }
+                },
             };
 
             const result = await axios.request<RoomModel>(requestConfig);
@@ -45,7 +46,7 @@ export class Room {
                 data: { temperature, duration },
                 headers: {
                     Authorization: `Bearer ${this.authToken}`,
-                }
+                },
             };
 
             LOGGER.debug('@@@@@ requestConfig', requestConfig);
@@ -67,7 +68,7 @@ export class Room {
                 method: 'DELETE',
                 headers: {
                     Authorization: `Bearer ${this.authToken}`,
-                }
+                },
             };
 
             LOGGER.debug('@@@@@ requestConfig', requestConfig);
@@ -79,6 +80,5 @@ export class Room {
             console.error(e);
             return errorHandler(e);
         }
-
     }
 }

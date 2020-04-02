@@ -1,8 +1,14 @@
 import { BadRequestError, InternalServerError, UnauthorizedError } from 'errors';
-import { Delete, Get, Handler, Middleware, Put, Request, Response, ResponseBody, ValidateBody } from 'lambda-core';
+import {
+    Delete, Get, Handler, Middleware, Put, Request, Response, ResponseBody, ValidateBody,
+} from 'lambda-core';
 import { LOGGER } from 'logger';
-import { RoomModel, SystemModel, SystemStatusModel, ZoneModel } from 'models';
-import { Authentication, Facility, Room, System, Zone } from 'vaillant-api';
+import {
+    RoomModel, SystemModel, SystemStatusModel, ZoneModel,
+} from 'models';
+import {
+    Authentication, Facility, Room, System, Zone,
+} from 'vaillant-api';
 import { FacilityApiModel } from '../../modules/vaillant-api/facility';
 import { RoomBuilder } from './builders/RoomBuilder';
 import { ZoneBuilder } from './builders/ZoneBuilder';
@@ -14,7 +20,8 @@ import { VaillantCredentials } from './services/VaillantCredentials';
 /** Class representing the controller for the Multimatic Lambda */
 export class MultimaticController extends Handler {
     protected middleware: Middleware[] = [];
-    private retryCount: number = 0;
+
+    private retryCount = 0;
 
     private parseToken(request: Request): string {
         return request.getHeader('authorization').replace(/Bearer /, '');
@@ -26,14 +33,14 @@ export class MultimaticController extends Handler {
     }
 
     private async reAuthenticate(token: string) {
-        this.retryCount = this.retryCount + 1;
+        this.retryCount += 1;
         if (this.retryCount > 3) {
             throw new UnauthorizedError('Failed to authenticate');
         }
 
         const credentials = await VaillantCredentials.get(token);
         LOGGER.debug(credentials, 'CREDENTIALS');
-        const authentication =  new Authentication(credentials);
+        const authentication = new Authentication(credentials);
         LOGGER.debug(authentication, 'AUTH');
         await authentication.authenticate();
         LOGGER.debug(authentication, 'AUTH');
@@ -60,7 +67,7 @@ export class MultimaticController extends Handler {
         try {
             const sessionId: string = await this.getSessionId(token);
             const facilities = await this.getFacilities(sessionId);
-            const systems: SystemModel[] = await Promise.all(facilities.map(facility => SystemService.getSystem(sessionId, facility)));
+            const systems: SystemModel[] = await Promise.all(facilities.map((facility) => SystemService.getSystem(sessionId, facility)));
             return Response.ok<SystemModel[]>(request).send(systems);
         } catch (e) {
             LOGGER.error(e, 'Get systems Route failed');
@@ -70,8 +77,7 @@ export class MultimaticController extends Handler {
                 await this.reAuthenticate(token);
                 return this.getSystem(request);
             }
-            else if (e instanceof InternalServerError) { errorMessage = 'Critical service error'; }
-            else { errorMessage = 'Invalid Multimatic Credentials'; }
+            if (e instanceof InternalServerError) { errorMessage = 'Critical service error'; } else { errorMessage = 'Invalid Multimatic Credentials'; }
 
             return Response.fromError(request, new BadRequestError(errorMessage));
         }
@@ -95,8 +101,7 @@ export class MultimaticController extends Handler {
                 await this.reAuthenticate(token);
                 return this.getSystem(request);
             }
-            else if (e instanceof InternalServerError) { errorMessage = 'Critical service error'; }
-            else { errorMessage = 'Invalid Multimatic Credentials'; }
+            if (e instanceof InternalServerError) { errorMessage = 'Critical service error'; } else { errorMessage = 'Invalid Multimatic Credentials'; }
 
             return Response.fromError(request, new BadRequestError(errorMessage));
         }
@@ -121,8 +126,7 @@ export class MultimaticController extends Handler {
                 await this.reAuthenticate(token);
                 return this.getRooms(request);
             }
-            else if (e instanceof InternalServerError) { errorMessage = 'Critical service error'; }
-            else { errorMessage = 'Invalid Multimatic Credentials'; }
+            if (e instanceof InternalServerError) { errorMessage = 'Critical service error'; } else { errorMessage = 'Invalid Multimatic Credentials'; }
 
             return Response.fromError(request, new BadRequestError(errorMessage));
         }
@@ -153,8 +157,7 @@ export class MultimaticController extends Handler {
                 await this.reAuthenticate(token);
                 return this.getRoom(request);
             }
-            else if (e instanceof InternalServerError) { errorMessage = 'Critical service error'; }
-            else { errorMessage = 'Invalid Multimatic Credentials'; }
+            if (e instanceof InternalServerError) { errorMessage = 'Critical service error'; } else { errorMessage = 'Invalid Multimatic Credentials'; }
 
             return Response.fromError(request, new BadRequestError(errorMessage));
         }
@@ -186,8 +189,7 @@ export class MultimaticController extends Handler {
                 await this.reAuthenticate(token);
                 return this.setRoomTemperature(request);
             }
-            else if (e instanceof InternalServerError) { errorMessage = 'Critical service error'; }
-            else { errorMessage = 'Invalid Multimatic Credentials'; }
+            if (e instanceof InternalServerError) { errorMessage = 'Critical service error'; } else { errorMessage = 'Invalid Multimatic Credentials'; }
 
             return Response.fromError(request, new BadRequestError(errorMessage));
         }
@@ -217,8 +219,7 @@ export class MultimaticController extends Handler {
                 await this.reAuthenticate(token);
                 return this.resetRoomSchedule(request);
             }
-            else if (e instanceof InternalServerError) { errorMessage = 'Critical service error'; }
-            else { errorMessage = 'Invalid Multimatic Credentials'; }
+            if (e instanceof InternalServerError) { errorMessage = 'Critical service error'; } else { errorMessage = 'Invalid Multimatic Credentials'; }
 
             return Response.fromError(request, new BadRequestError(errorMessage));
         }
@@ -249,8 +250,7 @@ export class MultimaticController extends Handler {
                 await this.reAuthenticate(token);
                 return this.getRooms(request);
             }
-            else if (e instanceof InternalServerError) { errorMessage = 'Critical service error'; }
-            else { errorMessage = 'Invalid Multimatic Credentials'; }
+            if (e instanceof InternalServerError) { errorMessage = 'Critical service error'; } else { errorMessage = 'Invalid Multimatic Credentials'; }
 
             return Response.fromError(request, new BadRequestError(errorMessage));
         }
@@ -281,8 +281,7 @@ export class MultimaticController extends Handler {
                 await this.reAuthenticate(token);
                 return this.getRoom(request);
             }
-            else if (e instanceof InternalServerError) { errorMessage = 'Critical service error'; }
-            else { errorMessage = 'Invalid Multimatic Credentials'; }
+            if (e instanceof InternalServerError) { errorMessage = 'Critical service error'; } else { errorMessage = 'Invalid Multimatic Credentials'; }
 
             return Response.fromError(request, new BadRequestError(errorMessage));
         }

@@ -11,6 +11,7 @@ import { AbstractDirective } from './AbstractDirective';
 
 export class AlexaThermostatControlDirective extends AbstractDirective {
     private roomPropertiesBuilder: RoomPropertiesBuilder;
+
     private zonePropertiesBuilder: ZonePropertiesBuilder;
 
     constructor(event: AlexaEvent) {
@@ -47,36 +48,35 @@ export class AlexaThermostatControlDirective extends AbstractDirective {
             const roomProperties: ContextProperty[] = this.roomPropertiesBuilder.build(room);
 
             this.updateResponseHeader(RESPONSES.Response, NAMESPACES.Alexa);
-            this.addContext({properties: roomProperties});
-            return this.getResponse();
-        } else {
-            const zoneApi = new Zone(facilityId, id);
-            zoneApi.addToken(this.event.endpoint.scope.token);
-
-            switch (this.event.header.name) {
-                case REQUESTS.SetTargetTemperature:
-                    await this.setZoneTargetTemperature(zoneApi);
-                    break;
-
-                case REQUESTS.AdjustTargetTemperature:
-                    await this.adjustZoneTargetTemperature(zoneApi);
-                    break;
-
-                case REQUESTS.ResumeSchedule:
-                    await this.resumeZoneSchedule(zoneApi);
-                    break;
-
-                default:
-                    break;
-            }
-            LOGGER.debug('Trying to set temperature of zone');
-            const zone: ZoneModel = await zoneApi.get() as ZoneModel;
-            const zoneProperties: ContextProperty[] = this.zonePropertiesBuilder.build(zone);
-
-            this.updateResponseHeader(RESPONSES.Response, NAMESPACES.Alexa);
-            this.addContext({properties: zoneProperties});
+            this.addContext({ properties: roomProperties });
             return this.getResponse();
         }
+        const zoneApi = new Zone(facilityId, id);
+        zoneApi.addToken(this.event.endpoint.scope.token);
+
+        switch (this.event.header.name) {
+            case REQUESTS.SetTargetTemperature:
+                await this.setZoneTargetTemperature(zoneApi);
+                break;
+
+            case REQUESTS.AdjustTargetTemperature:
+                await this.adjustZoneTargetTemperature(zoneApi);
+                break;
+
+            case REQUESTS.ResumeSchedule:
+                await this.resumeZoneSchedule(zoneApi);
+                break;
+
+            default:
+                break;
+        }
+        LOGGER.debug('Trying to set temperature of zone');
+        const zone: ZoneModel = await zoneApi.get() as ZoneModel;
+        const zoneProperties: ContextProperty[] = this.zonePropertiesBuilder.build(zone);
+
+        this.updateResponseHeader(RESPONSES.Response, NAMESPACES.Alexa);
+        this.addContext({ properties: zoneProperties });
+        return this.getResponse();
     }
 
     private async setZoneTargetTemperature(zoneApi: Zone) {
@@ -98,13 +98,15 @@ export class AlexaThermostatControlDirective extends AbstractDirective {
     }
 
     private async adjustZoneTargetTemperature(zoneApi: Zone) {
-        const temperatureDelta: number = this.event.payload.targetSetpointDelta && this.event.payload.targetSetpointDelta.value;
+        const temperatureDelta: number = this.event.payload.targetSetpointDelta
+            && this.event.payload.targetSetpointDelta.value;
         const zone: ZoneModel = await zoneApi.get();
         await zoneApi.setTemperature(zone.temperatureSetpoint + temperatureDelta, THERMOSTAT.DefaultDurationInMinutes);
     }
 
     private async adjustRoomTargetTemperature(roomApi: Room) {
-        const temperatureDelta: number = this.event.payload.targetSetpointDelta && this.event.payload.targetSetpointDelta.value;
+        const temperatureDelta: number = this.event.payload.targetSetpointDelta
+            && this.event.payload.targetSetpointDelta.value;
         const room: RoomModel = await roomApi.get();
         await roomApi.setTemperature(room.temperatureSetpoint + temperatureDelta, THERMOSTAT.DefaultDurationInMinutes);
     }
@@ -117,4 +119,3 @@ export class AlexaThermostatControlDirective extends AbstractDirective {
         await zoneApi.resetSchedule();
     }
 }
-

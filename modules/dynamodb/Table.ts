@@ -1,13 +1,15 @@
-import { DynamoDB } from 'aws-sdk'
+/* eslint-disable prefer-destructuring */
+import { DynamoDB } from 'aws-sdk';
 import { AttributeMap, AttributeValue } from 'aws-sdk/clients/dynamodb';
 import { InternalServerError } from '../errors';
 import { LOGGER } from '../logger';
 
 type DynamoDBDataType = 'N'|'S'|'BOOL';
-interface Json { [key: string]: any; }
+interface Json { [key: string]: any }
 
 export class Table {
     private tableName: string;
+
     private client: DynamoDB;
 
     constructor(tableName: string) {
@@ -15,12 +17,12 @@ export class Table {
         this.tableName = tableName;
     }
 
-    public async putItem(item: Json) {
+    public async putItem(item: Json): Promise<void> {
         try {
             LOGGER.debug(item, 'Saving item');
             const params = {
                 TableName: this.tableName,
-                Item: this.transformJsonToAttributeMap(item),
+                Item: Table.transformJsonToAttributeMap(item),
             };
             LOGGER.debug(params, 'Saving item as thus');
             await this.client.putItem(params).promise();
@@ -30,22 +32,22 @@ export class Table {
         }
     }
 
-    public async getItem(key: object) {
+    public async getItem(key: object): Promise<Json> {
         try {
             const params = {
                 TableName: this.tableName,
-                Key: this.transformJsonToAttributeMap(key),
+                Key: Table.transformJsonToAttributeMap(key),
             };
 
             const result = await this.client.getItem(params).promise();
-            return this.transformAttributeMapToJson(result.Item);
+            return Table.transformAttributeMapToJson(result.Item);
         } catch (e) {
             LOGGER.debug(e, `Failed fetching item in ${this.tableName} table`);
             throw new InternalServerError(e.message);
         }
     }
 
-    private transformJsonToAttributeMap(json: Json): AttributeMap {
+    private static transformJsonToAttributeMap(json: Json): AttributeMap {
         const data: Json = {};
         Object.keys(json).forEach((key: string) => {
             if (typeof json[key] === 'number') {
@@ -60,7 +62,7 @@ export class Table {
         return data;
     }
 
-    private transformAttributeMapToJson(map: AttributeMap): Json {
+    private static transformAttributeMapToJson(map: AttributeMap): Json {
         const data: Json = {};
 
         Object.keys(map).forEach((key: string) => {

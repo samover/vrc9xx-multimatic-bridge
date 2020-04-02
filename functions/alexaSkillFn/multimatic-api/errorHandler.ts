@@ -1,12 +1,12 @@
-import {LOGGER} from 'logger';
-import {AxiosError} from "axios";
+import { LOGGER } from 'logger';
+import { AxiosError } from 'axios';
 
 export const errorHandler = (error: AxiosError, errorMessage?: string) => {
     LOGGER.debug(error.config, 'VAILLANT-API :: ERROR :: RequestConfig');
     if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
-        LOGGER.debug(error.response, `VAILLANT-API :: ERROR :: Server responded with errorCode ${error.response.status}`)
+        LOGGER.debug(error.response, `VAILLANT-API :: ERROR :: Server responded with errorCode ${error.response.status}`);
     } else if (error.request) {
         // The request was made but no response was received
         // `error.request` is an instance of XMLHttpRequest in the browser and an instance of

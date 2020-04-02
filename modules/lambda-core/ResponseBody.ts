@@ -6,8 +6,10 @@ export interface ResponseBodyInput {
 
 export class ResponseBody {
     public statusCode: number;
+
     // public headers: { [index: string]: string; };
     public body: string;
+
     public multiValueHeaders: { [index: string]: string[] };
 
     constructor({ statusCode, headers, body }: ResponseBodyInput) {

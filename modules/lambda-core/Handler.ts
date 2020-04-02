@@ -1,6 +1,6 @@
 import camelCase from 'lodash.camelcase';
-import { LOGGER } from '../logger';
-import { Promises } from '../utils';
+import { LOGGER } from 'logger';
+import { Promises } from 'utils';
 import { ROUTES_METADATA } from './common/constants';
 import { HttpMethod } from './common/types';
 import { Request } from './Request';
@@ -26,7 +26,7 @@ export interface HandlerAction {
 }
 
 export interface RouteConfig {
-    path: string
+    path: string;
     method: HttpMethod;
     authenticated: boolean;
     useSession: boolean;
@@ -44,6 +44,7 @@ export type Middleware = (request: Request, action: HandlerAction) => Promise<vo
 
 export abstract class Handler implements HandlerInterface {
     [key: string]: any;
+
     /**
      * Middleware is executed before the handler code. There are two types of middleware:
      *
@@ -56,6 +57,7 @@ export abstract class Handler implements HandlerInterface {
      * @memberOf Handler
      */
     protected abstract middleware: Middleware[] = [];
+
     protected action: HandlerAction;
 
     /**
@@ -66,7 +68,8 @@ export abstract class Handler implements HandlerInterface {
         try {
             LOGGER.debug('Handling request', JSON.stringify(request, null, 2));
             this.action = this.getRouteConfig(request);
-            const middlewareResponse = await Promises.resolvePromiseChain(this.middleware.map((middleware: Middleware) => () => middleware(request, this.action)));
+            const middlewareResponse = await Promises.resolvePromiseChain(this.middleware
+                .map((middleware: Middleware) => (): Promise<void | ResponseBody> => middleware(request, this.action)));
             const prematureResponse = middlewareResponse.find((resp: any) => resp instanceof ResponseBody);
             if (prematureResponse) {
                 return prematureResponse;
@@ -79,45 +82,53 @@ export abstract class Handler implements HandlerInterface {
         }
     }
 
-    /**
-     * Parses [[HandlerAction]] from request
-     * @throws {Error} Unknown Route error
-     */
-    protected getRouteConfig(request: Request): HandlerAction {
-        LOGGER.debug('@@@@@ REQUEST 123', request);
-        const path: string = request.getResource();
-        const method: HttpMethod = request.getMethod();
+    private static makeAuditLog(request: Request, path: string, method: string) {
         LOGGER.debug({
             request: `${method} ${path}`,
-            // tslint:disable-next-line:object-literal-sort-keys
             headers: request.getHeaders(),
             body: request.getBody(),
             params: request.getPathParams(),
             query: request.getQueryParams(),
             identity: request.getIdentity(),
         }, 'AUDIT');
+    }
 
-        if (!path || !method) {
-            throw new Error('Route undefined');
-        }
-
+    private static getRouteName(path: string, method: string) {
         const routesMetadata = Reflect.getMetadata(ROUTES_METADATA, this) as Routes;
         const routeName: string = Object.keys(routesMetadata)
-            .find(a => equals(path, routesMetadata[a].path) && equals(method, routesMetadata[a].method));
+            .find((a) => equals(path, routesMetadata[a].path) && equals(method, routesMetadata[a].method));
         if (!routeName) {
             throw new Error('Route undefined');
         }
 
         const requestedAction: RouteConfig = routesMetadata[routeName];
 
+        return { name: routeName, config: requestedAction };
+    }
+
+    /**
+     * Parses [[HandlerAction]] from request
+     * @throws {Error} Unknown Route error
+     */
+    protected getRouteConfig(request: Request): HandlerAction {
+        const path: string = request.getResource();
+        const method: HttpMethod = request.getMethod();
+
+        Handler.makeAuditLog(request, path, method);
+
+        if (!path || !method) {
+            throw new Error('Route undefined');
+        }
+
+        const { name, config } = this.getRouteName(path, method);
 
         return {
-            authenticated: requestedAction.authenticated,
+            authenticated: config.authenticated,
             method,
-            name: camelCase(routeName),
+            name: camelCase(name),
             path,
-            roles: requestedAction.roles || [],
-            useSession: requestedAction.useSession,
+            roles: config.roles || [],
+            useSession: config.useSession,
         };
     }
 }

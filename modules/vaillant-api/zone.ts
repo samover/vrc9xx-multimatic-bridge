@@ -23,7 +23,7 @@ export interface ZoneConfigurationModel {
     enabled: boolean;
     active_function: string;
     inside_temperature: number;
-    quick_veto: QuickVetoModel,
+    quick_veto: QuickVetoModel;
 }
 
 export interface SetPointModel {
@@ -32,13 +32,13 @@ export interface SetPointModel {
 }
 
 export interface TimeProgramModel {
-    monday: SetPointModel[],
-    tuesday: SetPointModel[],
-    wednesday: SetPointModel[],
-    thursday: SetPointModel[],
-    friday: SetPointModel[],
-    saturday: SetPointModel[],
-    sunday: SetPointModel[],
+    monday: SetPointModel[];
+    tuesday: SetPointModel[];
+    wednesday: SetPointModel[];
+    thursday: SetPointModel[];
+    friday: SetPointModel[];
+    saturday: SetPointModel[];
+    sunday: SetPointModel[];
 }
 
 export interface HeatingConfigurationModel {
@@ -51,9 +51,9 @@ export interface ZoneApiModel {
     _id: string;
     configuration: ZoneConfigurationModel;
     heating: {
-        timeprogram: TimeProgramModel,
-        configuration: HeatingConfigurationModel,
-    }
+        timeprogram: TimeProgramModel;
+        configuration: HeatingConfigurationModel;
+    };
     currently_controlled_by: {
         name: string;
     };
@@ -61,6 +61,7 @@ export interface ZoneApiModel {
 
 export class Zone {
     private sessionId: string;
+
     private facilitySerialNumber: string;
 
     constructor(sessionId: string, facilitySerialNumber: string) {
@@ -75,10 +76,10 @@ export class Zone {
                 method: 'GET',
                 headers: {
                     Cookie: `JSESSIONID=${this.sessionId}`,
-                }
+                },
             };
 
-            const response =  await axios.request<VaillantApiResponse>(requestConfig);
+            const response = await axios.request<VaillantApiResponse>(requestConfig);
             return response.data && response.data.body;
         } catch (e) {
             errorHandler(e);
@@ -92,10 +93,10 @@ export class Zone {
                 method: 'GET',
                 headers: {
                     Cookie: `JSESSIONID=${this.sessionId}`,
-                }
+                },
             };
 
-            const response =  await axios.request<VaillantApiResponse>(requestConfig);
+            const response = await axios.request<VaillantApiResponse>(requestConfig);
             return response.data && response.data.body;
         } catch (e) {
             errorHandler(e);

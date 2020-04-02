@@ -1,32 +1,34 @@
-import {AlexaEvent, AlexaRequestDirective, AlexaResponseEvent} from "../common/interfaces/alexaEvent.interface";
-import {AlexaContext} from "../common/interfaces/alexaContext.interface";
+import { AlexaEvent, AlexaRequestDirective, AlexaResponseEvent } from '../common/interfaces/alexaEvent.interface';
+import { AlexaContext } from '../common/interfaces/alexaContext.interface';
 
 export abstract class AbstractDirective {
-   protected event: AlexaEvent;
-   private responseEvent: AlexaEvent;
-   private responseContext: any;
+    protected event: AlexaEvent;
 
-   constructor(event: AlexaEvent) {
-      this.event = event;
-      this.responseEvent = event;
-   }
+    private responseEvent: AlexaEvent;
 
-   protected updateResponseHeader(name: string, namespace?: string): void {
-      this.responseEvent.header.name = name;
-      if (namespace) this.responseEvent.header.namespace = namespace;
-   }
+    private responseContext: any;
 
-   protected addPayload(payload: any): void {
-      this.responseEvent.payload = payload;
-   }
+    constructor(event: AlexaEvent) {
+        this.event = event;
+        this.responseEvent = event;
+    }
 
-   protected addContext(context: any): void {
-      this.responseContext = context;
-   }
+    protected updateResponseHeader(name: string, namespace?: string): void {
+        this.responseEvent.header.name = name;
+        if (namespace) this.responseEvent.header.namespace = namespace;
+    }
 
-   protected getResponse(): AlexaResponseEvent {
-      return { event: this.responseEvent, context: this.responseContext };
-   }
+    protected addPayload(payload: any): void {
+        this.responseEvent.payload = payload;
+    }
 
-   abstract async handle(): Promise<{ event: AlexaEvent }>;
+    protected addContext(context: any): void {
+        this.responseContext = context;
+    }
+
+    protected getResponse(): AlexaResponseEvent {
+        return { event: this.responseEvent, context: this.responseContext };
+    }
+
+    abstract async handle(): Promise<{ event: AlexaEvent }>;
 }

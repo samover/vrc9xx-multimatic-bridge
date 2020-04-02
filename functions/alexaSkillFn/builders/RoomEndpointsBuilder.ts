@@ -20,12 +20,12 @@ export class RoomEndpointsBuilder {
                             { name: 'thermostatMode' },
                         ],
                         proactivelyReported: true,
-                        retrievable: true
+                        retrievable: true,
                     },
                     configuration: {
                         supportedModes: ['HEAT', 'ECO', 'AUTO', 'OFF'],
-                        supportsScheduling: true
-                    }
+                        supportsScheduling: true,
+                    },
                 },
                 {
                     type: 'AlexaInterface',
@@ -33,11 +33,11 @@ export class RoomEndpointsBuilder {
                     version: '3',
                     properties: {
                         supported: [
-                            { name: 'temperature' }
+                            { name: 'temperature' },
                         ],
                         proactivelyReported: true,
                         retrievable: true,
-                    }
+                    },
                 },
                 {
                     type: 'AlexaInterface',
@@ -45,18 +45,18 @@ export class RoomEndpointsBuilder {
                     version: '3',
                     properties: {
                         supported: [
-                            { name: 'connectivity' }
+                            { name: 'connectivity' },
                         ],
                         proactivelyReported: true,
-                        retrievable: true
-                    }
+                        retrievable: true,
+                    },
                 },
                 {
                     type: 'AlexaInterface',
                     interface: 'Alexa',
                     version: '3',
-                }
-            ]
+                },
+            ],
         };
     }
 }

@@ -1,4 +1,6 @@
-import { RoomModel, SystemModel, SystemStatusModel, ZoneModel } from 'models';
+import {
+    RoomModel, SystemModel, SystemStatusModel, ZoneModel,
+} from 'models';
 import { RoomPropertiesBuilder } from '../builders/RoomPropertiesBuilder';
 import { SystemStatusPropertiesBuilder } from '../builders/SystemStatusPropertiesBuilder';
 import { ZonePropertiesBuilder } from '../builders/ZonePropertiesBuilder';
@@ -9,7 +11,9 @@ import { AbstractDirective } from './AbstractDirective';
 
 export class AlexaDirective extends AbstractDirective {
     private roomPropertiesBuilder: RoomPropertiesBuilder;
+
     private zonePropertiesBuilder: ZonePropertiesBuilder;
+
     private systemStatusPropertiesBuilder: SystemStatusPropertiesBuilder;
 
     constructor(event: AlexaEvent) {
@@ -21,7 +25,7 @@ export class AlexaDirective extends AbstractDirective {
 
     public async handle(): Promise<AlexaResponseEvent> {
         if (this.event.header.name === REQUESTS.ReportState) { return this.handleReportState(); }
-        else { return null; } // fixme: return error?
+        return null; // fixme: return error?
     }
 
     private async handleReportState() {
@@ -56,4 +60,3 @@ export class AlexaDirective extends AbstractDirective {
         return this.getResponse();
     }
 }
-

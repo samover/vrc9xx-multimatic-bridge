@@ -11,7 +11,7 @@ export enum ErrorCode {
     Unauthorized = 'Unauthorized',
     ValidationError = 'ValidationError',
 
-// CUSTOM ERROR CODES
+    // CUSTOM ERROR CODES
     DuplicateEmail = 'DuplicateEmailError',
     InvalidEmail = 'InvalidEmailError',
     InvalidPassword = 'InvalidPasswordError',

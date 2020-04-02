@@ -49,6 +49,8 @@ module.exports = {
         "quotes": [2, "single", "avoid-escape"],
         "@typescript-eslint/indent": ["error", 4],
         "import/prefer-default-export": 0,
+        "max-len": ["error", 120],
+        "max-lines-per-function": ["error", 20]
         // "whitespace": [true, "check-module"],
         // "no-submodule-imports": false,
         // "variable-name": {

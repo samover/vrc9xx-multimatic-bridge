@@ -29,13 +29,13 @@ export interface SetPointModel {
 }
 
 export interface TimeProgramModel {
-    monday: SetPointModel[],
-    tuesday: SetPointModel[],
-    wednesday: SetPointModel[],
-    thursday: SetPointModel[],
-    friday: SetPointModel[],
-    saturday: SetPointModel[],
-    sunday: SetPointModel[],
+    monday: SetPointModel[];
+    tuesday: SetPointModel[];
+    wednesday: SetPointModel[];
+    thursday: SetPointModel[];
+    friday: SetPointModel[];
+    saturday: SetPointModel[];
+    sunday: SetPointModel[];
 }
 
 export interface RoomApiModel {
@@ -46,6 +46,7 @@ export interface RoomApiModel {
 
 export class Room {
     private sessionId: string;
+
     private facilitySerialNumber: string;
 
     constructor(sessionId: string, facilitySerialNumber: string) {
@@ -60,10 +61,10 @@ export class Room {
                 method: 'GET',
                 headers: {
                     Cookie: `JSESSIONID=${this.sessionId}`,
-                }
+                },
             };
 
-            const response =  await axios.request<VaillantApiResponse>(requestConfig);
+            const response = await axios.request<VaillantApiResponse>(requestConfig);
             return response.data && response.data.body && response.data.body.rooms;
         } catch (e) {
             errorHandler(e);
@@ -77,17 +78,17 @@ export class Room {
                 method: 'GET',
                 headers: {
                     Cookie: `JSESSIONID=${this.sessionId}`,
-                }
+                },
             };
 
-            const response =  await axios.request<VaillantApiResponse>(requestConfig);
+            const response = await axios.request<VaillantApiResponse>(requestConfig);
             return response.data && response.data.body;
         } catch (e) {
             errorHandler(e);
         }
     };
 
-    public quickVeto = async(roomId: string, temperature: number, duration: number): Promise<void> => {
+    public quickVeto = async (roomId: string, temperature: number, duration: number): Promise<void> => {
         try {
             const requestConfig: AxiosRequestConfig = {
                 url: ApiPath.roomQuickVeto(this.facilitySerialNumber, `${roomId}`),
@@ -95,7 +96,7 @@ export class Room {
                 data: { temperatureSetpoint: temperature, duration },
                 headers: {
                     Cookie: `JSESSIONID=${this.sessionId}`,
-                }
+                },
             };
 
             await axios.request<VaillantApiResponse>(requestConfig);
@@ -104,19 +105,19 @@ export class Room {
         }
     };
 
-    public deleteQuickVeto = async(roomId: string): Promise<void> => {
+    public deleteQuickVeto = async (roomId: string): Promise<void> => {
         try {
             const requestConfig: AxiosRequestConfig = {
                 url: ApiPath.roomQuickVeto(this.facilitySerialNumber, `${roomId}`),
                 method: 'DELETE',
                 headers: {
                     Cookie: `JSESSIONID=${this.sessionId}`,
-                }
+                },
             };
 
             await axios.request<VaillantApiResponse>(requestConfig);
         } catch (e) {
             errorHandler(e);
         }
-    }
+    };
 }

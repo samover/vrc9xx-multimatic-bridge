@@ -1,13 +1,13 @@
-import {NAMESPACES} from "../common/constants/alexaEvent.constants";
-import {AlexaDiscoveryDirective} from "./AlexaDiscoveryDirective";
-import {AlexaThermostatControlDirective} from "./AlexaThermostatControlDirective";
-import {AlexaDirective} from "./AlexaDirective";
-import {AbstractDirective} from "./AbstractDirective";
-import {AlexaEvent} from "../common/interfaces/alexaEvent.interface";
+import { NAMESPACES } from '../common/constants/alexaEvent.constants';
+import { AlexaDiscoveryDirective } from './AlexaDiscoveryDirective';
+import { AlexaThermostatControlDirective } from './AlexaThermostatControlDirective';
+import { AlexaDirective } from './AlexaDirective';
+import { AbstractDirective } from './AbstractDirective';
+import { AlexaEvent } from '../common/interfaces/alexaEvent.interface';
 
 export const directiveFactory = {
     create: (event: AlexaEvent): AbstractDirective => {
-        const namespace = event.header.namespace;
+        const { namespace } = event.header;
 
         switch (namespace) {
             case NAMESPACES.Alexa:
@@ -27,7 +27,6 @@ export const directiveFactory = {
                 // response = handleUnexpectedInfo(requestedNamespace);
                 return new AlexaDirective(event);
                 break;
-
         }// switch
-    }
+    },
 };

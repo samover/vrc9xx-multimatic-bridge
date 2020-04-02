@@ -5,4 +5,3 @@ export interface Credentials {
     authToken: string;
     sessionId: string;
 }
-

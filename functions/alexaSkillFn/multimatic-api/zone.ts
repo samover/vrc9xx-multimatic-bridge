@@ -1,10 +1,11 @@
-import {errorHandler} from './errorHandler';
-import axios, {AxiosRequestConfig} from 'axios';
-import {LOGGER} from 'logger';
+import axios, { AxiosRequestConfig } from 'axios';
+import { LOGGER } from 'logger';
 import { ZoneModel } from 'models';
+import { errorHandler } from './errorHandler';
 
 export class Zone {
     private path: string;
+
     private authToken: string;
 
     constructor(facilityId: string, zoneId: string) {
@@ -23,7 +24,7 @@ export class Zone {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${this.authToken}`,
-                }
+                },
             };
 
             const result = await axios.request<ZoneModel>(requestConfig);

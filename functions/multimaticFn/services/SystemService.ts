@@ -1,5 +1,7 @@
 import { LOGGER } from 'logger';
-import { RoomModel, SystemModel, SystemOverrideEnum, SystemStatusModel } from 'models';
+import {
+    RoomModel, SystemModel, SystemOverrideEnum, SystemStatusModel,
+} from 'models';
 import { FacilityApiModel, System } from 'vaillant-api';
 import { QuickModeApiEnum } from '../../../modules/vaillant-api/system';
 import { ZoneBuilder } from '../builders/ZoneBuilder';
@@ -13,9 +15,9 @@ export class SystemService {
         const systemDetails = await systemApi.getDetails();
         LOGGER.debug(systemDetails, 'SystemDetails');
 
-        const zones = systemDetails.zones.filter(z => z.currently_controlled_by.name !== 'RBR');
+        const zones = systemDetails.zones.filter((z) => z.currently_controlled_by.name !== 'RBR');
         LOGGER.debug(zones, 'ZONES');
-        const systemHasRooms: boolean = systemDetails.zones.some(z => z.currently_controlled_by.name === 'RBR');
+        const systemHasRooms: boolean = systemDetails.zones.some((z) => z.currently_controlled_by.name === 'RBR');
         LOGGER.debug(systemHasRooms, 'systemHasRooms');
         if (systemHasRooms) {
             rooms = await RoomService.getList(sessionId, facility.serialNumber);
@@ -37,7 +39,7 @@ export class SystemService {
             outsideTemperature: systemDetails.status.outside_temperature,
             systemOverride: SystemOverrideEnum.None,
             rooms,
-            zones: zones.map(z => ZoneBuilder.build(facility.serialNumber, z)),
+            zones: zones.map((z) => ZoneBuilder.build(facility.serialNumber, z)),
             dhw: [],
         };
     }
@@ -59,6 +61,6 @@ export class SystemService {
             },
             outsideTemperature: systemDetails.status.outside_temperature,
             systemOverride: systemQuickmode.quickmode as unknown as SystemOverrideEnum,
-        }
+        };
     }
 }

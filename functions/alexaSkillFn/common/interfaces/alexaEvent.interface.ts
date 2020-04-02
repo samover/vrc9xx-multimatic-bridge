@@ -23,7 +23,7 @@ export interface Payload {
 }
 
 export interface AlexaEvent {
-    header: AlexaHeader
+    header: AlexaHeader;
     endpoint: Endpoint;
     payload: Payload;
 }
@@ -36,7 +36,7 @@ export interface ContextProperty {
     namespace: string;
     instance?: string;
     name: string;
-    value: string | { value: number | string, scale?: string };
+    value: string | { value: number | string; scale?: string };
     timeOfSample: string;
     uncertaintyInMilliseconds: number;
 }

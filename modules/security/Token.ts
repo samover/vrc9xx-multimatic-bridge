@@ -9,11 +9,10 @@ export class Token {
      */
     public static async verify(token: string): Promise<UserInfo> {
         try {
-            return new Promise((resolve, reject) =>
-                verify(token, process.env.ONETIME_TOKEN_SECRET, (err: Error, decoded: object) => {
-                    if (err) { reject(new UnauthorizedError(err.message)); }
-                    resolve(decoded as UserInfo);
-                }));
+            return new Promise((resolve, reject) => verify(token, process.env.ONETIME_TOKEN_SECRET, (err: Error, decoded: object) => {
+                if (err) { reject(new UnauthorizedError(err.message)); }
+                resolve(decoded as UserInfo);
+            }));
         } catch (e) {
             throw new InternalServerError(e.message);
         }

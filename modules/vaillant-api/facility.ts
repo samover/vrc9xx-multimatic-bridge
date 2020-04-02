@@ -6,7 +6,7 @@ import { errorHandler } from './errorHandler';
 export interface FacilityApiModel {
     serialNumber: string;
     name: string;
-    capabilities: string[],
+    capabilities: string[];
 }
 
 export class Facility {
@@ -23,10 +23,10 @@ export class Facility {
                 method: 'GET',
                 headers: {
                     Cookie: `JSESSIONID=${this.sessionId}`,
-                }
+                },
             };
 
-            const response =  await axios.request<VaillantApiResponse>(requestConfig);
+            const response = await axios.request<VaillantApiResponse>(requestConfig);
             return response.data && response.data.body && response.data.body.facilitiesList;
         } catch (e) {
             errorHandler(e);

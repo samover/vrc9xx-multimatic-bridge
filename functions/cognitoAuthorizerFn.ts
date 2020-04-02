@@ -16,19 +16,17 @@ interface Policy {
 }
 
 // Generate policy to allow this user on this API:
-const generatePolicy = (principalId: string, effect: string, resourceArn: string): Policy => {
-    return {
-        principalId,
-        policyDocument: {
-            Version: '2012-10-17',
-            Statement: [{
-                Action: 'execute-api:Invoke',
-                Effect: effect,
-                Resource: resourceArn,
-            }],
-        }
-    };
-};
+const generatePolicy = (principalId: string, effect: string, resourceArn: string): Policy => ({
+    principalId,
+    policyDocument: {
+        Version: '2012-10-17',
+        Statement: [{
+            Action: 'execute-api:Invoke',
+            Effect: effect,
+            Resource: resourceArn,
+        }],
+    },
+});
 
 interface CognitoAuthorizerEvent {
     authorizationToken: string;

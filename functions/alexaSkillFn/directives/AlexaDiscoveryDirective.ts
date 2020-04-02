@@ -23,11 +23,11 @@ export class AlexaDiscoveryDirective extends AbstractDirective {
         const systems = await systemsApi.get();
 
         // zones
-        const zones: ZoneModel[] = [].concat.apply([], systems.map(s => s.zones));
+        const zones: ZoneModel[] = [].concat.apply([], systems.map((s) => s.zones));
         const zoneEndpoints = zones.map(ZoneEndpointsBuilder.build);
 
         // rooms
-        const rooms: RoomModel[] = [].concat.apply([], systems.map(s => s.rooms));
+        const rooms: RoomModel[] = [].concat.apply([], systems.map((s) => s.rooms));
         const roomEndpoints = rooms.map(RoomEndpointsBuilder.build);
 
         // systems

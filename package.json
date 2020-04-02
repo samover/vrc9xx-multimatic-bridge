@@ -86,7 +86,7 @@
   "scripts": {
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "lint": "eslint --fix ./modules/**/*.ts && eslint ./functions/**/*.ts && eslint ./__tests__/**/*.ts"
+    "lint": "eslint --fix ./modules/**/*.ts && eslint --fix ./functions/**/*.ts"
   },
   "author": "Samuel Overloop <samover@protonmail.com>",
   "license": "MIT"

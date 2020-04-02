@@ -38,7 +38,7 @@ export const INTERFACE_PROPERTIES = {
         TargetSetpoint: 'targetSetpoint',
         LowerSetpoint: 'lowerSetpoint',
         UpperSetpoint: 'upperSetpoint',
-        ThermostatMode: 'thermostatMode'
+        ThermostatMode: 'thermostatMode',
     },
     TemperatureSensor: {
         Temperature: 'temperature',

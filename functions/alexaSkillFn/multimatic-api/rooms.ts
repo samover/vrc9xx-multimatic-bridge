@@ -1,7 +1,7 @@
-import {errorHandler} from "./errorHandler";
-import axios, {AxiosRequestConfig} from "axios";
-import {LOGGER} from "logger";
-import {RoomModel} from "models";
+import axios, { AxiosRequestConfig } from 'axios';
+import { LOGGER } from 'logger';
+import { RoomModel } from 'models';
+import { errorHandler } from './errorHandler';
 
 export class Rooms {
     private authToken: string;
@@ -18,7 +18,7 @@ export class Rooms {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${this.authToken}`,
-                }
+                },
             };
 
             const result = await axios.request<RoomModel[]>(requestConfig);

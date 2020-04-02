@@ -1,7 +1,7 @@
-import {AlexaContext} from "./common/interfaces/alexaContext.interface";
-import {AlexaRequestDirective} from "./common/interfaces/alexaEvent.interface";
-import {directiveFactory} from "./directives/directiveFactory";
-import {LOGGER} from 'logger';
+import { LOGGER } from 'logger';
+import { AlexaContext } from './common/interfaces/alexaContext.interface';
+import { AlexaRequestDirective } from './common/interfaces/alexaEvent.interface';
+import { directiveFactory } from './directives/directiveFactory';
 
 export const handler = async function (event: AlexaRequestDirective, context: AlexaContext) {
     LOGGER.debug(event, '*** Received Directive');
@@ -13,4 +13,3 @@ export const handler = async function (event: AlexaRequestDirective, context: Al
 
     return response;
 };
-

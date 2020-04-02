@@ -5,6 +5,7 @@ import { errorHandler } from './errorHandler';
 
 export class System {
     private authToken: string;
+
     private path: string;
 
     constructor(facilityId: string) {
@@ -23,7 +24,7 @@ export class System {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${this.authToken}`,
-                }
+                },
             };
 
             const result = await axios.request<SystemStatusModel>(requestConfig);

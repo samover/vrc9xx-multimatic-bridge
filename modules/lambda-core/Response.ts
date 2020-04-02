@@ -8,7 +8,7 @@ import {
     InternalServerError,
     NotFoundError,
     UnauthorizedError,
-    ValidationError
+    ValidationError,
 } from '../errors';
 import { Strings } from '../utils';
 import { ContentType } from './common/enums/contentType.enum';
@@ -50,11 +50,16 @@ interface JsonObject {
  */
 export class Response<T> {
     private allowedOrigins: string[] = Strings.toList(process.env.ALLOWED_ORIGINS || '*');
+
     private body: T; // ResponseBodyInput['body'] = '';
+
     private status: ResponseBodyInput['statusCode'];
+
     private headers: ResponseBodyInput['headers'];
+
     private contentType: string;
-    private cors: boolean = true; // use cors by default
+
+    private cors = true; // use cors by default
 
     constructor(statusCode: number, request: Request, options?: ResponseOptions) {
         this.status = statusCode;
@@ -84,7 +89,7 @@ export class Response<T> {
     }
 
     public static noContent(request: Request, options?: ResponseOptions): Response<null> {
-        return Response.response<null>(204, request,  options);
+        return Response.response<null>(204, request, options);
     }
 
     public static badRequest(request: Request, options?: ResponseOptions): Response<JsonObject> {
@@ -114,7 +119,7 @@ export class Response<T> {
     public static fromError(request: Request, error: ApiError, options?: ResponseOptions): ResponseBody {
         const convertError = (err: ApiError, defaultMessage?: string) => {
             const errorMessage = err.message || defaultMessage;
-            return errorMessage ? ({message: errorMessage, errorCode: err.errorCode, stack: error.stack}) : err;
+            return errorMessage ? ({ message: errorMessage, errorCode: err.errorCode, stack: error.stack }) : err;
         };
 
         if (error instanceof InternalServerError) {
@@ -159,7 +164,7 @@ export class Response<T> {
         if (allowedOrigins.includes('*') || allowedOrigins.includes(origin)) {
             return origin;
         }
-       return null;
+        return null;
     }
 
     private static response<T>(statusCode: number, request: Request, options?: ResponseOptions) {
@@ -202,7 +207,7 @@ export class Response<T> {
             domain: new URL(process.env.API_BASE_URL).host,
             path: '/',
             sameSite: 'none',
-            ...options
+            ...options,
         };
         cookieHeader.push(cookie.serialize(key, val, cookieOptions));
         this.headers['set-cookie'] = cookieHeader;
@@ -226,7 +231,7 @@ export class Response<T> {
      * @public
      */
     public setHeader(field: string, val: string | string[]): void {
-        const value: string[] = val ? (Array.isArray(val) ? val.map(v => `${v}`) : [`${val}`]) : [];
+        const value: string[] = val ? (Array.isArray(val) ? val.map((v) => `${v}`) : [`${val}`]) : [];
 
         if (typeof this.headers === 'undefined') {
             this.headers = {};
@@ -244,9 +249,9 @@ export class Response<T> {
      */
     private getHeader(field: string): string | undefined {
         return (
-            typeof this.headers !== 'undefined' ?
-                this.headers[field.toLowerCase()] && this.headers[field.toLowerCase()][0] :
-                undefined);
+            typeof this.headers !== 'undefined'
+                ? this.headers[field.toLowerCase()] && this.headers[field.toLowerCase()][0]
+                : undefined);
     }
 
     private setCorsHeaders(request: Request) {
@@ -257,9 +262,8 @@ export class Response<T> {
     private setHeaders(headers: ResponseBodyInput['headers']) {
         for (const header in headers) {
             if (headers.hasOwnProperty(header)) {
-                this.setHeader(header, headers[header])
+                this.setHeader(header, headers[header]);
             }
         }
     }
 }
-

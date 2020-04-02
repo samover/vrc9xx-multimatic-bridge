@@ -1,6 +1,8 @@
 import { Table } from 'dynamodb';
 import { BadRequestError, InternalServerError, UnauthorizedError } from 'errors';
-import { Handler, Middleware, Post, Request, Response, ResponseBody, ValidateBody } from 'lambda-core';
+import {
+    Handler, Middleware, Post, Request, Response, ResponseBody, ValidateBody,
+} from 'lambda-core';
 import { LOGGER } from 'logger';
 import { encrypt, Token } from 'security';
 import uuid from 'uuid/v4';
@@ -41,7 +43,7 @@ export class ConnectController extends Handler {
                 username: body.username,
                 smartphoneId,
                 sessionId: null,
-                authToken: null
+                authToken: null,
             });
             await authentication.login(body.password);
             await authentication.authenticate();
@@ -58,7 +60,7 @@ export class ConnectController extends Handler {
             await table.putItem({
                 userId: userInfo.sub,
                 hasAcceptedTerms: body.hasAcceptedTerms,
-                secret: JSON.stringify(secret)
+                secret: JSON.stringify(secret),
             });
 
             return Response.noContent(request).send();

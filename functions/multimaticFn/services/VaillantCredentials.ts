@@ -1,6 +1,8 @@
 import { Table } from 'dynamodb';
 import { LOGGER } from 'logger';
-import { decrypt, encrypt, Token, UserInfo } from 'security';
+import {
+    decrypt, encrypt, Token, UserInfo,
+} from 'security';
 import { Credentials } from 'vaillant-api';
 
 export class VaillantCredentials {

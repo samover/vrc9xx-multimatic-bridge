@@ -12,7 +12,7 @@ const ALGORITHM = 'aes-256-cbc';
 const KEY = Buffer.concat([Buffer.from(process.env.CRYPTO_KEY)], keyBuffer.length);
 
 export const encrypt = (value: string): Cypher => {
-    const IV = Buffer.from(Array.prototype.map.call(ivBuffer, () =>Math.floor(Math.random() * 256)));
+    const IV = Buffer.from(Array.prototype.map.call(ivBuffer, () => Math.floor(Math.random() * 256)));
 
     const cipher = createCipheriv(ALGORITHM, Buffer.from(KEY), IV);
     let encrypted = cipher.update(value);
@@ -28,4 +28,3 @@ export const decrypt = (value: Cypher): string => {
     decrypted = Buffer.concat([decrypted, decipher.final()]);
     return decrypted.toString();
 };
-

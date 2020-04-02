@@ -1,6 +1,6 @@
 import { Context } from 'aws-lambda';
-import { LOGGER } from '../logger';
-import { Objects } from '../utils';
+import { LOGGER } from 'logger';
+import { Objects } from 'utils';
 import { Handler } from './Handler';
 import { LambdaProxyEvent, Request } from './Request';
 import { Response } from './Response';
@@ -15,8 +15,7 @@ export abstract class LambdaEntryPoint {
     /**
      * HeartBeatResponse can be used to keep the Lambda warm using Cloudwatch Events
      */
-    private static heartBeatResponse(request: Request) {
-        let stuff;
+    private static heartBeatResponse(request: Request): ResponseBody {
         LOGGER.debug('Heartbeat function');
         // Disable cors because
         return Response.noContent(request, { cors: false }).send();
@@ -33,6 +32,7 @@ export abstract class LambdaEntryPoint {
         // instead of waiting for the nodejs event loop to be empty. This is best practice
         // for nodeJS lambdas on AWS
         // See https://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-context.html
+        // eslint-disable-next-line no-param-reassign
         if (context) { context.callbackWaitsForEmptyEventLoop = false; }
 
         try {
@@ -61,4 +61,3 @@ export abstract class LambdaEntryPoint {
         return this.handler.handle(request);
     }
 }
-

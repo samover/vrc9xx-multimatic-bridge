@@ -6,3 +6,5 @@ dist
 coverage
 # don't lint hidden files/folders
 .*
+# don't lint test files
+__tests__

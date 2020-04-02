@@ -11,7 +11,7 @@ export interface SystemConfigurationModel {
         start_date: string;
         end_date: string;
         temperature_setpoint: number;
-    }
+    };
 }
 
 export interface SystemSetPointModel {
@@ -20,13 +20,13 @@ export interface SystemSetPointModel {
 }
 
 export interface SystemTimeProgramModel {
-    monday: SystemSetPointModel[],
-    tuesday: SystemSetPointModel[],
-    wednesday: SystemSetPointModel[],
-    thursday: SystemSetPointModel[],
-    friday: SystemSetPointModel[],
-    saturday: SystemSetPointModel[],
-    sunday: SystemSetPointModel[],
+    monday: SystemSetPointModel[];
+    tuesday: SystemSetPointModel[];
+    wednesday: SystemSetPointModel[];
+    thursday: SystemSetPointModel[];
+    friday: SystemSetPointModel[];
+    saturday: SystemSetPointModel[];
+    sunday: SystemSetPointModel[];
 }
 
 export interface SystemStatusApiModel {
@@ -40,9 +40,9 @@ export interface DomesticHotWaterModel {
         configuration: {
             operation_mode: 'ON' | 'OFF' | 'AUTO';
             temperature_setpoint: number;
-        },
-        timeprogram: SystemTimeProgramModel
-    }
+        };
+        timeprogram: SystemTimeProgramModel;
+    };
 }
 
 export interface SystemApiModel {
@@ -61,6 +61,7 @@ export interface SystemQuickModeApiModel {
 
 export class System {
     private sessionId: string;
+
     private facilitySerialNumber: string;
 
     constructor(sessionId: string, facilitySerialNumber: string) {
@@ -79,7 +80,7 @@ export class System {
             };
 
             try {
-                const response =  await axios.request<VaillantApiResponse>(requestConfig);
+                const response = await axios.request<VaillantApiResponse>(requestConfig);
                 return response.data && response.data.body;
             } catch (e) {
                 if (e.response.status === 409) {
@@ -88,7 +89,7 @@ export class System {
                 throw e;
             }
         } catch (e) {
-            errorHandler(e);
+            return errorHandler(e);
         }
     };
 
@@ -102,10 +103,10 @@ export class System {
                 url: ApiPath.system(this.facilitySerialNumber),
             };
 
-            const response =  await axios.request<VaillantApiResponse>(requestConfig);
+            const response = await axios.request<VaillantApiResponse>(requestConfig);
             return response.data && response.data.body;
         } catch (e) {
-            errorHandler(e);
+            return errorHandler(e);
         }
     };
 }

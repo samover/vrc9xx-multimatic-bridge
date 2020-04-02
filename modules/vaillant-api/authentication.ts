@@ -16,8 +16,11 @@ export interface SessionId {
 
 export class Authentication {
     private username: string;
+
     private smartphoneId: string;
+
     private authToken: string;
+
     private sessionId: string;
 
     constructor(credentials: Credentials) {
@@ -35,7 +38,7 @@ export class Authentication {
                 method: 'POST',
             };
 
-            const response =  await axios.request<VaillantApiResponse>(requestConfig);
+            const response = await axios.request<VaillantApiResponse>(requestConfig);
             this.authToken = response.data && response.data.body && response.data.body.authToken;
         } catch (e) {
             errorHandler(e);
@@ -51,7 +54,7 @@ export class Authentication {
                 method: 'POST',
             };
 
-            const response =  await axios.request<VaillantApiResponse>(requestConfig);
+            const response = await axios.request<VaillantApiResponse>(requestConfig);
             const cookies: any = cookie.parse(response.headers['set-cookie'].join(';'));
             this.sessionId = cookies.JSESSIONID;
         } catch (e) {

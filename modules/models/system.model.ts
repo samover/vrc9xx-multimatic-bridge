@@ -30,14 +30,14 @@ export enum OperationModeModel {
 export interface DomesticHotWaterModel {
     id: string;
     temperatureSetpoint: number;
-    operationMode: OperationModeModel,
+    operationMode: OperationModeModel;
 }
 
 export interface SystemStatusModel {
     id: string;
     outsideTemperature: number;
     datetime: Date;
-    systemOverride: SystemOverrideEnum,
+    systemOverride: SystemOverrideEnum;
     ecoMode: boolean;
     holidayMode: HolidayModeModel;
 }
@@ -50,5 +50,3 @@ export interface SystemModel extends SystemStatusModel {
     zones: ZoneModel[];
     dhw: [];
 }
-
-

@@ -18,23 +18,23 @@ export class SystemEndpointsBuilder {
                     version: '3',
                     properties: {
                         supported: [
-                            { name: 'mode' }
+                            { name: 'mode' },
                         ],
                         retrievable: true,
                         proactivelyReported: true,
-                        nonControllable: false
+                        nonControllable: false,
                     },
                     capabilityResources: {
                         friendlyNames: [
                             {
                                 '@type': 'text',
-                                value: { text: 'override', locale: 'en-US' }
+                                value: { text: 'override', locale: 'en-US' },
                             },
                             {
                                 '@type': 'text',
-                                value: { text: 'quick mode', locale: 'en-US' }
+                                value: { text: 'quick mode', locale: 'en-US' },
                             },
-                        ]
+                        ],
                     },
                     configuration: {
                         ordered: false,
@@ -45,14 +45,14 @@ export class SystemEndpointsBuilder {
                                     friendlyNames: [
                                         {
                                             '@type': 'text',
-                                            value: { text: 'normal', locale: 'en-US' }
+                                            value: { text: 'normal', locale: 'en-US' },
                                         },
                                         {
                                             '@type': 'text',
-                                            value: { text: 'no quickmode', locale: 'en-US' }
-                                        }
-                                    ]
-                                }
+                                            value: { text: 'no quickmode', locale: 'en-US' },
+                                        },
+                                    ],
+                                },
                             },
                             {
                                 value: MODE_CONTROLLER_VALUES.QuickModeParty,
@@ -60,10 +60,10 @@ export class SystemEndpointsBuilder {
                                     friendlyNames: [
                                         {
                                             '@type': 'text',
-                                            value: { text: 'party', locale: 'en-US' }
+                                            value: { text: 'party', locale: 'en-US' },
                                         },
-                                    ]
-                                }
+                                    ],
+                                },
                             },
                             {
                                 value: MODE_CONTROLLER_VALUES.QuickModeVentilationBoost,
@@ -71,10 +71,10 @@ export class SystemEndpointsBuilder {
                                     friendlyNames: [
                                         {
                                             '@type': 'text',
-                                            value: { text: 'ventilation boost', locale: 'en-US' }
+                                            value: { text: 'ventilation boost', locale: 'en-US' },
                                         },
-                                    ]
-                                }
+                                    ],
+                                },
                             },
                             {
                                 value: MODE_CONTROLLER_VALUES.QuickModeDayAtHome,
@@ -82,14 +82,14 @@ export class SystemEndpointsBuilder {
                                     friendlyNames: [
                                         {
                                             '@type': 'text',
-                                            value: { text: 'at home', locale: 'en-US' }
+                                            value: { text: 'at home', locale: 'en-US' },
                                         },
                                         {
                                             '@type': 'text',
-                                            value: { text: 'one day at home', locale: 'en-US' }
+                                            value: { text: 'one day at home', locale: 'en-US' },
                                         },
-                                    ]
-                                }
+                                    ],
+                                },
                             },
                             {
                                 value: MODE_CONTROLLER_VALUES.QuickModeAwayFromHome,
@@ -97,17 +97,17 @@ export class SystemEndpointsBuilder {
                                     friendlyNames: [
                                         {
                                             '@type': 'text',
-                                            value: { text: 'away from home', locale: 'en-US' }
+                                            value: { text: 'away from home', locale: 'en-US' },
                                         },
                                         {
                                             '@type': 'text',
-                                            value: { text: 'one day away', locale: 'en-US' }
+                                            value: { text: 'one day away', locale: 'en-US' },
                                         },
-                                    ]
-                                }
+                                    ],
+                                },
                             },
-                        ]
-                    }
+                        ],
+                    },
                 },
                 {
                     type: 'AlexaInterface',
@@ -117,20 +117,20 @@ export class SystemEndpointsBuilder {
                     properties: {
                         supported: [
                             {
-                                name: 'mode'
-                            }
+                                name: 'mode',
+                            },
                         ],
                         retrievable: true,
                         proactivelyReported: true,
-                        nonControllable: false
+                        nonControllable: false,
                     },
                     capabilityResources: {
                         friendlyNames: [
                             {
                                 '@type': 'text',
-                                value: { text: 'eco mode', locale: 'en-US' }
+                                value: { text: 'eco mode', locale: 'en-US' },
                             },
-                        ]
+                        ],
                     },
                     configuration: {
                         ordered: false,
@@ -141,10 +141,10 @@ export class SystemEndpointsBuilder {
                                     friendlyNames: [
                                         {
                                             '@type': 'text',
-                                            value: { text: 'on', locale: 'en-US' }
+                                            value: { text: 'on', locale: 'en-US' },
                                         },
-                                    ]
-                                }
+                                    ],
+                                },
                             },
                             {
                                 value: MODE_CONTROLLER_VALUES.EcoModeOff,
@@ -152,13 +152,13 @@ export class SystemEndpointsBuilder {
                                     friendlyNames: [
                                         {
                                             '@type': 'text',
-                                            value: { text: 'off', locale: 'en-US' }
+                                            value: { text: 'off', locale: 'en-US' },
                                         },
-                                    ]
-                                }
+                                    ],
+                                },
                             },
-                        ]
-                    }
+                        ],
+                    },
                 },
                 {
                     type: 'AlexaInterface',
@@ -166,11 +166,11 @@ export class SystemEndpointsBuilder {
                     version: '3',
                     properties: {
                         supported: [
-                            { name: 'temperature' }
+                            { name: 'temperature' },
                         ],
                         proactivelyReported: true,
                         retrievable: true,
-                    }
+                    },
                 },
                 {
                     type: 'AlexaInterface',
@@ -178,18 +178,18 @@ export class SystemEndpointsBuilder {
                     version: '3',
                     properties: {
                         supported: [
-                            { name: 'connectivity' }
+                            { name: 'connectivity' },
                         ],
                         proactivelyReported: true,
-                        retrievable: true
-                    }
+                        retrievable: true,
+                    },
                 },
                 {
                     type: 'AlexaInterface',
                     interface: 'Alexa',
                     version: '3',
-                }
-            ]
+                },
+            ],
         };
     }
 }

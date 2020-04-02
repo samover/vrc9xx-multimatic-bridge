@@ -18,7 +18,7 @@ export class Systems {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${this.authToken}`,
-                }
+                },
             };
 
             const result = await axios.request<SystemModel[]>(requestConfig);

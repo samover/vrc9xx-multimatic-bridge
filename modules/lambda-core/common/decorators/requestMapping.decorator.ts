@@ -9,7 +9,7 @@ const defaultRequestConfig = {
     [METHOD]: RequestMethod.GET,
 };
 
-export const RequestMapping = ( config: RequestMappingConfig = defaultRequestConfig ): MethodDecorator => {
+export const RequestMapping = (config: RequestMappingConfig = defaultRequestConfig): MethodDecorator => {
     const pathConfig = config[PATH];
     const path = pathConfig && pathConfig.length ? pathConfig : defaultRequestConfig[PATH];
     const requestMethod = config[METHOD] || defaultRequestConfig[METHOD];
@@ -27,8 +27,7 @@ export const RequestMapping = ( config: RequestMappingConfig = defaultRequestCon
     };
 };
 
-const createMappingDecorator = (method: RequestMethod) => (path?: string | string[]): MethodDecorator =>
-    RequestMapping({ [PATH]: path, [METHOD]: method });
+const createMappingDecorator = (method: RequestMethod) => (path?: string | string[]): MethodDecorator => RequestMapping({ [PATH]: path, [METHOD]: method });
 
 export const Get = createMappingDecorator(RequestMethod.GET);
 export const Post = createMappingDecorator(RequestMethod.POST);

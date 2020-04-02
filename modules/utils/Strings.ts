@@ -3,8 +3,8 @@ export class Strings {
     public static toList(commaSeparatedList: string): string[] {
         return commaSeparatedList
             .split(',')
-            .map(p => p.trim())
-            .filter(i => i != null && i !== '');
+            .map((p) => p.trim())
+            .filter((i) => i != null && i !== '');
     }
 
     /** Converts space separated words into a lowercase camelcased string */

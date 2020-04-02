@@ -20,12 +20,12 @@ export class ZoneEndpointsBuilder {
                             { name: 'thermostatMode' },
                         ],
                         proactivelyReported: true,
-                        retrievable: true
+                        retrievable: true,
                     },
                     configuration: {
                         supportedModes: ['HEAT', 'ECO', 'AUTO', 'OFF'],
-                        supportsScheduling: true
-                    }
+                        supportsScheduling: true,
+                    },
                 },
                 {
                     type: 'AlexaInterface',
@@ -33,11 +33,11 @@ export class ZoneEndpointsBuilder {
                     version: '3',
                     properties: {
                         supported: [
-                            { name: 'temperature' }
+                            { name: 'temperature' },
                         ],
                         proactivelyReported: true,
                         retrievable: true,
-                    }
+                    },
                 },
                 {
                     type: 'AlexaInterface',
@@ -45,11 +45,11 @@ export class ZoneEndpointsBuilder {
                     version: '3',
                     properties: {
                         supported: [
-                            { name: 'connectivity' }
+                            { name: 'connectivity' },
                         ],
                         proactivelyReported: true,
-                        retrievable: true
-                    }
+                        retrievable: true,
+                    },
                 },
                 {
                     type: 'AlexaInterface',
@@ -59,12 +59,12 @@ export class ZoneEndpointsBuilder {
                     properties: {
                         supported: [
                             {
-                                name: 'mode'
-                            }
+                                name: 'mode',
+                            },
                         ],
                         retrievable: true,
                         proactivelyReported: true,
-                        nonControllable: false
+                        nonControllable: false,
                     },
                     capabilityResources: {
                         friendlyNames: [
@@ -72,10 +72,10 @@ export class ZoneEndpointsBuilder {
                                 '@type': 'text',
                                 value: {
                                     text: 'mode',
-                                    locale: 'en-US'
-                                }
+                                    locale: 'en-US',
+                                },
                             },
-                        ]
+                        ],
                     },
                     configuration: {
                         ordered: false,
@@ -88,18 +88,18 @@ export class ZoneEndpointsBuilder {
                                             '@type': 'text',
                                             value: {
                                                 text: 'normal',
-                                                locale: 'en-US'
-                                            }
+                                                locale: 'en-US',
+                                            },
                                         },
                                         {
                                             '@type': 'text',
                                             value: {
                                                 text: 'no quickmode',
-                                                locale: 'en-US'
-                                            }
-                                        }
-                                    ]
-                                }
+                                                locale: 'en-US',
+                                            },
+                                        },
+                                    ],
+                                },
                             },
                             {
                                 value: 'RoomThermostat.Party',
@@ -109,11 +109,11 @@ export class ZoneEndpointsBuilder {
                                             '@type': 'text',
                                             value: {
                                                 text: 'party',
-                                                locale: 'en-US'
-                                            }
+                                                locale: 'en-US',
+                                            },
                                         },
-                                    ]
-                                }
+                                    ],
+                                },
                             },
                             {
                                 value: 'RoomThermostat.VentilationBoost',
@@ -123,11 +123,11 @@ export class ZoneEndpointsBuilder {
                                             '@type': 'text',
                                             value: {
                                                 text: 'ventilation boost',
-                                                locale: 'en-US'
-                                            }
+                                                locale: 'en-US',
+                                            },
                                         },
-                                    ]
-                                }
+                                    ],
+                                },
                             },
                             {
                                 value: 'RoomThermostat.DayAtHome',
@@ -137,18 +137,18 @@ export class ZoneEndpointsBuilder {
                                             '@type': 'text',
                                             value: {
                                                 text: 'at home',
-                                                locale: 'en-US'
-                                            }
+                                                locale: 'en-US',
+                                            },
                                         },
                                         {
                                             '@type': 'text',
                                             value: {
                                                 text: 'one day at home',
-                                                locale: 'en-US'
-                                            }
+                                                locale: 'en-US',
+                                            },
                                         },
-                                    ]
-                                }
+                                    ],
+                                },
                             },
                             {
                                 value: 'RoomThermostat.AwayFromHome',
@@ -158,28 +158,28 @@ export class ZoneEndpointsBuilder {
                                             '@type': 'text',
                                             value: {
                                                 text: 'away from home',
-                                                locale: 'en-US'
-                                            }
+                                                locale: 'en-US',
+                                            },
                                         },
                                         {
                                             '@type': 'text',
                                             value: {
                                                 text: 'one day away',
-                                                locale: 'en-US'
-                                            }
+                                                locale: 'en-US',
+                                            },
                                         },
-                                    ]
-                                }
+                                    ],
+                                },
                             },
-                        ]
-                    }
+                        ],
+                    },
                 },
                 {
                     type: 'AlexaInterface',
                     interface: 'Alexa',
                     version: '3',
-                }
-            ]
+                },
+            ],
         };
     }
 }

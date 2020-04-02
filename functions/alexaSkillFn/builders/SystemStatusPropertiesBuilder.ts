@@ -3,13 +3,12 @@ import {
     INTERFACE_PROPERTIES,
     MODE_CONTROLLER_VALUES,
     NAMESPACES,
-    SCALES
+    SCALES,
 } from '../common/constants/alexaEvent.constants';
 import { ContextProperty } from '../common/interfaces/alexaEvent.interface';
 import { PropertiesBuilder } from '../common/interfaces/builder';
 
 export class SystemStatusPropertiesBuilder implements PropertiesBuilder {
-
     public build(system: SystemStatusModel): ContextProperty[] {
         const timestamp = (new Date()).toISOString();
 
@@ -20,7 +19,7 @@ export class SystemStatusPropertiesBuilder implements PropertiesBuilder {
                 name: 'Thermostat Override',
                 value: this.parseQuickmodeValue(system.systemOverride),
                 timeOfSample: timestamp,
-                uncertaintyInMilliseconds: 6000
+                uncertaintyInMilliseconds: 6000,
             },
             {
                 namespace: NAMESPACES.AlexaModeController,
@@ -28,7 +27,7 @@ export class SystemStatusPropertiesBuilder implements PropertiesBuilder {
                 name: 'Eco Mode',
                 value: system.ecoMode ? MODE_CONTROLLER_VALUES.EcoModeOn : MODE_CONTROLLER_VALUES.EcoModeOff,
                 timeOfSample: timestamp,
-                uncertaintyInMilliseconds: 6000
+                uncertaintyInMilliseconds: 6000,
             },
             {
                 namespace: NAMESPACES.AlexaTemperatureSensor,
@@ -39,19 +38,20 @@ export class SystemStatusPropertiesBuilder implements PropertiesBuilder {
                     scale: SCALES.Celsius,
                 },
                 timeOfSample: timestamp,
-                uncertaintyInMilliseconds: 6000
+                uncertaintyInMilliseconds: 6000,
             },
             {
                 namespace: NAMESPACES.AlexaEndpointHealth,
                 name: INTERFACE_PROPERTIES.EndpointHealth.Connectivity,
                 value: {
-                    value: 'OK'
+                    value: 'OK',
                 },
                 timeOfSample: timestamp,
-                uncertaintyInMilliseconds: 6000
-            }
+                uncertaintyInMilliseconds: 6000,
+            },
         ];
     }
+
     private parseQuickmodeValue(systemOverride: SystemOverrideEnum): string {
         let quickmodeValue: string;
 
@@ -78,6 +78,7 @@ export class SystemStatusPropertiesBuilder implements PropertiesBuilder {
 
         return quickmodeValue;
     }
+
     private parseThermostatMode(operationMode: string) {
         if (operationMode === 'AUTO') { return 'AUTO'; }
         if (operationMode === 'OFF') { return 'OFF'; }
