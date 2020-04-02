@@ -37,11 +37,13 @@
                 "vaillant-api",
                 "dynamodb",
                 "security",
-                "class-validator-wrapper"
+                "class-validator-wrapper",
+                "utils"
             ],
             "dev"
         ],
-        "object-literal-sort-keys": false
+        "object-literal-sort-keys": false,
+        "max-method-line-count":
     },
     "rulesDirectory": []
 }
