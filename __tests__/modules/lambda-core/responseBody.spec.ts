@@ -1,6 +1,7 @@
-import { ResponseBody } from '../src/ResponseBody';
+import { ResponseBody } from '../../../modules/lambda-core';
 
 let responseBody: ResponseBody;
+
 describe('ResponseBody', () => {
     beforeEach(() => {
         responseBody = new ResponseBody({ statusCode: 200 });

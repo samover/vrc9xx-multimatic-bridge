@@ -7,22 +7,20 @@ import uuid from 'uuid/v4';
 import { Authentication } from 'vaillant-api';
 import { PostConnectRequestBody } from './dtos/postConnectRequestBody';
 
-const webUri = process.env.WEB_APP_URI;
-const oauth0Uri = process.env.OAUTH0_URI;
-
-export interface PolicyGateState {
-    redirectUrl: string;
-}
-
-/** Class representing the controller for the Profile Lambda */
+/** Class representing the controller for the Connect Lambda */
 export class ConnectController extends Handler {
     protected middleware: Middleware[] = [];
 
     @Post('/connect')
-    /*
-        Validates entrypoint and redirects to static page
-     */
     @ValidateBody(PostConnectRequestBody)
+    /**
+     * Use for validating and storing an encrypted string of a user's vaillaint multimatic credentials
+     *
+     * @param {Request}
+     * @param {Request.body<PostConnectRequestBody>}
+     * @returns {ResponseBody}
+     * @throws {BadRequestError}
+     */
     private async postConnect(request: Request): Promise<ResponseBody> {
         LOGGER.debug(request, 'Entrypoint POST /connect');
 
@@ -30,7 +28,7 @@ export class ConnectController extends Handler {
         const token: string = request.getHeader('authorization').replace(/Bearer /, '');
 
         try {
-            if (!body.hasAcceptedTerms) {
+            if (body.hasAcceptedTerms !== 'true') {
                 throw new BadRequestError('User must accept Terms and Conditions');
             }
 
@@ -39,7 +37,12 @@ export class ConnectController extends Handler {
 
             // Test Multimatic Connect
             const smartphoneId = uuid();
-            const authentication = new Authentication({ username: body.username, smartphoneId, sessionId: null, authToken: null });
+            const authentication = new Authentication({
+                username: body.username,
+                smartphoneId,
+                sessionId: null,
+                authToken: null
+            });
             await authentication.login(body.password);
             await authentication.authenticate();
 
@@ -52,15 +55,25 @@ export class ConnectController extends Handler {
                 username: body.username,
             }));
 
-            await table.putItem({ userId: userInfo.sub, hasAcceptedTerms: body.hasAcceptedTerms, secret: JSON.stringify(secret) });
+            await table.putItem({
+                userId: userInfo.sub,
+                hasAcceptedTerms: body.hasAcceptedTerms,
+                secret: JSON.stringify(secret)
+            });
 
             return Response.noContent(request).send();
         } catch (e) {
             LOGGER.error(e, 'ProfileEdit Route failed');
             let errorMessage: string;
-            if (e instanceof UnauthorizedError) { errorMessage = 'Token invalid or expired'; }
-            else if (e instanceof InternalServerError) { errorMessage = 'Critical service error'; }
-            else { errorMessage = 'Invalid Multimatic Credentials'; }
+            if (e instanceof UnauthorizedError) {
+                errorMessage = 'Token invalid or expired';
+            } else if (e instanceof InternalServerError) {
+                errorMessage = 'Critical service error';
+            } else if (e instanceof BadRequestError) {
+                errorMessage = e.message;
+            } else {
+                errorMessage = 'Invalid Multimatic Credentials';
+            }
 
             return Response.fromError(request, new BadRequestError(errorMessage));
         }

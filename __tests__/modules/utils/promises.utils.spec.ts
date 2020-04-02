@@ -1,6 +1,6 @@
-import { Promises } from '../src';
+import { Promises } from 'utils';
 
-describe('@jmc/utils/Promises', () => {
+describe('utils/Promises', () => {
     describe('resolvePromiseChain', () => {
         it('resolves a promiseChain', async () => {
             const tasks = [Promise.resolve(1), Promise.resolve(2)];

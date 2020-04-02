@@ -1,26 +1,30 @@
-import { apiGatewayProxyEvent } from '@jmc-dev/test-helper';
 import 'reflect-metadata';
-import { Authenticated, Get, LambdaProxyEvent, Request, ResponseBody } from '../src';
-import { Handler, Middleware, Routes } from '../src/Handler';
+import {
+    Authenticated,
+    Get,
+    Handler,
+    LambdaProxyEvent,
+    Middleware,
+    Request,
+    ResponseBody
+} from '../../../modules/lambda-core';
+import { apiGatewayProxyEvent } from '../../__helpers';
 
 const getProfileStub = jest.fn();
 
 class HandlerImplementation extends Handler {
-    protected middleware: Middleware[];
+    public middleware: Middleware[];
 
-    // @ts-ignore
     @Get('/profile/{id}')
-    // @ts-ignore
     @Authenticated()
-    // @ts-ignore
     public async getProfile(req: Request) {
         return getProfileStub(req);
     }
 }
 
-let handlerImplementation;
-let event;
-let request;
+let handlerImplementation: HandlerImplementation;
+let event: LambdaProxyEvent;
+let request: Request;
 
 describe('Handler', () => {
     beforeEach(() => {
@@ -57,6 +61,7 @@ describe('Handler', () => {
             handlerImplementation.middleware.push(middlewareMock);
             const response = await handlerImplementation.handle(request);
             expect(middlewareMock).toHaveBeenCalledTimes(1);
+            // @ts-ignore
             expect(middlewareMock).toHaveBeenCalledWith(request, handlerImplementation.getRouteConfig(request));
             expect(getProfileStub).toHaveBeenCalledTimes(1);
             expect(getProfileStub).toHaveBeenCalledWith(request);
@@ -66,6 +71,7 @@ describe('Handler', () => {
             handlerImplementation.middleware.push(middlewareMock);
             const response = await handlerImplementation.handle(request);
             expect(middlewareMock).toHaveBeenCalledTimes(1);
+            // @ts-ignore
             expect(middlewareMock).toHaveBeenCalledWith(request, handlerImplementation.getRouteConfig(request));
             expect(getProfileStub).not.toHaveBeenCalled();
             expect(response.statusCode).toEqual(406);
@@ -75,6 +81,7 @@ describe('Handler', () => {
     describe('#getRouteConfig', () => {
         it('parses a routeConfig from a request', () => {
             const path = 'GET_PROFILE';
+            // @ts-ignore
             const route = handlerImplementation.getRouteConfig(request);
 
             expect(route.authenticated).toEqual(true);
@@ -85,15 +92,19 @@ describe('Handler', () => {
         it('returns Undefined Route error when METHOD + PATH is not in routeConfig', () => {
             event.httpMethod = 'PATCH';
             request = new Request(event);
+            // @ts-ignore
             expect(() => handlerImplementation.getRouteConfig(request)).toThrow('Route undefined');
         });
         it('returns Undefined Route error when METHOD is missing', () => {
+            // @ts-ignore
             delete request.method;
+            // @ts-ignore
             expect(() => handlerImplementation.getRouteConfig(request)).toThrow('Route undefined');
         });
         it('returns Undefined Route error when PATH is missing', () => {
             event.httpMethod = 'PATCH';
             request = new Request(event);
+            // @ts-ignore
             expect(() => handlerImplementation.getRouteConfig(request)).toThrow('Route undefined');
         })
     });

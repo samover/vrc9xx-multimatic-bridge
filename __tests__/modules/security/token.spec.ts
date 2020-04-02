@@ -1,9 +1,16 @@
+import { InternalServerError, UnauthorizedError } from 'errors';
 import * as faker from 'faker';
 import { sign } from 'jsonwebtoken';
-import { InternalServerError, UnauthorizedError } from '../../../modules/errors';
-import { Token, UserInfo } from '../../../modules/security';
+import { Token, UserInfo } from 'security';
 
 describe('Token', () => {
+    const signClaim = async (claim: UserInfo, secret?: string): Promise<string> => {
+        return new Promise((resolve, reject) =>
+            sign(tokenClaim, secret || process.env.ONETIME_TOKEN_SECRET, (err: Error, encoded: string) => {
+                if (err) { reject(new UnauthorizedError(err.message)); }
+                resolve(encoded);
+            }));
+    };
     const expirationDate: number = parseInt(`${faker.date.future().valueOf() / 1000}`, 10);
     const tokenClaim: UserInfo = {
         sub: faker.internet.email(),
@@ -15,31 +22,19 @@ describe('Token', () => {
             const decoded = Token.decode(jwtToken);
             expect(decoded.sub).toEqual(tokenClaim.sub);
         });
-        it('returns null when claim is not a json string', () => {
-            const jwtToken = sign('string', 'secret');
-            expect(Token.decode(jwtToken)).toBeNull();
-        });
     });
 
     describe('verify', () => {
         it('verifies a JWT token and returns the claims', async () => {
-            const token = await Token.sign(tokenClaim, expirationDate);
 
+            const token: string = await signClaim(tokenClaim);
             const claims = await Token.verify(token);
 
-            expect(claims.userId).toEqual(tokenClaim.userId);
-            // @ts-ignore
-            expect(claims.exp).toEqual(expirationDate);
+            expect(claims.sub).toEqual(tokenClaim.sub);
         });
         it('throws unauthorizedError when token is not correctly signed', async () => {
-            const token = await sign(tokenClaim, 'secret');
+            const token: string = await signClaim(tokenClaim, 'secret');
             await expect(Token.verify(token)).rejects.toThrow(UnauthorizedError);
-        });
-        it('throws internalServerError when failing to fetch publicKey', async () => {
-            parameterStore.getPublicKey = jest.fn().mockRejectedValueOnce(new Error());
-            await expect(Token.verify('token')).rejects.toThrow(InternalServerError);
-            // @ts-ignore
-            parameterStore.getPublicKey.mockRestore();
         });
     });
 });

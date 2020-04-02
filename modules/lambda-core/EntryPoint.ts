@@ -16,6 +16,7 @@ export abstract class LambdaEntryPoint {
      * HeartBeatResponse can be used to keep the Lambda warm using Cloudwatch Events
      */
     private static heartBeatResponse(request: Request) {
+        let stuff;
         LOGGER.debug('Heartbeat function');
         // Disable cors because
         return Response.noContent(request, { cors: false }).send();

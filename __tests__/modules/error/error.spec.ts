@@ -8,7 +8,7 @@ import {
     NotFoundError,
     UnauthorizedError,
     ValidationError
-} from '../../../modules/errors';
+} from 'errors';
 
 
 describe('modules/errors', () => {

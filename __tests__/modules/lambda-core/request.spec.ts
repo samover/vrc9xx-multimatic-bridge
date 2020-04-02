@@ -1,5 +1,5 @@
-import { apiGatewayProxyEvent } from '@jmc-dev/test-helper';
-import { LambdaProxyEvent, Request } from '../src/Request';
+import { LambdaProxyEvent, Request } from '../../../modules/lambda-core';
+import { apiGatewayProxyEvent } from '../../__helpers';
 
 describe('Request', () => {
     let event: LambdaProxyEvent;

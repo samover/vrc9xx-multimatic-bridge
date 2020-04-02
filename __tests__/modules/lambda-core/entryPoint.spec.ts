@@ -1,7 +1,7 @@
-import { apiGatewayProxyEvent } from '@jmc-dev/test-helper';
-import { BadRequestError } from '@jmc/errors/lib';
-import { Handler, LambdaProxyEvent, Middleware, Request } from '../src';
-import { LambdaEntryPoint } from '../src/EntryPoint';
+import { Context } from 'aws-lambda';
+import { BadRequestError } from 'errors';
+import { Handler, LambdaEntryPoint, LambdaProxyEvent, Middleware, Request } from '../../../modules/lambda-core';
+import { apiGatewayProxyEvent } from '../../__helpers';
 
 class HandlerImplementation extends Handler {
     protected middleware: Middleware[];
@@ -16,14 +16,15 @@ class EntryPointImplementation extends LambdaEntryPoint {
 }
 
 const handleMock = jest.fn();
-let event;
-let implementation;
-let context;
+let event: LambdaProxyEvent;
+let implementation: EntryPointImplementation;
+let context: Context;
 
-jest.mock('../src/Request');
+jest.mock('../../../modules/lambda-core/Request');
 
 describe('EntryPoint', () => {
     beforeEach(() => {
+        // @ts-ignore
         context = {};
         event = apiGatewayProxyEvent.get() as unknown as LambdaProxyEvent;
         event.httpMethod = 'GET';
@@ -41,13 +42,14 @@ describe('EntryPoint', () => {
 
     it('invokes the handle function of the controller with a request object and return handle function result as is', async () => {
         handleMock.mockResolvedValue('OK');
-        const response = await implementation.handle(event);
+        const response = await implementation.handle(event, context);
         expect(HandlerImplementation.prototype.handle).toHaveBeenCalledTimes(1);
         expect(HandlerImplementation.prototype.handle).toHaveBeenCalledWith(expect.any(Request));
         expect(response).toEqual('OK');
     });
 
     it('invokes the heartbeat function when no event is passed and returns 204', async () => {
+        // @ts-ignore
         const response = await implementation.handle({}, {});
         expect(context.callbackWaitsForEmptyEventLoop).toBeFalsy();
         expect(HandlerImplementation.prototype.handle).not.toHaveBeenCalled();
@@ -58,7 +60,7 @@ describe('EntryPoint', () => {
         // @ts-ignore
         Request.prototype.getHeader.mockReturnValue('https://example.com');
         handleMock.mockRejectedValue(new BadRequestError('Oops'));
-        const response = await implementation.handle(event, {});
+        const response = await implementation.handle(event, context);
         expect(HandlerImplementation.prototype.handle).toHaveBeenCalledTimes(1);
         expect(HandlerImplementation.prototype.handle).toHaveBeenCalledWith(expect.any(Request));
         expect(response.statusCode).toEqual(400);
@@ -69,7 +71,7 @@ describe('EntryPoint', () => {
         EntryPointImplementation.prototype.initializeHandler = () => { throw new Error('OOPS'); };
         // @ts-ignore
         Request.prototype.getHeader.mockReturnValue('https://example.com');
-        const response = await implementation.handle(event, {});
+        const response = await implementation.handle(event, context);
         expect(HandlerImplementation.prototype.handle).not.toHaveBeenCalled();
         expect(response.statusCode).toEqual(500);
     });

@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 
-import { ValidationClass, ValidatorOptions } from '../../../class-validator-wrapper';
-import { ValidationError } from '../../../errors';
+import { ValidationClass, ValidatorOptions } from 'class-validator-wrapper';
+import { ValidationError } from 'errors';
 import { Request } from '../../Request';
 import { RequestParams } from '../enums';
 

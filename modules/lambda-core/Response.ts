@@ -54,7 +54,7 @@ export class Response<T> {
     private status: ResponseBodyInput['statusCode'];
     private headers: ResponseBodyInput['headers'];
     private contentType: string;
-    private cors: boolean = true; // do not use cors by default
+    private cors: boolean = true; // use cors by default
 
     constructor(statusCode: number, request: Request, options?: ResponseOptions) {
         this.status = statusCode;

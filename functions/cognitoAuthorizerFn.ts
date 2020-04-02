@@ -1,9 +1,10 @@
 import axios from 'axios';
+import { UnauthorizedError } from 'errors';
 import { verify } from 'jsonwebtoken';
 import jwkToPem from 'jwk-to-pem';
-import { UnauthorizedError } from '../modules/errors';
-import { LOGGER } from '../modules/logger';
+import { LOGGER } from 'logger';
 
+// TODO: place in configuration
 const iss = 'https://samover.eu.auth0.com/';
 
 interface Policy {
@@ -11,7 +12,7 @@ interface Policy {
     policyDocument: {
         Version: string;
         Statement: Array<{ Action: string; Effect: string; Resource: string }>;
-    }
+    };
 }
 
 // Generate policy to allow this user on this API:

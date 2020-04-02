@@ -1,6 +1,6 @@
-import { Strings } from '../src';
+import { Strings } from 'utils';
 
-describe('@jmc/utils/Strings', () => {
+describe('utils/Strings', () => {
     let randomObject: { [key: string]: any }
 
     beforeEach(() => {

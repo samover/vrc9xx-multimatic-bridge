@@ -1,6 +1,6 @@
-import { Objects } from '../src';
+import { Objects } from 'utils';
 
-describe('@jmc/utils/Objects', () => {
+describe('utils/Objects', () => {
     describe('isEmpty', () => {
         it('returns true when object is null', () => {
             // @ts-ignore
