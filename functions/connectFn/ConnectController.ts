@@ -11,7 +11,7 @@ import {
 import { BadRequestError } from 'aws-lambda-core/lib/errors';
 import { LOGGER } from 'logger';
 import { Token } from 'security';
-import uuid from 'uuid/v4';
+import { v4 as uuid } from 'uuid';
 import { errorHandler } from './connectErrorHandler';
 import { PostConnectRequestBody } from './dtos/postConnectRequestBody';
 import { CredentialsService } from './services/credentialsService';
