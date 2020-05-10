@@ -12,21 +12,15 @@ export const directiveFactory = {
         switch (namespace) {
             case NAMESPACES.Alexa:
                 return new AlexaDirective(event);
-                break;
 
             case NAMESPACES.AlexaDiscovery:
                 return new AlexaDiscoveryDirective(event);
-                break;
 
             case NAMESPACES.AlexaThermostatController:
                 return new AlexaThermostatControlDirective(event);
-                break;
 
             default:
-                // log('Error', 'Unsupported namespace: ' + requestedNamespace);
-                // response = handleUnexpectedInfo(requestedNamespace);
                 return new AlexaDirective(event);
-                break;
-        }// switch
+        }
     },
 };

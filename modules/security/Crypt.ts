@@ -8,8 +8,9 @@ export interface Cypher {
 const keyBuffer = Buffer.alloc(32);
 const ivBuffer = Buffer.alloc(16);
 
-const ALGORITHM = 'aes-256-cbc';
 const KEY = Buffer.concat([Buffer.from(process.env.CRYPTO_KEY)], keyBuffer.length);
+
+export const ALGORITHM = 'aes-256-cbc';
 
 export const encrypt = (value: string): Cypher => {
     const IV = Buffer.from(Array.prototype.map.call(ivBuffer, () => Math.floor(Math.random() * 256)));

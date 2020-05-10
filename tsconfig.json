@@ -13,16 +13,13 @@
     "baseUrl": ".",
     "paths": {
       "logger": ["modules/logger"],
-      "lambda-core": ["modules/lambda-core"],
-      "errors": ["modules/errors"],
       "url-builder": ["modules/url-builder"],
       "security": ["modules/security"],
-      "utils": ["modules/utils"],
       "openid": ["modules/openid"],
-      "class-validator-wrapper": ["modules/class-validator-wrapper"],
       "vaillant-api": ["modules/vaillant-api"],
       "dynamodb": ["modules/dynamodb"],
-      "models": ["modules/models"]
+      "models": ["modules/models"],
+      "fixtures": ["modules/fixtures"]
     }
   },
   "exclude": [ "node_modules" ],

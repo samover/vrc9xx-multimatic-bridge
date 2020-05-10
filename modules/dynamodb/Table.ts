@@ -1,20 +1,23 @@
 /* eslint-disable prefer-destructuring */
+import { InternalServerError } from 'aws-lambda-core/lib/errors';
 import { DynamoDB } from 'aws-sdk';
-import { AttributeMap, AttributeValue } from 'aws-sdk/clients/dynamodb';
-import { InternalServerError } from '../errors';
-import { LOGGER } from '../logger';
-
-type DynamoDBDataType = 'N'|'S'|'BOOL';
-interface Json { [key: string]: any }
+import { LOGGER } from 'logger';
+import { Json, transformAttributeMapToJson, transformJsonToAttributeMap } from './dataMapper';
 
 export class Table {
     private tableName: string;
 
     private client: DynamoDB;
 
+    private transformAttributeMapToJson: (map: DynamoDB.AttributeMap) => Json;
+
+    private transformJsonToAttributeMap: (json: Json) => DynamoDB.AttributeMap;
+
     constructor(tableName: string) {
         this.client = new DynamoDB({ apiVersion: '2012-08-10' });
         this.tableName = tableName;
+        this.transformAttributeMapToJson = transformAttributeMapToJson;
+        this.transformJsonToAttributeMap = transformJsonToAttributeMap;
     }
 
     public async putItem(item: Json): Promise<void> {
@@ -22,7 +25,7 @@ export class Table {
             LOGGER.debug(item, 'Saving item');
             const params = {
                 TableName: this.tableName,
-                Item: Table.transformJsonToAttributeMap(item),
+                Item: this.transformJsonToAttributeMap(item),
             };
             LOGGER.debug(params, 'Saving item as thus');
             await this.client.putItem(params).promise();
@@ -36,44 +39,15 @@ export class Table {
         try {
             const params = {
                 TableName: this.tableName,
-                Key: Table.transformJsonToAttributeMap(key),
+                Key: this.transformJsonToAttributeMap(key),
             };
 
             const result = await this.client.getItem(params).promise();
-            return Table.transformAttributeMapToJson(result.Item);
+            return this.transformAttributeMapToJson(result.Item);
         } catch (e) {
             LOGGER.debug(e, `Failed fetching item in ${this.tableName} table`);
             throw new InternalServerError(e.message);
         }
     }
 
-    private static transformJsonToAttributeMap(json: Json): AttributeMap {
-        const data: Json = {};
-        Object.keys(json).forEach((key: string) => {
-            if (typeof json[key] === 'number') {
-                data[key] = { N: json[key] };
-            } else if (`${json[key]}` === 'true' || `${json[key]}` === 'false') {
-                data[key] = { BOOL: json[key] === 'true' };
-            } else {
-                data[key] = { S: json[key] };
-            }
-        });
-
-        return data;
-    }
-
-    private static transformAttributeMapToJson(map: AttributeMap): Json {
-        const data: Json = {};
-
-        Object.keys(map).forEach((key: string) => {
-            const attribute: AttributeValue = map[key];
-            let value: boolean|number|string;
-            if (Object.keys(attribute)[0] === 'S') { value = Object.values(attribute)[0]; }
-            if (Object.keys(attribute)[0] === 'N') { value = parseFloat(Object.values(attribute)[0]); }
-            if (Object.keys(attribute)[0] === 'BOOL') { value = Object.values(attribute)[0] === 'true'; }
-            data[key] = value;
-        });
-
-        return data;
-    }
 }

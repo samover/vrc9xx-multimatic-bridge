@@ -1,5 +1,4 @@
-import { IsNumber } from 'class-validator';
-import { IsString, ValidationClass } from 'class-validator-wrapper';
+import { ValidationClass, IsNumber } from 'aws-lambda-core/lib/class-validator-wrapper';
 
 export class PutRoomTemperatureRequestBody extends ValidationClass {
     @IsNumber()

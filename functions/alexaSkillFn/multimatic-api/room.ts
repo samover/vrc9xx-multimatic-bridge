@@ -1,5 +1,4 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { LOGGER } from 'logger';
 import { RoomModel } from 'models';
 import { errorHandler } from './errorHandler';
 
@@ -12,11 +11,11 @@ export class Room {
         this.path = `facilities/${facilityId}/rooms/${roomId}`;
     }
 
-    public addToken(authToken: string) {
+    public addToken(authToken: string): void {
         this.authToken = authToken;
     }
 
-    public async get() {
+    public async get(): Promise<RoomModel> {
         try {
             const requestConfig: AxiosRequestConfig = {
                 baseURL: process.env.MULTIMATIC_API_PATH,
@@ -28,11 +27,8 @@ export class Room {
             };
 
             const result = await axios.request<RoomModel>(requestConfig);
-            LOGGER.debug(result.status, '@@@@@ request to multimatic api success');
             return result.data as RoomModel;
         } catch (e) {
-            console.log('@@@@@@@@@@@ ERROR IN SETTING RoomTemperature');
-            console.error(e);
             return errorHandler(e);
         }
     }
@@ -49,14 +45,9 @@ export class Room {
                 },
             };
 
-            LOGGER.debug('@@@@@ requestConfig', requestConfig);
-
-            const result = await axios.request(requestConfig);
-            LOGGER.debug(result.status, '@@@@@ request to multimatic api success');
+            await axios.request(requestConfig);
         } catch (e) {
-            console.log('@@@@@@@@@@@ ERROR IN SETTING RoomTemperature');
-            console.error(e);
-            return errorHandler(e);
+            errorHandler(e);
         }
     }
 
@@ -71,14 +62,9 @@ export class Room {
                 },
             };
 
-            LOGGER.debug('@@@@@ requestConfig', requestConfig);
-
-            const result = await axios.request(requestConfig);
-            LOGGER.debug(result.status, '@@@@@ request to multimatic api success');
+            await axios.request(requestConfig);
         } catch (e) {
-            console.log('@@@@@@@@@@@ ERROR IN Resetting Room Schedule');
-            console.error(e);
-            return errorHandler(e);
+            errorHandler(e);
         }
     }
 }

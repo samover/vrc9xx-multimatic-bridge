@@ -1,5 +1,4 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { LOGGER } from 'logger';
 import { ZoneModel } from 'models';
 import { errorHandler } from './errorHandler';
 
@@ -12,11 +11,11 @@ export class Zone {
         this.path = `facilities/${facilityId}/zones/${zoneId}`;
     }
 
-    public addToken(authToken: string) {
+    public addToken(authToken: string): void {
         this.authToken = authToken;
     }
 
-    public async get() {
+    public async get(): Promise<ZoneModel> {
         try {
             const requestConfig: AxiosRequestConfig = {
                 baseURL: process.env.MULTIMATIC_API_PATH,
@@ -28,16 +27,17 @@ export class Zone {
             };
 
             const result = await axios.request<ZoneModel>(requestConfig);
-            LOGGER.debug(result.status, '@@@@@ request to multimatic api success');
             return result.data as ZoneModel;
         } catch (e) {
-            console.log('@@@@@@@@@@@ ERROR IN Fetching ZoneProperties');
-            console.error(e);
             return errorHandler(e);
         }
     }
 
-    public async setTemperature(): Promise<void> {}
+    public async setTemperature(temperature: number, duration: number): Promise<void> {
+        return null;
+    }
 
-    public async resetSchedule(): Promise<void> {}
+    public async resetSchedule(): Promise<void> {
+        return null;
+    }
 }

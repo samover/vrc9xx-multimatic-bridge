@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import * as cookie from 'cookie';
 import { ApiPath } from './ApiPath';
 import { VaillantApiResponse } from './common/interfaces/vaillantApiResponse.interface';
@@ -68,5 +68,14 @@ export class Authentication {
 
     public getSessionId(): string {
         return this.sessionId;
+    }
+
+    public getCredentials(): Credentials {
+        return {
+            username: this.username,
+            smartphoneId: this.smartphoneId,
+            authToken: this.authToken,
+            sessionId: this.sessionId,
+        }
     }
 }

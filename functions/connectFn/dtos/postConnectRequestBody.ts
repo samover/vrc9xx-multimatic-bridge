@@ -1,5 +1,4 @@
-import { IsBooleanString } from 'class-validator';
-import { IsBoolean, IsString, ValidationClass } from 'class-validator-wrapper';
+import { IsBooleanString, IsString, ValidationClass } from 'aws-lambda-core/lib/class-validator-wrapper';
 
 export class PostConnectRequestBody extends ValidationClass {
     @IsString()

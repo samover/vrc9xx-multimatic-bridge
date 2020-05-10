@@ -28,35 +28,43 @@ export class AlexaDirective extends AbstractDirective {
         return null; // fixme: return error?
     }
 
-    private async handleReportState() {
+    private async handleReportState(): Promise<AlexaResponseEvent> {
         const [facilityId, type, id] = this.event.endpoint.endpointId.split(':');
+        const token = this.event.endpoint.scope.token;
 
-        if (type === 'room') {
-            const roomApi = new Room(facilityId, id);
-            roomApi.addToken(this.event.endpoint.scope.token);
+        let properties: ContextProperty[];
 
-            const room: RoomModel = await roomApi.get();
-            const roomProperties: ContextProperty[] = this.roomPropertiesBuilder.build(room);
+        if (type === 'room') properties = await this.getRoomProperties(token, facilityId, id);
+        else if (type === 'zone') properties = await this.getZoneProperties(token, facilityId, id);
+        else if (type === 'system') properties = await this.getSystemProperties(token, facilityId);
+        else properties = null;
 
-            this.addContext({ properties: roomProperties });
-        } else if (type === 'zone') {
-            const zoneApi = new Zone(facilityId, id);
-            zoneApi.addToken(this.event.endpoint.scope.token);
-
-            const zone: ZoneModel = await zoneApi.get();
-            const zoneProperties: ContextProperty[] = this.zonePropertiesBuilder.build(zone);
-
-            this.addContext({ properties: zoneProperties });
-        } else if (type === 'system') {
-            const systemApi = new System(facilityId);
-            systemApi.addToken(this.event.endpoint.scope.token);
-
-            const system: SystemStatusModel = await systemApi.get();
-            const systemProperties: ContextProperty[] = this.systemStatusPropertiesBuilder.build(system);
-            this.addContext({ properties: systemProperties });
-        }
-
+        this.addContext({ properties });
         this.updateResponseHeader(RESPONSES.ReportState);
         return this.getResponse();
+    }
+
+    private async getRoomProperties(token: string, facilityId: string, roomId: string): Promise<ContextProperty[]> {
+        const roomApi = new Room(facilityId, roomId);
+        roomApi.addToken(token);
+
+        const room: RoomModel = await roomApi.get();
+        return this.roomPropertiesBuilder.build(room);
+    }
+
+    private async getZoneProperties(token: string, facilityId: string, zoneId: string): Promise<ContextProperty[]> {
+        const zoneApi = new Zone(facilityId, zoneId);
+        zoneApi.addToken(token);
+
+        const zone: ZoneModel = await zoneApi.get();
+        return this.zonePropertiesBuilder.build(zone);
+    }
+
+    private async getSystemProperties(token: string, facilityId: string): Promise<ContextProperty[]> {
+        const systemApi = new System(facilityId);
+        systemApi.addToken(token);
+
+        const system: SystemStatusModel = await systemApi.get();
+        return this.systemStatusPropertiesBuilder.build(system);
     }
 }

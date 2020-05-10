@@ -1,9 +1,9 @@
 import { LOGGER } from 'logger';
 import { AlexaContext } from './common/interfaces/alexaContext.interface';
-import { AlexaRequestDirective } from './common/interfaces/alexaEvent.interface';
+import { AlexaRequestDirective, AlexaResponseEvent } from './common/interfaces/alexaEvent.interface';
 import { directiveFactory } from './directives/directiveFactory';
 
-export const handler = async function (event: AlexaRequestDirective, context: AlexaContext) {
+export const handler = async (event: AlexaRequestDirective, context: AlexaContext): Promise<AlexaResponseEvent> => {
     LOGGER.debug(event, '*** Received Directive');
     LOGGER.debug(context, '*** Received Context');
 

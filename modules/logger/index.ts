@@ -1,8 +1,10 @@
 import * as Logger from 'bunyan';
 
+const { LOG_LEVEL } = process.env;
 const getLogLevel = (): Logger.LogLevel => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
-    if (process.env.LOG_LEVEL && Logger.levelFromName[process.env.LOG_LEVEL]) { return process.env.LOG_LEVEL as Logger.LogLevel; }
+    if (process.env.LOG_LEVEL && Logger.levelFromName[LOG_LEVEL]) { return process.env.LOG_LEVEL as Logger.LogLevel; }
     return Logger.INFO;
 };
 

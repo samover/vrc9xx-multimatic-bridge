@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import { ApiPath } from './ApiPath';
 import { VaillantApiResponse } from './common/interfaces/vaillantApiResponse.interface';
 import { errorHandler } from './errorHandler';
@@ -25,7 +25,7 @@ export interface RoomConfigurationModel {
 
 export interface SetPointModel {
     startTime: string;
-    temperatureSetPoint: number;
+    temperatureSetpoint: number;
 }
 
 export interface TimeProgramModel {
@@ -54,7 +54,7 @@ export class Room {
         this.facilitySerialNumber = facilitySerialNumber;
     }
 
-    public getList = async (): Promise<RoomApiModel[]> => {
+    public async getList(): Promise<RoomApiModel[]> {
         try {
             const requestConfig: AxiosRequestConfig = {
                 url: ApiPath.rooms(this.facilitySerialNumber),
@@ -67,7 +67,7 @@ export class Room {
             const response = await axios.request<VaillantApiResponse>(requestConfig);
             return response.data && response.data.body && response.data.body.rooms;
         } catch (e) {
-            errorHandler(e);
+            return errorHandler(e);
         }
     };
 
@@ -84,7 +84,7 @@ export class Room {
             const response = await axios.request<VaillantApiResponse>(requestConfig);
             return response.data && response.data.body;
         } catch (e) {
-            errorHandler(e);
+            return errorHandler(e);
         }
     };
 

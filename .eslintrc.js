@@ -50,33 +50,9 @@ module.exports = {
         "@typescript-eslint/indent": ["error", 4],
         "import/prefer-default-export": 0,
         "max-len": ["error", 120],
-        "max-lines-per-function": ["error", 20]
-        // "whitespace": [true, "check-module"],
-        // "no-submodule-imports": false,
-        // "variable-name": {
-        //     "options": [
-        //         "ban-keywords",
-        //         "check-format",
-        //         "allow-leading-underscore",
-        //         "allow-pascal-case"
-        //     ]
-        // },
-        // "member-ordering": [true, {"order": "fields-first"}],
-        // "no-implicit-dependencies": [
-        //     true,
-        //     [
-        //         "models",
-        //         "errors",
-        //         "logger",
-        //         "lambda-core",
-        //         "vaillant-api",
-        //         "dynamodb",
-        //         "security",
-        //         "class-validator-wrapper",
-        //         "utils"
-        //     ],
-        //     "dev"
-        // ],
-        // "object-literal-sort-keys": false,
+        "max-lines-per-function": ["error", { max: 20, skipComments: true, skipBlankLines: true }],
+        "class-methods-use-this": "off",
+        "no-underscore-dangle": "off",
+        "prefer-destructuring": "off"
     }
 };

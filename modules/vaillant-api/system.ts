@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 import { ApiPath } from './ApiPath';
 import { VaillantApiResponse } from './common/interfaces/vaillantApiResponse.interface';
 import { errorHandler } from './errorHandler';
-import { TimeProgramModel, ZoneApiModel } from './zone';
+import { ZoneApiModel } from './zone';
 
 export interface SystemConfigurationModel {
     eco_mode: boolean;
@@ -19,14 +19,19 @@ export interface SystemSetPointModel {
     mode: 'ON' | 'OFF';
 }
 
-export interface SystemTimeProgramModel {
-    monday: SystemSetPointModel[];
-    tuesday: SystemSetPointModel[];
-    wednesday: SystemSetPointModel[];
-    thursday: SystemSetPointModel[];
-    friday: SystemSetPointModel[];
-    saturday: SystemSetPointModel[];
-    sunday: SystemSetPointModel[];
+export interface SystemSetPointModel2 {
+    startTime: string;
+    setting: 'ON' | 'OFF';
+}
+
+export interface SystemTimeProgramModel<T> {
+    monday: T[];
+    tuesday: T[];
+    wednesday: T[];
+    thursday: T[];
+    friday: T[];
+    saturday: T[];
+    sunday: T[];
 }
 
 export interface SystemStatusApiModel {
@@ -41,7 +46,13 @@ export interface DomesticHotWaterModel {
             operation_mode: 'ON' | 'OFF' | 'AUTO';
             temperature_setpoint: number;
         };
-        timeprogram: SystemTimeProgramModel;
+        timeprogram: SystemTimeProgramModel<SystemSetPointModel>;
+    };
+    circulation: {
+        configuration: {
+            operationMode: 'ON' | 'OFF' | 'AUTO';
+        };
+        timeprogram: SystemTimeProgramModel<SystemSetPointModel2>;
     };
 }
 
@@ -52,7 +63,13 @@ export interface SystemApiModel {
     dhw: DomesticHotWaterModel[];
 }
 
-export enum QuickModeApiEnum { NO_QUICK_MODE, QM_PARTY, QM_VENTILATION_BOOST, QM_ONE_DAY_AT_HOME, QM_ONE_DAY_AWAY, }
+export enum QuickModeApiEnum {
+    NO_QUICK_MODE = 'NO_QUICK_MODE',
+    QM_PARTY = 'QM_PARTY',
+    QM_VENTILATION_BOOST = 'QM_VENTILATION_BOOST',
+    QM_ONE_DAY_AT_HOME = 'QM_ONE_DAY_AT_HOME',
+    QM_ONE_DAY_AWAY = 'QM_ONE_DAY_AWAY',
+}
 
 export interface SystemQuickModeApiModel {
     quickmode: QuickModeApiEnum;
@@ -69,12 +86,10 @@ export class System {
         this.facilitySerialNumber = facilitySerialNumber;
     }
 
-    public getQuickMode = async (): Promise<SystemQuickModeApiModel> => {
+    public async getQuickMode(): Promise<SystemQuickModeApiModel> {
         try {
             const requestConfig: AxiosRequestConfig = {
-                headers: {
-                    Cookie: `JSESSIONID=${this.sessionId}`,
-                },
+                headers: { Cookie: `JSESSIONID=${this.sessionId}` },
                 method: 'GET',
                 url: ApiPath.systemQuickmode(this.facilitySerialNumber),
             };
@@ -91,7 +106,7 @@ export class System {
         } catch (e) {
             return errorHandler(e);
         }
-    };
+    }
 
     public getDetails = async (): Promise<SystemApiModel> => {
         try {

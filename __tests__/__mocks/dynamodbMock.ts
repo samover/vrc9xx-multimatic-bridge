@@ -1,8 +1,8 @@
 import { Table } from 'dynamodb';
 import { MockOf } from '../__helpers/mockOf.type';
 
-export const putItemStub = jest.fn();
-export const getItemStub = jest.fn();
+export let putItemStub = jest.fn();
+export let getItemStub = jest.fn();
 
 jest.mock('dynamodb', () => ({
     __esModule: true,

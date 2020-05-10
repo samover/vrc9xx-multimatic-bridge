@@ -1,7 +1,8 @@
 import { RoomModel } from 'models';
 
 export class RoomEndpointsBuilder {
-    public static build(room: RoomModel) {
+    // eslint-disable-next-line max-lines-per-function
+    public build(room: RoomModel) {
         return {
             endpointId: `${room.facilityId}:room:${room.id}`,
             manufacturerName: 'Vaillant',

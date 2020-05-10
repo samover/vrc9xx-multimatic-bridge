@@ -1,13 +1,15 @@
+import { UnauthorizedError } from 'aws-lambda-core/lib/errors';
 import { AxiosError } from 'axios';
-import { UnauthorizedError } from 'errors';
-import { LOGGER } from '../logger';
+import { LOGGER } from 'logger';
 
-export const errorHandler = (error: AxiosError, errorMessage?: string) => {
+export const errorHandler = (error: AxiosError, errorMessage?: string): never => {
     LOGGER.debug(error.config, 'VAILLANT-API :: ERROR :: RequestConfig');
+
     if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
-        LOGGER.debug(error.response, `VAILLANT-API :: ERROR :: Server responded with errorCode ${error.response.status}`);
+        LOGGER.debug(error.response,
+            `VAILLANT-API :: ERROR :: Server responded with errorCode ${error.response.status}`);
         if (error.response.status === 401) {
             throw new UnauthorizedError(JSON.stringify(error.response.data));
         }

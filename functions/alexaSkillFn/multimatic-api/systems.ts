@@ -6,6 +6,12 @@ import { errorHandler } from './errorHandler';
 export class Systems {
     private authToken: string;
 
+    private path: string;
+
+    constructor() {
+        this.path = '/systems';
+    }
+
     public addToken(authToken: string) {
         this.authToken = authToken;
     }
@@ -14,7 +20,7 @@ export class Systems {
         try {
             const requestConfig: AxiosRequestConfig = {
                 baseURL: process.env.MULTIMATIC_API_PATH,
-                url: '/systems',
+                url: this.path,
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${this.authToken}`,

@@ -4,5 +4,6 @@ export interface ZoneModel {
     mode: string; // DAY | NIGHT
     name: string;
     insideTemperature: number;
+    temperatureSetpoint: number;
     enabled: boolean;
 }

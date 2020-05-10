@@ -2,7 +2,7 @@ import { AlexaEvent, AlexaRequestDirective, AlexaResponseEvent } from '../common
 import { AlexaContext } from '../common/interfaces/alexaContext.interface';
 
 export abstract class AbstractDirective {
-    protected event: AlexaEvent;
+    protected readonly event: AlexaEvent;
 
     private responseEvent: AlexaEvent;
 
@@ -10,7 +10,7 @@ export abstract class AbstractDirective {
 
     constructor(event: AlexaEvent) {
         this.event = event;
-        this.responseEvent = event;
+        this.responseEvent = JSON.parse(JSON.stringify(event));
     }
 
     protected updateResponseHeader(name: string, namespace?: string): void {

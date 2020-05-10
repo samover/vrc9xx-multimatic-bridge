@@ -1,13 +1,20 @@
-import { Table } from 'dynamodb';
-import { BadRequestError, InternalServerError, UnauthorizedError } from 'errors';
 import {
-    Handler, Middleware, Post, Request, Response, ResponseBody, ValidateBody,
-} from 'lambda-core';
+    Handler,
+    Middleware,
+    Post,
+    Request,
+    Response,
+    ResponseBody,
+    UseErrorHandler,
+    ValidateBody,
+} from 'aws-lambda-core';
+import { BadRequestError } from 'aws-lambda-core/lib/errors';
 import { LOGGER } from 'logger';
-import { encrypt, Token } from 'security';
+import { Token } from 'security';
 import uuid from 'uuid/v4';
-import { Authentication } from 'vaillant-api';
+import { errorHandler } from './connectErrorHandler';
 import { PostConnectRequestBody } from './dtos/postConnectRequestBody';
+import { CredentialsService } from './services/credentialsService';
 
 /** Class representing the controller for the Connect Lambda */
 export class ConnectController extends Handler {
@@ -15,6 +22,7 @@ export class ConnectController extends Handler {
 
     @Post('/connect')
     @ValidateBody(PostConnectRequestBody)
+    @UseErrorHandler(errorHandler)
     /**
      * Use for validating and storing an encrypted string of a user's vaillaint multimatic credentials
      *
@@ -23,61 +31,26 @@ export class ConnectController extends Handler {
      * @returns {ResponseBody}
      * @throws {BadRequestError}
      */
-    private async postConnect(request: Request): Promise<ResponseBody> {
+    public async postConnect(request: Request): Promise<ResponseBody> {
         LOGGER.debug(request, 'Entrypoint POST /connect');
 
         const body: PostConnectRequestBody = request.getBody<PostConnectRequestBody>();
         const token: string = request.getHeader('authorization').replace(/Bearer /, '');
 
-        try {
-            if (body.hasAcceptedTerms !== 'true') {
-                throw new BadRequestError('User must accept Terms and Conditions');
-            }
-
-            // validate token
-            const userInfo = await Token.verify(token);
-
-            // Test Multimatic Connect
-            const smartphoneId = uuid();
-            const authentication = new Authentication({
-                username: body.username,
-                smartphoneId,
-                sessionId: null,
-                authToken: null,
-            });
-            await authentication.login(body.password);
-            await authentication.authenticate();
-
-            // Save Multimatic Credentials in dynamoDB
-            const table = new Table(process.env.MULTIMATIC_TABLE);
-            const secret = encrypt(JSON.stringify({
-                authToken: authentication.getAuthToken(),
-                sessionId: authentication.getSessionId(),
-                smartphoneId,
-                username: body.username,
-            }));
-
-            await table.putItem({
-                userId: userInfo.sub,
-                hasAcceptedTerms: body.hasAcceptedTerms,
-                secret: JSON.stringify(secret),
-            });
-
-            return Response.noContent(request).send();
-        } catch (e) {
-            LOGGER.error(e, 'ProfileEdit Route failed');
-            let errorMessage: string;
-            if (e instanceof UnauthorizedError) {
-                errorMessage = 'Token invalid or expired';
-            } else if (e instanceof InternalServerError) {
-                errorMessage = 'Critical service error';
-            } else if (e instanceof BadRequestError) {
-                errorMessage = e.message;
-            } else {
-                errorMessage = 'Invalid Multimatic Credentials';
-            }
-
-            return Response.fromError(request, new BadRequestError(errorMessage));
+        if (body.hasAcceptedTerms !== 'true') {
+            throw new BadRequestError('User must accept Terms and Conditions');
         }
+
+        // validate token
+        const userInfo = await Token.verify(token);
+
+        // verify Multimatic credentials
+        const smartphoneId = uuid();
+        const authentication = await CredentialsService.verify(body.username, body.password, smartphoneId);
+
+        // save Multimatic credentials
+        await CredentialsService.save(authentication, userInfo.sub, body.hasAcceptedTerms);
+
+        return Response.noContent(request).send();
     }
 }

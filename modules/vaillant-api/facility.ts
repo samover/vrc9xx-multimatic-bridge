@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import { ApiPath } from './ApiPath';
 import { VaillantApiResponse } from './common/interfaces/vaillantApiResponse.interface';
 import { errorHandler } from './errorHandler';

@@ -1,4 +1,4 @@
-import { InternalServerError, UnauthorizedError } from 'errors';
+import { UnauthorizedError } from 'aws-lambda-core/lib/errors';
 import * as faker from 'faker';
 import { sign } from 'jsonwebtoken';
 import { Token, UserInfo } from 'security';
@@ -6,7 +6,7 @@ import { Token, UserInfo } from 'security';
 describe('Token', () => {
     const signClaim = async (claim: UserInfo, secret?: string): Promise<string> => {
         return new Promise((resolve, reject) =>
-            sign(tokenClaim, secret || process.env.ONETIME_TOKEN_SECRET, (err: Error, encoded: string) => {
+            sign(claim, secret || process.env.ONETIME_TOKEN_SECRET, (err: Error, encoded: string) => {
                 if (err) { reject(new UnauthorizedError(err.message)); }
                 resolve(encoded);
             }));

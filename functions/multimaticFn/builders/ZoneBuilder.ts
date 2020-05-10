@@ -10,6 +10,7 @@ export class ZoneBuilder {
             name: zone.configuration.name.trim().toLowerCase(),
             mode: zone.heating.configuration.mode,
             insideTemperature: zone.configuration.inside_temperature,
+            temperatureSetpoint: zone.heating.configuration.setpoint_temperature,
         };
     }
 }

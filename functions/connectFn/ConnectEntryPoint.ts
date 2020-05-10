@@ -1,4 +1,4 @@
-import { LambdaEntryPoint } from 'lambda-core';
+import { LambdaEntryPoint } from 'aws-lambda-core';
 import { LOGGER } from 'logger';
 import { ConnectController } from './ConnectController';
 

@@ -1,7 +1,8 @@
 import { ZoneModel } from 'models';
 
 export class ZoneEndpointsBuilder {
-    public static build(zone: ZoneModel) {
+    // eslint-disable-next-line max-lines-per-function
+    public build(zone: ZoneModel) {
         return {
             endpointId: `${zone.facilityId}:zone:${zone.id}`,
             manufacturerName: 'Vaillant',

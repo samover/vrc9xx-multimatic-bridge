@@ -1,5 +1,4 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { LOGGER } from 'logger';
 import { SystemStatusModel } from 'models';
 import { errorHandler } from './errorHandler';
 
@@ -12,7 +11,7 @@ export class System {
         this.path = `facilities/${facilityId}/system`;
     }
 
-    public addToken(authToken: string) {
+    public addToken(authToken: string): void {
         this.authToken = authToken;
     }
 
@@ -28,7 +27,6 @@ export class System {
             };
 
             const result = await axios.request<SystemStatusModel>(requestConfig);
-            LOGGER.debug(result.status, '@@@@@ request to multimatic api success');
             return result.data as SystemStatusModel;
         } catch (e) {
             return errorHandler(e);

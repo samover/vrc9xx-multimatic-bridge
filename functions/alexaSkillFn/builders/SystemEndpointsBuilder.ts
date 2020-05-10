@@ -2,7 +2,8 @@ import { SystemModel, ZoneModel } from 'models';
 import { MODE_CONTROLLER_VALUES, NAMESPACES } from '../common/constants/alexaEvent.constants';
 
 export class SystemEndpointsBuilder {
-    public static build(system: SystemModel) {
+    // eslint-disable-next-line max-lines-per-function
+    public build(system: SystemModel) {
         return {
             endpointId: `${system.id}:system`,
             manufacturerName: system.manufacturer,
