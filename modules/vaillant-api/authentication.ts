@@ -76,6 +76,6 @@ export class Authentication {
             smartphoneId: this.smartphoneId,
             authToken: this.authToken,
             sessionId: this.sessionId,
-        }
+        };
     }
 }

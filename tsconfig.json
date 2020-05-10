@@ -13,9 +13,7 @@
     "baseUrl": ".",
     "paths": {
       "logger": ["modules/logger"],
-      "url-builder": ["modules/url-builder"],
       "security": ["modules/security"],
-      "openid": ["modules/openid"],
       "vaillant-api": ["modules/vaillant-api"],
       "dynamodb": ["modules/dynamodb"],
       "models": ["modules/models"],

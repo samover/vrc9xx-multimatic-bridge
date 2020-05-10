@@ -5,7 +5,7 @@ const slsw = require('serverless-webpack');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 const isLocal = slsw.lib.webpack.isLocal;
-console.log(slsw.lib.entries);
+
 module.exports = {
   mode: isLocal ? 'development' : 'production',
   entry: slsw.lib.entries,
@@ -24,10 +24,6 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.ejs$/,
-        exclude: /node_modules/,
-      },
-      {
         test: /\.(ts|js)x?$/,
         exclude: /node_modules/,
         use: [
@@ -40,10 +36,6 @@ module.exports = {
           'babel-loader',
         ]
       },
-      {
-        test: /\.ejs$/,
-        exclude: /node_modules/,
-      }
     ]
   },
 };

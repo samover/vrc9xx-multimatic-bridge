@@ -49,5 +49,4 @@ export class Table {
             throw new InternalServerError(e.message);
         }
     }
-
 }

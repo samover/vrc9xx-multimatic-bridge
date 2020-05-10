@@ -16,7 +16,7 @@ export class Facility {
         this.sessionId = sessionId;
     }
 
-    public getList = async (): Promise<FacilityApiModel[]> => {
+    public async getList(): Promise<FacilityApiModel[]> {
         try {
             const requestConfig: AxiosRequestConfig = {
                 url: ApiPath.facilitiesList(),
@@ -29,7 +29,7 @@ export class Facility {
             const response = await axios.request<VaillantApiResponse>(requestConfig);
             return response.data && response.data.body && response.data.body.facilitiesList;
         } catch (e) {
-            errorHandler(e);
+            return errorHandler(e);
         }
-    };
+    }
 }

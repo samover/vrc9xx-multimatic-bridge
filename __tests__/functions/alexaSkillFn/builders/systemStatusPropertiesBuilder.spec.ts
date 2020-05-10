@@ -1,4 +1,4 @@
-import { systemStatusModel } from 'fixtures';
+import { systemStatusModel } from '../../../__helpers/fixtures';
 import { parseQuickmodeValue } from '../../../../functions/alexaSkillFn/builders/builderHelpers';
 import { SystemStatusPropertiesBuilder } from '../../../../functions/alexaSkillFn/builders/SystemStatusPropertiesBuilder';
 import { MODE_CONTROLLER_VALUES } from '../../../../functions/alexaSkillFn/common/constants/alexaEvent.constants';

@@ -1,4 +1,4 @@
-import { zoneModel } from 'fixtures';
+import { zoneModel } from '../../../__helpers/fixtures';
 import { parseThermostatMode } from '../../../../functions/alexaSkillFn/builders/builderHelpers';
 import { ZonePropertiesBuilder } from '../../../../functions/alexaSkillFn/builders/ZonePropertiesBuilder';
 

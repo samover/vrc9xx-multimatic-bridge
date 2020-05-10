@@ -1,4 +1,4 @@
-import { roomModel } from 'fixtures';
+import { roomModel } from '../../../__helpers/fixtures';
 import { parseThermostatMode } from '../../../../functions/alexaSkillFn/builders/builderHelpers';
 import { RoomPropertiesBuilder } from '../../../../functions/alexaSkillFn/builders/RoomPropertiesBuilder';
 

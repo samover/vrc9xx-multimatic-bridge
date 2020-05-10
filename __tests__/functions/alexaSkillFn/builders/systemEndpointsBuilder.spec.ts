@@ -1,4 +1,4 @@
-import { systemModel } from 'fixtures';
+import { systemModel } from '../../../__helpers/fixtures';
 import { SystemEndpointsBuilder } from '../../../../functions/alexaSkillFn/builders/SystemEndpointsBuilder';
 
 describe('SystemeEndpointsBuilder', () => {

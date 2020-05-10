@@ -1,4 +1,4 @@
-import { zoneModel } from 'fixtures';
+import { zoneModel } from '../../../__helpers/fixtures';
 import { ZoneEndpointsBuilder } from '../../../../functions/alexaSkillFn/builders/ZoneEndpointsBuilder';
 
 describe('ZoneEndpointsBuilder', () => {

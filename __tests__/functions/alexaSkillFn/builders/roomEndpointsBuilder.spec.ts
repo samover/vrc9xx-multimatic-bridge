@@ -1,4 +1,4 @@
-import { roomModel } from 'fixtures';
+import { roomModel } from '../../../__helpers/fixtures';
 import { RoomEndpointsBuilder } from '../../../../functions/alexaSkillFn/builders/RoomEndpointsBuilder';
 
 describe('RoomeEndpointsBuilder', () => {

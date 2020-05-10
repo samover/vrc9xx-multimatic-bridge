@@ -69,7 +69,7 @@ export class Room {
         } catch (e) {
             return errorHandler(e);
         }
-    };
+    }
 
     public getDetails = async (roomId: string): Promise<RoomApiModel> => {
         try {
