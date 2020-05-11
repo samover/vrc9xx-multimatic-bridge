@@ -1,5 +1,7 @@
 import { RoomModel, SystemModel, SystemOverrideEnum } from 'models';
-import { FacilityApiModel, ZoneApiModel, SystemApiModel, SystemQuickModeApiModel } from 'vaillant-api';
+import {
+    FacilityApiModel, ZoneApiModel, SystemApiModel, SystemQuickModeApiModel,
+} from 'vaillant-api';
 import { ZoneBuilder } from './ZoneBuilder';
 
 export class SystemBuilder {
@@ -22,7 +24,7 @@ export class SystemBuilder {
             controller: 'multiMATIC VRC700',
             datetime: systemDetails.status.datetime,
             ecoMode: systemDetails.configuration.eco_mode,
-            holidayMode: this.buildHolidayMode(systemDetails),
+            holidayMode: SystemBuilder.buildHolidayMode(systemDetails),
             outsideTemperature: systemDetails.status.outside_temperature,
             systemOverride: SystemOverrideEnum.None,
             rooms,
@@ -38,7 +40,7 @@ export class SystemBuilder {
             id: facilityId,
             datetime: systemDetails.status.datetime,
             ecoMode: systemDetails.configuration.eco_mode,
-            holidayMode: this.buildHolidayMode(systemDetails),
+            holidayMode: SystemBuilder.buildHolidayMode(systemDetails),
             outsideTemperature: systemDetails.status.outside_temperature,
             systemOverride: systemQuickmode.quickmode as unknown as SystemOverrideEnum,
         };

@@ -49,6 +49,7 @@ functions:
       ONETIME_TOKEN_SECRET: ${ssm:/multimaticConnect/${self:provider.stage}/onetime-token-secret~true}
       CRYPTO_KEY: ${ssm:/multimaticConnect/${self:provider.stage}/crypto-key~true}
       MULTIMATIC_TABLE: ${self:custom.multimaticTableName}
+      ALLOWED_ORIGINS: https://${self:custom.siteName}
     events:
       - http:
           path: connect
