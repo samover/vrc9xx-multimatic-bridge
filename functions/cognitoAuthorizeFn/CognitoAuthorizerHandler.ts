@@ -36,6 +36,10 @@ export class CognitoAuthorizerHandler {
         return token.substring(7);
     }
 
+    private static buildAllowedResourceArn(methodArn: string): string {
+        return `${methodArn.split('/')[0]}/*/*`;
+    }
+
     // Generate policy to allow this user on this API:
     private static generatePolicy(principalId: string, resourceArn: string): Policy {
         return {
@@ -74,7 +78,10 @@ export class CognitoAuthorizerHandler {
             const pem = await CognitoAuthorizerHandler.getPemFromIssuer(this.issuer);
 
             const userInfo: UserInfo = await Token.verify(token, pem, { issuer: this.issuer });
-            return CognitoAuthorizerHandler.generatePolicy(userInfo.sub, event.methodArn);
+            return CognitoAuthorizerHandler.generatePolicy(
+                userInfo.sub,
+                CognitoAuthorizerHandler.buildAllowedResourceArn(event.methodArn),
+            );
         } catch (e) {
             LOGGER.error(e, 'Unauthorized');
             throw new UnauthorizedError('Unauthorized');

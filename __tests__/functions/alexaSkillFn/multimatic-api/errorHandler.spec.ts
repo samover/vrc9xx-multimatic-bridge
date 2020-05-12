@@ -17,7 +17,7 @@ class AxiosErrorExtension implements AxiosError {
 }
 
 const axiosResponse: AxiosResponse = {
-    config: undefined, data: undefined, headers: undefined, status: 0, statusText: ''
+    config: undefined, data: 'data', headers: undefined, status: 403, statusText: 'Forbidden'
 };
 const axiosConfig: AxiosRequestConfig = { method: 'DELETE' };
 const axiosRequest: AxiosRequestConfig = { method: 'GET' };
@@ -32,7 +32,7 @@ describe('MultimaticApi.errorHandler', () => {
         axiosError.config = axiosConfig;
         expect(() => errorHandler(axiosError)).toThrow(Error);
         expect(LOGGER.debug).toHaveBeenNthCalledWith(1, axiosError.config, expect.anything());
-        expect(LOGGER.debug).toHaveBeenNthCalledWith(2, axiosError.response, expect.anything());
+        expect(LOGGER.debug).toHaveBeenNthCalledWith(2, axiosError.response.statusText, axiosError.response.data, expect.anything());
     });
     it('#requestError: logs axiosError request', () => {
         const axiosError = new AxiosErrorExtension();

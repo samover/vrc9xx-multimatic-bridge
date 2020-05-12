@@ -6,7 +6,7 @@ export const errorHandler = (error: AxiosError, errorMessage?: string): never =>
     if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
-        LOGGER.debug(error.response, 'VAILLANT-API :: ERROR :: '
+        LOGGER.debug(error.response.statusText, error.response.data, 'VAILLANT-API :: ERROR :: '
             + `Server responded with errorCode ${error.response.status}`);
     } else if (error.request) {
         // The request was made but no response was received

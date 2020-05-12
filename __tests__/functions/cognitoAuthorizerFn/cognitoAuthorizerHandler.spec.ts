@@ -43,6 +43,8 @@ describe('CognitoAuthorizerFn', () => {
             jest.spyOn(CognitoAuthorizerHandler, 'parseAuthorizationToken').mockImplementation(() => 'token');
             // @ts-ignore
             jest.spyOn(CognitoAuthorizerHandler, 'generatePolicy').mockImplementation(() => policy);
+            // @ts-ignore
+            jest.spyOn(CognitoAuthorizerHandler, 'buildAllowedResourceArn').mockImplementation(() => 'allowedArn');
 
             const handler = new CognitoAuthorizerHandler(issuer);
 
@@ -55,7 +57,9 @@ describe('CognitoAuthorizerFn', () => {
             // @ts-ignore
             expect(CognitoAuthorizerHandler.parseAuthorizationToken).toHaveBeenCalledWith(authorizerEvent.authorizationToken);
             // @ts-ignore
-            expect(CognitoAuthorizerHandler.generatePolicy).toHaveBeenCalledWith(securityMock.username, authorizerEvent.methodArn);
+            expect(CognitoAuthorizerHandler.buildAllowedResourceArn).toHaveBeenCalledWith(authorizerEvent.methodArn);
+            // @ts-ignore
+            expect(CognitoAuthorizerHandler.generatePolicy).toHaveBeenCalledWith(securityMock.username, 'allowedArn');
         });
 
         it('throws an unauthorized error', async () => {
@@ -118,6 +122,18 @@ describe('CognitoAuthorizerFn', () => {
             // @ts-ignore
             await expect(CognitoAuthorizerHandler.getPemFromIssuer(issuer)).resolves.toEqual('pem');
             expect(jwkToPem).toHaveBeenCalledWith(jwkArray);
+        });
+    });
+
+    describe('#buildAllowedResourceArn', () => {
+        it('builds the allowed Resource Arn', async () => {
+            const methodArnFirstPart = `arn:aws:execute-api:eu-west-1:${faker.random.alphaNumeric(12)}:${faker.random.alphaNumeric(10)}`;
+            const methodArn = `${methodArnFirstPart}/stage/GET/facilities/${faker.random.alphaNumeric(24)}/rooms/8`;
+
+            // @ts-ignore
+            expect(CognitoAuthorizerHandler.buildAllowedResourceArn(methodArn)).toEqual(
+                `${methodArnFirstPart}/*/*`
+            );
         });
     })
 });
