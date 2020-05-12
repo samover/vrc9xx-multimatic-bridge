@@ -55,6 +55,7 @@ export class Authentication {
             };
 
             const response = await axios.request<VaillantApiResponse>(requestConfig);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const cookies: any = cookie.parse(response.headers['set-cookie'].join(';'));
             this.sessionId = cookies.JSESSIONID;
         } catch (e) {

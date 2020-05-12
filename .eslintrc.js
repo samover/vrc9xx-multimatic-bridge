@@ -19,6 +19,9 @@ module.exports = {
                 "alwaysTryTypes": true,
             },
         },
+        "react": {
+            "version": "999.999.999"
+        }
     },
     rules: {
         "@typescript-eslint/ban-types": [ "error", {

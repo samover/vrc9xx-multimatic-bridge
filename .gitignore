@@ -11,4 +11,5 @@ serverless.dev.config.yml
 .serverless
 .webpack*
 .env*
+!.env.test
 

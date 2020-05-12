@@ -2,6 +2,7 @@
 import { AttributeMap, AttributeValue } from 'aws-sdk/clients/dynamodb';
 
 export type DynamoDBDataType = 'N'|'S'|'BOOL';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface Json { [key: string]: any }
 
 // Only transforms data types actually used by the application.

@@ -51,14 +51,14 @@ const ROOM_QUICK_VETO = `${ROOM_CONFIGURATION}/quickVeto`;
 // System control//
 const SYSTEM = `${FACILITIES}/systemcontrol/v1`;
 const SYSTEM_CONFIGURATION = `${SYSTEM}/configuration`;
-const SYSTEM_STATUS = `${SYSTEM}/status`;
+// const SYSTEM_STATUS = `${SYSTEM}/status`;
 // const SYSTEM_DATETIME = `${SYSTEM_STATUS}/datetime`;
 // const SYSTEM_PARAMETERS = `${SYSTEM}/parameters`;
 const SYSTEM_QUICK_MODE = `${SYSTEM_CONFIGURATION}/quickmode`;
 // const SYSTEM_HOLIDAY_MODE = `${SYSTEM_CONFIGURATION}/holidaymode`;
 
 // DHW (Domestic Hot Water)//
-const DHW = `${SYSTEM}/dhw/{dhwId}`;
+// const DHW = `${SYSTEM}/dhw/{dhwId}`;
 
 // Circulation//
 // const CIRCULATION = `${DHW}/circulation`;
@@ -101,6 +101,7 @@ const ZONE = `${ZONES_LIST}/{zoneId}`;
 // const ZONE_COOLING_SETPOINT_TEMPERATURE = `${ZONE_COOLING_CONFIGURATION}/setpointTemperature`;
 // const ZONE_COOLING_MANUAL_SETPOINT_TEMPERATURE = `${ZONE_COOLING_CONFIGURATION}/manualModeCoolingTemperatureSetpoint`;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const formatUrl = (url: string, object: any): string => {
     let formattedUrl = url;
 
