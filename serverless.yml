@@ -22,6 +22,8 @@ provider:
 plugins:
   - serverless-webpack
   - serverless-s3-sync
+  - serverless-domain-manager
+  -
 package:
   individually: true
 
@@ -32,20 +34,20 @@ functions:
     handler: functions/alexaSkillFn/index.handler
     name: alexaSkillFn-${self:provider.stage}
     events:
-      - alexaSmartHome: amzn1.ask.skill.b23dfb87-b42a-4226-bd5d-c9dca047c38e
+      - alexaSmartHome: ${env.alexaSkillIdentifier}
     environment:
-      MULTIMATIC_API_PATH: https://z55al0vgn1.execute-api.eu-west-1.amazonaws.com/dev
+      MULTIMATIC_API_PATH: ${self:custom.customDomain.domainName}
   authorizerFn:
     handler: functions/cognitoAuthorizerFn.handler
     name: authorizerFn-${self:provider.stage}
     environment:
-      ISSUER: https://${self:custom.oauth0Url}/
+      ISSUER: https://${env.oauth0Url}/
   connectFn:
     handler: functions/connectFn.handler
     name: connectFn-${self:provider.stage}
     environment:
       WEB_APP_URI: ${self:custom.siteName}
-      OAUTH0_URI: ${self:custom.oauth0Url}
+      OAUTH0_URI: ${env.oauth0Url}
       ONETIME_TOKEN_SECRET: ${ssm:/multimaticConnect/${self:provider.stage}/onetime-token-secret~true}
       CRYPTO_KEY: ${ssm:/multimaticConnect/${self:provider.stage}/crypto-key~true}
       MULTIMATIC_TABLE: ${self:custom.multimaticTableName}
@@ -60,7 +62,7 @@ functions:
     name: multimaticFn-${self:provider.stage}
     environment:
       WEB_APP_URI: ${self:custom.siteName}
-      OAUTH0_URI: ${self:custom.oauth0Url}
+      OAUTH0_URI: ${env.oauth0Url}
       ONETIME_TOKEN_SECRET: ${ssm:/multimaticConnect/${self:provider.stage}/onetime-token-secret~true}
       CRYPTO_KEY: ${ssm:/multimaticConnect/${self:provider.stage}/crypto-key~true}
       MULTIMATIC_TABLE: ${self:custom.multimaticTableName}
@@ -108,7 +110,6 @@ functions:
 
 resources:
   Resources:
-    ## Specifying the S3 Bucket
     MultimaticConnectS3Bucket:
       Type: AWS::S3::Bucket
       Properties:
@@ -117,7 +118,6 @@ resources:
         WebsiteConfiguration:
           IndexDocument: index.html
           ErrorDocument: index.html
-    ## Specifying the policies to make sure all files inside the Bucket are avaialble to CloudFront
     MultimaticConnectS3BucketPolicy:
       Type: AWS::S3::BucketPolicy
       Properties:
@@ -132,7 +132,6 @@ resources:
               Action:
                 - s3:GetObject
               Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
-    ## Specifying the CloudFront Distribution to server your Web Application
     MultimaticConnectCloudFrontIdentity:
       Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
       Properties:
@@ -144,7 +143,6 @@ resources:
         DistributionConfig:
           Origins:
             - DomainName: ${self:custom.s3Bucket}.s3.amazonaws.com
-              ## An identifier for the origin which must be unique within the distribution
               Id: MultimaticConnect
               S3OriginConfig:
                 OriginAccessIdentity:
@@ -155,7 +153,7 @@ resources:
                       - Ref: MultimaticConnectCloudFrontIdentity
           Enabled: 'true'
           Aliases:
-            - ${self:custom.siteName} # https://multimatic.huddle.be/connect
+            - ${self:custom.siteName}
           DefaultRootObject: error.html
           CustomErrorResponses:
             - ErrorCode: 404
@@ -173,18 +171,14 @@ resources:
               - PATCH
               - POST
               - PUT
-            ## The origin id defined above
             TargetOriginId: MultimaticConnect
-            ## Defining if and how the QueryString and Cookies are forwarded to the origin which in this case is S3
             ForwardedValues:
               QueryString: true
               Cookies:
                 Forward: none
-            ## The protocol that users can use to access the files in the origin. To allow HTTP use `allow-all`
             ViewerProtocolPolicy: redirect-to-https
-          ## The certificate to use when viewers use HTTPS to request objects.
           ViewerCertificate:
-            AcmCertificateArn: ${self:custom.certificateArn}
+            AcmCertificateArn: ${env.certificateArn}
             SslSupportMethod: sni-only
             MinimumProtocolVersion: TLSv1.1_2016
     MultimaticConnectTable:
@@ -198,7 +192,7 @@ resources:
           - AttributeName: userId
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
-  ## In order to print out the hosted domain via `serverless info` we need to define the DomainName output for CloudFormation
+
   Outputs:
     MultimaticConnectCloudFrontDistributionOutput:
       Value:
