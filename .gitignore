@@ -5,8 +5,6 @@ jspm_packages
 # coverage
 coverage
 
-serverless.dev.config.yml
-
 # Serverless directories
 .serverless
 .webpack*

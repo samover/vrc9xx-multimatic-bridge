@@ -26,7 +26,7 @@ plugins:
 package:
   individually: true
 
-custom: ${file(./serverless.${self:provider.stage}.config.yml)} # You can reference the entire file
+custom: ${file(./serverless.config.yml)} # You can reference the entire file
 
 functions:
   alexaSkillFn:

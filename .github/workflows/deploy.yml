@@ -1,4 +1,4 @@
-name: Serverless Depoy
+name: Serverless Deploy
 
 on:
   push:
@@ -6,16 +6,11 @@ on:
   pull_request:
     branches: [ develop ]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
 
     - name: Install dependencies
@@ -25,3 +20,6 @@ jobs:
       uses: serverless/github-action@v1.53.0
       with:
         args: deploy --stage dev
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
