@@ -13,3 +13,4 @@ serverless.dev.config.yml
 .env*
 !.env.test
 
+deploy.local

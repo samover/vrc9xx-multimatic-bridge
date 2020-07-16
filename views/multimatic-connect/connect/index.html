@@ -66,7 +66,7 @@
         const vaillantConnectForm = $('#vaillant-connect-form');
 
         const url = new URL(window.location.href);
-        const apiUrl = 'https://z55al0vgn1.execute-api.eu-west-1.amazonaws.com/dev';
+        const apiUrl = 'https://api.multimatic-dev.huddle.be';
         const continueUrl = new URL('https://samover.eu.auth0.com/continue');
         continueUrl.href += `?state=${url.searchParams.get('state')}`;
 
