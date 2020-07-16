@@ -1,6 +1,6 @@
 webpackIncludeModules: true
 applicationName: ${ssm:/multimaticConnect/${self:provider.stage}/application-name}
-domainName: ${self:custom.applicationName}-${self:provider.stage}.${ssm:/multimaticConnect/${self:provider.stage}/application-name}
+domainName: ${self:custom.applicationName}-${self:provider.stage}.${ssm:/multimaticConnect/${self:provider.stage}/domain-name}
 multimaticTableName: ${self:custom.applicationName}-${self:provider.stage}
 siteName: portal.${self:custom.domainName}
 apiDomain: api.${self:custom.domainName}
