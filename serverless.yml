@@ -47,8 +47,8 @@ functions:
     environment:
       WEB_APP_URI: ${self:custom.siteName}
       OAUTH0_URI: ${self:custom.oauth0Url}
-      ONETIME_TOKEN_SECRET: ${ssm:/multimaticConnect/${self:provider.stage}/onetime-token-secret~true}
-      CRYPTO_KEY: ${ssm:/multimaticConnect/${self:provider.stage}/crypto-key~true}
+      ONETIME_TOKEN_SECRET: ${self:custom.onetimeTokenSecret}
+      CRYPTO_KEY: ${self:custom.cryptoKey}
       MULTIMATIC_TABLE: ${self:custom.multimaticTableName}
       ALLOWED_ORIGINS: https://${self:custom.siteName}
     events:
@@ -62,8 +62,8 @@ functions:
     environment:
       WEB_APP_URI: ${self:custom.siteName}
       OAUTH0_URI: ${self:custom.oauth0Url}
-      ONETIME_TOKEN_SECRET: ${ssm:/multimaticConnect/${self:provider.stage}/onetime-token-secret~true}
-      CRYPTO_KEY: ${ssm:/multimaticConnect/${self:provider.stage}/crypto-key~true}
+      ONETIME_TOKEN_SECRET: ${self:custom.onetimeTokenSecret}
+      CRYPTO_KEY: ${self:custom.cryptoKey}
       MULTIMATIC_TABLE: ${self:custom.multimaticTableName}
     events:
       - http:
