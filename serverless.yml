@@ -26,7 +26,7 @@ plugins:
 package:
   individually: true
 
-  custom: ${file(./serverless.${self:provider.stage}.config.yml)}
+custom: ${file(./serverless.${self:provider.stage}.config.yml)}
 
 functions:
   alexaSkillFn:
