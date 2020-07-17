@@ -1,4 +1,4 @@
-name: Serverless Deploy
+name: Build
 
 on:
   push:
