@@ -31,9 +31,9 @@ package:
   individually: true
 
 custom:
-  custom: ${file(./serverless.${self:provider.stage}.config.yml)}
-  apiDomain: api.${self:custom.custom.domainName}
-  siteName: portal.${self:custom.custom.domainName}
+  domainName: ${file(./serverless.${self:provider.stage}.config.yml):domainName}
+  apiDomain: api.${self:custom.domainName}
+  siteName: portal.${self:custom.domainName}
   alexaSkillIdentifier: ${ssm:/multimaticConnect/${self:provider.stage}/alexa-skill-identifier}
   applicationName: ${ssm:/multimaticConnect/${self:provider.stage}/application-name}
   certificateArn: ${ssm:/multimaticConnect/${self:provider.stage}/certificate}

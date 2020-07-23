@@ -16,17 +16,26 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Set deployment environment
+      id: environment
+      run: |
+        if '${{ endsWith(github.ref, '/master') }}' == 'true'; then echo ::set-output name=env::"prod";else echo ::set-output name=env::"dev"; fi
+
     - name: Install dependencies
       run: npm install
 
-    - name: Deploy Develop
-      if: github.ref == 'refs/heads/develop'
+    - name: Deploy Backend
       uses: serverless/github-action@v1.53.0
       with:
-        args: deploy --stage dev
+        args: deploy --stage ${{ steps.environment.outputs.env }} --nos3sync
 
-    - name: Deploy Master
-      if: github.ref == 'refs/heads/master'
+    - name: Build Client
       uses: serverless/github-action@v1.53.0
       with:
-        args: deploy --stage prod
+        args: client build --stage ${{ steps.environment.outputs.env }}
+
+    - name: Upload client
+      uses: serverless/github-action@v1.53.0
+      with:
+        args: s3sync --stage ${{ steps.environment.outputs.env }}
+
