@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+mkdir -p build
+rm -rf build/views
+cp -r views build/
+
+for template in $(find build -name "*.ejs"); do
+  ./node_modules/.bin/ejs $template -o "${template%.ejs}.html"
+  rm -rf $template
+done

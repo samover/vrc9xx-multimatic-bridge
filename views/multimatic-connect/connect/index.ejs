@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Vaillant Multimatic Connect</title>
+    <title><%= JSON.stringify(process.env.TITLE) %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css">
@@ -66,8 +66,8 @@
         const vaillantConnectForm = $('#vaillant-connect-form');
 
         const url = new URL(window.location.href);
-        const apiUrl = 'https://api.multimatic-dev.huddle.be';
-        const continueUrl = new URL('https://samover.eu.auth0.com/continue');
+        const apiUrl = '<%= process.env.API_URL %>';
+        const continueUrl = new URL('<%= process.env.AUTH_URL %>/continue');
         continueUrl.href += `?state=${url.searchParams.get('state')}`;
 
         console.log('urls', url, continueUrl, apiUrl);

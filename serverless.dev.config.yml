@@ -1,18 +1,1 @@
-webpackIncludeModules: true
-applicationName: ${ssm:/multimaticConnect/${self:provider.stage}/application-name}
 domainName: ${self:custom.applicationName}-${self:provider.stage}.${ssm:/multimaticConnect/${self:provider.stage}/domain-name}
-multimaticTableName: ${self:custom.applicationName}-${self:provider.stage}
-siteName: portal.${self:custom.domainName}
-apiDomain: api.${self:custom.domainName}
-s3Bucket: ${self:custom.applicationName}-connect-${self:provider.stage}
-oauth0Url: ${ssm:/multimaticConnect/${self:provider.stage}/auth-url}
-certificateArn: ${ssm:/multimaticConnect/${self:provider.stage}/certificate}
-alexaSkillIdentifier: ${ssm:/multimaticConnect/${self:provider.stage}/alexa-skill-identifier}
-onetimeTokenSecret: ${ssm:/multimaticConnect/${self:provider.stage}/onetime-token-secret~true}
-cryptoKey: ${ssm:/multimaticConnect/${self:provider.stage}/crypto-key~true}
-
-## serverless-s3-sync plugin config
-s3Sync:
-  - bucketName: ${self:custom.s3Bucket}
-    localDir: views/multimatic-connect
-    defaultContentType: text/html
