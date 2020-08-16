@@ -1,11 +1,8 @@
 import { LOGGER } from 'logger';
 import { RoomModel, ZoneModel } from 'models';
 import { RoomEndpointsBuilder } from '../builders/RoomEndpointsBuilder';
-import { RoomPropertiesBuilder } from '../builders/RoomPropertiesBuilder';
 import { SystemEndpointsBuilder } from '../builders/SystemEndpointsBuilder';
-import { SystemStatusPropertiesBuilder } from '../builders/SystemStatusPropertiesBuilder';
 import { ZoneEndpointsBuilder } from '../builders/ZoneEndpointsBuilder';
-import { ZonePropertiesBuilder } from '../builders/ZonePropertiesBuilder';
 import { RESPONSES } from '../common/constants/alexaEvent.constants';
 import { AlexaEvent, AlexaResponseEvent } from '../common/interfaces/alexaEvent.interface';
 import { Systems } from '../multimatic-api';

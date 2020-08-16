@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import * as cookie from 'cookie';
 import { ApiPath } from './ApiPath';
+import { mockAuthenticate, mockLogin } from './common/decorators/mock.decorator';
 import { VaillantApiResponse } from './common/interfaces/vaillantApiResponse.interface';
 import { Credentials } from './common/interfaces/vaillantCredentials.interface';
 import { errorHandler } from './errorHandler';
@@ -30,7 +31,8 @@ export class Authentication {
         this.sessionId = credentials.sessionId;
     }
 
-    public login = async (password: string): Promise<void> => {
+    @mockLogin
+    public async login(password: string): Promise<void> {
         try {
             const requestConfig: AxiosRequestConfig = {
                 url: ApiPath.newToken(),
@@ -43,9 +45,10 @@ export class Authentication {
         } catch (e) {
             errorHandler(e);
         }
-    };
+    }
 
-    public authenticate = async (): Promise<void> => {
+    @mockAuthenticate
+    public async authenticate(): Promise<void> {
         try {
             // use sessionId
             const requestConfig: AxiosRequestConfig = {
@@ -61,7 +64,7 @@ export class Authentication {
         } catch (e) {
             errorHandler(e);
         }
-    };
+    }
 
     public getAuthToken(): string {
         return this.authToken;

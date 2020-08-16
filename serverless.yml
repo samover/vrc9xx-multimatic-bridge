@@ -13,6 +13,10 @@ provider:
     API_URL: https://${self:custom.apiDomain}
     AUTH_URL: https://${self:custom.oauth0Url}
     TITLE: Vaillant Multimatic Connect
+    DEMO_PASSWORD: ${ssm:/multimaticConnect/demo-vars/password}
+    DEMO_USERNAME: ${ssm:/multimaticConnect/demo-vars/username}
+    DEMO_AUTH_TOKEN: ${ssm:/multimaticConnect/demo-vars/auth-token}
+    DEMO_SESSION_ID: ${ssm:/multimaticConnect/demo-vars/session-id}
   iamRoleStatements:
     - Effect: Allow
       Action:

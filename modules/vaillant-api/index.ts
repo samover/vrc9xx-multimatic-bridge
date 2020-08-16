@@ -1,8 +1,14 @@
 export { Authentication } from './authentication';
-export { Facility, FacilityApiModel } from './facility';
-export { Room, RoomApiModel } from './room';
+export { Facility} from './facility';
+export { Room} from './room';
 export {
-    System, SystemApiModel, QuickModeApiEnum, SystemQuickModeApiModel,
+    System,
 } from './system';
-export { Zone, ZoneApiModel } from './zone';
+export { Zone} from './zone';
 export { Credentials } from './common/interfaces/vaillantCredentials.interface';
+export { FacilityApiModel } from './common/interfaces/facilityApiModel.interface';
+export { RoomApiModel } from './common/interfaces/roomApiModel.interface';
+export { SystemQuickModeApiModel } from './common/interfaces/systemApiModel.interface';
+export { QuickModeApiEnum } from './common/interfaces/systemApiModel.interface';
+export { SystemApiModel } from './common/interfaces/systemApiModel.interface';
+export { ZoneApiModel } from './common/interfaces/zoneApiModel.interface';

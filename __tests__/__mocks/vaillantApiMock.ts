@@ -6,10 +6,9 @@ import {
     FacilityApiModel,
     Room,
     RoomApiModel,
-    System,
+    System, SystemApiModel, SystemQuickModeApiModel,
     Zone, ZoneApiModel
 } from 'vaillant-api';
-import { SystemApiModel, SystemQuickModeApiModel } from '../../modules/vaillant-api/system';
 import { MockOf } from '../__helpers/mockOf.type';
 import Mock = jest.Mock;
 

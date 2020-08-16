@@ -1,59 +1,21 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { ApiPath } from './ApiPath';
+import { mock } from './common/decorators/mock.decorator';
+import { RoomApiModel } from './common/interfaces/roomApiModel.interface';
 import { VaillantApiResponse } from './common/interfaces/vaillantApiResponse.interface';
 import { errorHandler } from './errorHandler';
+import { mockRoomDetails } from './mocks/room.mock';
+import { VaillantApi } from './vaillantApi';
 
-export interface DeviceModel {
-    name: string;
-    sgtin: string;
-    deviceType: string; // VALVE
-    isBatteryLow: boolean;
-    isRadioOutOfReach: boolean;
-
-}
-
-export interface RoomConfigurationModel {
-    name: string;
-    temperatureSetpoint: number;
-    operationMode: string; // AUTO
-    currentTemperature: number;
-    childLock: boolean;
-    isWindowOpen: boolean;
-    devices: DeviceModel[];
-    iconId: string;
-}
-
-export interface SetPointModel {
-    startTime: string;
-    temperatureSetpoint: number;
-}
-
-export interface TimeProgramModel {
-    monday: SetPointModel[];
-    tuesday: SetPointModel[];
-    wednesday: SetPointModel[];
-    thursday: SetPointModel[];
-    friday: SetPointModel[];
-    saturday: SetPointModel[];
-    sunday: SetPointModel[];
-}
-
-export interface RoomApiModel {
-    roomIndex: number;
-    configuration: RoomConfigurationModel;
-    timeprogram: TimeProgramModel;
-}
-
-export class Room {
-    private sessionId: string;
-
+export class Room extends VaillantApi {
     private facilitySerialNumber: string;
 
     constructor(sessionId: string, facilitySerialNumber: string) {
-        this.sessionId = sessionId;
+        super(sessionId);
         this.facilitySerialNumber = facilitySerialNumber;
     }
 
+    @mock(mockRoomDetails)
     public async getList(): Promise<RoomApiModel[]> {
         try {
             const requestConfig: AxiosRequestConfig = {
@@ -71,7 +33,8 @@ export class Room {
         }
     }
 
-    public getDetails = async (roomId: string): Promise<RoomApiModel> => {
+    @mock(mockRoomDetails)
+    public async getDetails(roomId: string): Promise<RoomApiModel> {
         try {
             const requestConfig: AxiosRequestConfig = {
                 url: ApiPath.room(this.facilitySerialNumber, roomId),
@@ -86,9 +49,10 @@ export class Room {
         } catch (e) {
             return errorHandler(e);
         }
-    };
+    }
 
-    public quickVeto = async (roomId: string, temperature: number, duration: number): Promise<void> => {
+    @mock(null)
+    public async quickVeto(roomId: string, temperature: number, duration: number): Promise<void> {
         try {
             const requestConfig: AxiosRequestConfig = {
                 url: ApiPath.roomQuickVeto(this.facilitySerialNumber, `${roomId}`),
@@ -103,9 +67,10 @@ export class Room {
         } catch (e) {
             errorHandler(e);
         }
-    };
+    }
 
-    public deleteQuickVeto = async (roomId: string): Promise<void> => {
+    @mock(null)
+    public async deleteQuickVeto(roomId: string): Promise<void> {
         try {
             const requestConfig: AxiosRequestConfig = {
                 url: ApiPath.roomQuickVeto(this.facilitySerialNumber, `${roomId}`),
@@ -119,5 +84,5 @@ export class Room {
         } catch (e) {
             errorHandler(e);
         }
-    };
+    }
 }

@@ -1,0 +1,151 @@
+import { RoomApiModel } from 'vaillant-api';
+
+export const mockRoomDetails: RoomApiModel[] = [
+    {
+        roomIndex: 0,
+        configuration: {
+            name: 'Living room',
+            temperatureSetpoint: 21.0,
+            operationMode: 'AUTO',
+            currentTemperature: 21.5,
+            childLock: false,
+            isWindowOpen: false,
+            devices: [
+                {
+                    name: 'Living room_2',
+                    sgtin: '1234-ABCD',
+                    deviceType: 'VALVE',
+                    isBatteryLow: false,
+                    isRadioOutOfReach: false,
+                },
+                {
+                    name: 'Living room_1',
+                    sgtin: '2345-BCDE',
+                    deviceType: 'VALVE',
+                    isBatteryLow: false,
+                    isRadioOutOfReach: false,
+                },
+            ],
+            iconId: 'LIVING_ROOM',
+        },
+        timeprogram: {
+            friday: [
+                { startTime: '00:00', temperatureSetpoint: 17.0 },
+                { startTime: '06:00', temperatureSetpoint: 21.0 },
+                { startTime: '09:00', temperatureSetpoint: 17.0 },
+                { startTime: '17:00', temperatureSetpoint: 21.0 },
+                { startTime: '22:00', temperatureSetpoint: 17.0 },
+            ],
+            monday: [
+                { startTime: '00:00', temperatureSetpoint: 17.0 },
+                { startTime: '06:00', temperatureSetpoint: 21.0 },
+                { startTime: '09:00', temperatureSetpoint: 17.0 },
+                { startTime: '17:00', temperatureSetpoint: 21.0 },
+                { startTime: '22:00', temperatureSetpoint: 17.0 },
+            ],
+            tuesday: [
+                { startTime: '00:00', temperatureSetpoint: 17.0 },
+                { startTime: '06:00', temperatureSetpoint: 21.0 },
+                { startTime: '09:00', temperatureSetpoint: 17.0 },
+                { startTime: '17:00', temperatureSetpoint: 21.0 },
+                { startTime: '22:00', temperatureSetpoint: 17.0 },
+            ],
+            wednesday: [
+                { startTime: '00:00', temperatureSetpoint: 17.0 },
+                { startTime: '06:00', temperatureSetpoint: 21.0 },
+                { startTime: '09:00', temperatureSetpoint: 17.0 },
+                { startTime: '17:00', temperatureSetpoint: 21.0 },
+                { startTime: '22:00', temperatureSetpoint: 17.0 },
+            ],
+            saturday: [
+                { startTime: '00:00', temperatureSetpoint: 17.0 },
+                { startTime: '06:00', temperatureSetpoint: 21.0 },
+                { startTime: '23:00', temperatureSetpoint: 17.0 },
+            ],
+            sunday: [
+                { startTime: '00:00', temperatureSetpoint: 17.0 },
+                { startTime: '06:00', temperatureSetpoint: 21.0 },
+                { startTime: '23:00', temperatureSetpoint: 17.0 },
+            ],
+            thursday: [
+                { startTime: '00:00', temperatureSetpoint: 17.0 },
+                { startTime: '06:00', temperatureSetpoint: 21.0 },
+                { startTime: '09:00', temperatureSetpoint: 17.0 },
+                { startTime: '17:00', temperatureSetpoint: 21.0 },
+                { startTime: '22:00', temperatureSetpoint: 17.0 },
+            ],
+        },
+    },
+    {
+        roomIndex: 1,
+        configuration: {
+            name: 'Bedroom',
+            temperatureSetpoint: 22.0,
+            operationMode: 'AUTO',
+            currentTemperature: 20.5,
+            childLock: false,
+            isWindowOpen: false,
+            devices: [
+                {
+                    name: 'Bedroom_1',
+                    sgtin: '3456-CDEF',
+                    deviceType: 'VALVE',
+                    isBatteryLow: false,
+                    isRadioOutOfReach: false,
+                },
+            ],
+            iconId: 'BEDROOM',
+        },
+        timeprogram: {
+            friday: [
+                { startTime: '00:00', temperatureSetpoint: 18.0 },
+                { startTime: '06:00', temperatureSetpoint: 21.0 },
+                { startTime: '07:30', temperatureSetpoint: 17.5 },
+                { startTime: '17:00', temperatureSetpoint: 21.0 },
+                { startTime: '22:30', temperatureSetpoint: 18.0 },
+            ],
+            monday: [
+                { startTime: '00:00', temperatureSetpoint: 18.0 },
+                { startTime: '06:00', temperatureSetpoint: 21.0 },
+                { startTime: '07:30', temperatureSetpoint: 17.5 },
+                { startTime: '17:00', temperatureSetpoint: 21.0 },
+                { startTime: '22:30', temperatureSetpoint: 18.0 },
+            ],
+            tuesday: [
+                { startTime: '00:00', temperatureSetpoint: 18.0 },
+                { startTime: '06:00', temperatureSetpoint: 21.0 },
+                { startTime: '07:30', temperatureSetpoint: 17.5 },
+                { startTime: '17:00', temperatureSetpoint: 21.0 },
+                { startTime: '22:30', temperatureSetpoint: 18.0 },
+            ],
+            wednesday: [
+                { startTime: '00:00', temperatureSetpoint: 18.0 },
+                { startTime: '06:00', temperatureSetpoint: 21.0 },
+                { startTime: '07:30', temperatureSetpoint: 17.5 },
+                { startTime: '17:00', temperatureSetpoint: 21.0 },
+                { startTime: '22:30', temperatureSetpoint: 18.0 },
+            ],
+            saturday: [
+                { startTime: '00:00', temperatureSetpoint: 18.0 },
+                { startTime: '06:00', temperatureSetpoint: 21.0 },
+                { startTime: '07:30', temperatureSetpoint: 17.5 },
+                { startTime: '17:00', temperatureSetpoint: 21.0 },
+                { startTime: '22:30', temperatureSetpoint: 18.0 },
+            ],
+            sunday: [
+                { startTime: '00:00', temperatureSetpoint: 18.0 },
+                { startTime: '06:00', temperatureSetpoint: 21.0 },
+                { startTime: '07:30', temperatureSetpoint: 17.5 },
+                { startTime: '17:00', temperatureSetpoint: 21.0 },
+                { startTime: '22:30', temperatureSetpoint: 18.0 },
+            ],
+            thursday: [
+                { startTime: '00:00', temperatureSetpoint: 18.0 },
+                { startTime: '06:00', temperatureSetpoint: 21.0 },
+                { startTime: '07:30', temperatureSetpoint: 17.5 },
+                { startTime: '17:00', temperatureSetpoint: 21.0 },
+                { startTime: '22:30', temperatureSetpoint: 18.0 },
+            ],
+        },
+    },
+];
