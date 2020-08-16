@@ -34,16 +34,6 @@ describe('SystemStatusPropertiesBuilder', () => {
                 uncertaintyInMilliseconds: 6000
             },
             {
-                namespace: 'Alexa.TemperatureSensor',
-                name: 'Outside Temperature',
-                value: {
-                    value: systemStatus.outsideTemperature,
-                    scale: 'CELSIUS'
-                },
-                timeOfSample: now.toISOString(),
-                uncertaintyInMilliseconds: 6000
-            },
-            {
                 namespace: 'Alexa.EndpointHealth',
                 name: 'connectivity',
                 value: {

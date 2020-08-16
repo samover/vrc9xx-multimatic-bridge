@@ -37,6 +37,7 @@ export class AlexaDirective extends AbstractDirective {
         if (type === 'room') properties = await this.getRoomProperties(token, facilityId, id);
         else if (type === 'zone') properties = await this.getZoneProperties(token, facilityId, id);
         else if (type === 'system') properties = await this.getSystemProperties(token, facilityId);
+        else if (type === 'outside-sensor') properties = await this.getOutsideSensorProperties(token, facilityId);
         else properties = null;
 
         this.addContext({ properties });
@@ -61,6 +62,14 @@ export class AlexaDirective extends AbstractDirective {
     }
 
     private async getSystemProperties(token: string, facilityId: string): Promise<ContextProperty[]> {
+        const systemApi = new System(facilityId);
+        systemApi.addToken(token);
+
+        const system: SystemStatusModel = await systemApi.get();
+        return this.systemStatusPropertiesBuilder.build(system);
+    }
+
+    private async getOutsideSensorProperties(token: string, facilityId: string): Promise<ContextProperty[]> {
         const systemApi = new System(facilityId);
         systemApi.addToken(token);
 
