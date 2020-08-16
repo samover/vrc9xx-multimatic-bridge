@@ -1,13 +1,15 @@
 import * as faker from 'faker';
-import { Authentication, Credentials, Facility, QuickModeApiEnum, Room, System } from 'vaillant-api';
+import { Authentication, Credentials, Facility, QuickModeApiEnum, Room, System, SystemApiModel } from 'vaillant-api';
 import axios, { AxiosError } from 'axios';
 import { ApiPath } from '../../../modules/vaillant-api/ApiPath';
+import { mockSessionId } from '../../../modules/vaillant-api/common/decorators/mock.decorator';
 import { errorHandler } from '../../../modules/vaillant-api/errorHandler';
+import { mockSystemDetails } from '../../../modules/vaillant-api/mocks/system.mock';
 
 jest.mock('axios');
 jest.mock('../../../modules/vaillant-api/errorHandler');
 
-describe('Room', () => {
+describe('System', () => {
     const facilitySerialNumber = faker.random.uuid();
     const roomId = faker.random.uuid();
     const jsessionId = faker.random.uuid();
@@ -35,6 +37,11 @@ describe('Room', () => {
                     Cookie: `JSESSIONID=${jsessionId}`,
                 },
             });
+        });
+        it('returns a mock system', async () => {
+            const system = new System(mockSessionId, facilitySerialNumber);
+            await expect(system.getDetails()).resolves.toEqual(mockSystemDetails);
+            expect(axios.request).not.toHaveBeenCalled();
         });
         it('returns a system', async () => {
             const system = new System(jsessionId, facilitySerialNumber);

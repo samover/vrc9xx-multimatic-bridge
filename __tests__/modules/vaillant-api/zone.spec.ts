@@ -1,8 +1,10 @@
 import * as faker from 'faker';
-import { Authentication, Credentials, Facility, Zone } from 'vaillant-api';
+import { Authentication, Credentials, Facility, Zone, ZoneApiModel } from 'vaillant-api';
 import axios from 'axios';
 import { ApiPath } from '../../../modules/vaillant-api/ApiPath';
+import { mockSessionId } from '../../../modules/vaillant-api/common/decorators/mock.decorator';
 import { errorHandler } from '../../../modules/vaillant-api/errorHandler';
+import { mockZoneDetails } from '../../../modules/vaillant-api/mocks/zone.mock';
 
 jest.mock('axios');
 jest.mock('../../../modules/vaillant-api/errorHandler');
@@ -42,6 +44,11 @@ describe('Zone', () => {
             const zone = new Zone(jsessionId, facilitySerialNumber);
             await expect(zone.getList()).resolves.toEqual('zones');
         });
+        it('returns mock zonesList', async () => {
+            const zone = new Zone(mockSessionId, facilitySerialNumber);
+            await expect(zone.getList()).resolves.toEqual(mockZoneDetails);
+            expect(axios.request).not.toHaveBeenCalled();
+        });
         it('catches the error and passes it to the errorHandler', async () => {
             const error = new Error('BOOM');
             // @ts-ignore
@@ -73,6 +80,12 @@ describe('Zone', () => {
                     Cookie: `JSESSIONID=${jsessionId}`,
                 },
             });
+        });
+        it('returns a mock zone', async () => {
+            const zone = new Zone(mockSessionId, facilitySerialNumber);
+            const id = mockZoneDetails[0]._id;
+            await expect(zone.getDetails(id)).resolves.toEqual(mockZoneDetails.find((obj: ZoneApiModel) => obj._id === id));
+            expect(axios.request).not.toHaveBeenCalled();
         });
         it('returns a zone', async () => {
             const zone = new Zone(jsessionId, facilitySerialNumber);

@@ -34,7 +34,7 @@ export class Zone {
         }
     }
 
-    @mock(mockZoneDetails)
+    @mock(mockZoneDetails, '_id')
     public async getDetails(zoneId: string): Promise<ZoneApiModel> {
         try {
             const requestConfig: AxiosRequestConfig = {

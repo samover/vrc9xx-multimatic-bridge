@@ -33,7 +33,7 @@ export class Room extends VaillantApi {
         }
     }
 
-    @mock(mockRoomDetails)
+    @mock(mockRoomDetails, 'roomIndex')
     public async getDetails(roomId: string): Promise<RoomApiModel> {
         try {
             const requestConfig: AxiosRequestConfig = {

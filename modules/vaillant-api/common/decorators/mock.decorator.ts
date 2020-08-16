@@ -6,12 +6,16 @@ export const mockSessionId = process.env.DEMO_SESSION_ID;
  * Mock Decorator. Allows for testing of a demo account necessary for a.o. AWS skill approval
  * @param mockObject
  */
-export const mock = (mockObject: any) => (
+export const mock = (mockObject: any, filterKey?: string) => (
     target: object, key: string|symbol, descriptor: PropertyDescriptor,
 ): void => {
     const originalMethod = descriptor.value;
     const mockFunction = async (id: string): Promise<object> => {
-        if (id && mockObject) return mockObject.find((obj: { [key: string]: object }) => obj[id]);
+        if (id && mockObject) {
+            return mockObject.find((obj: { [key: string]: any }) => {
+                return `${obj[filterKey]}` === id;
+            });
+        }
         return mockObject;
     };
 
