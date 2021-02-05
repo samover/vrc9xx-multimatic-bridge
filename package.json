@@ -18,6 +18,7 @@
     "duration-fns": "^2.0.1",
     "jsonwebtoken": "^8.5.1",
     "jwk-to-pem": "^2.0.4",
+    "lodash.flatmap": "^4.5.0",
     "reflect-metadata": "^0.1.13",
     "uuid": "^8.2.0"
   },
@@ -35,6 +36,7 @@
     "@types/jest": "^25.2.3",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/jwk-to-pem": "^2.0.0",
+    "@types/lodash.flatmap": "^4.5.6",
     "@types/node": "^13.13.14",
     "@types/reflect-metadata": "^0.1.0",
     "@types/uuid": "^7.0.4",

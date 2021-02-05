@@ -1,6 +1,7 @@
 import {
     RoomModel, SystemModel, SystemStatusModel, ZoneModel,
 } from 'models';
+import { OutsideSensorPropertiesBuilder } from '../builders/OutsideSensorPropertiesBuilder';
 import { RoomPropertiesBuilder } from '../builders/RoomPropertiesBuilder';
 import { SystemStatusPropertiesBuilder } from '../builders/SystemStatusPropertiesBuilder';
 import { ZonePropertiesBuilder } from '../builders/ZonePropertiesBuilder';
@@ -16,11 +17,14 @@ export class AlexaDirective extends AbstractDirective {
 
     private systemStatusPropertiesBuilder: SystemStatusPropertiesBuilder;
 
+    private outsideSensorPropertiesBuilder: OutsideSensorPropertiesBuilder;
+
     constructor(event: AlexaEvent) {
         super(event);
         this.roomPropertiesBuilder = new RoomPropertiesBuilder();
         this.zonePropertiesBuilder = new ZonePropertiesBuilder();
         this.systemStatusPropertiesBuilder = new SystemStatusPropertiesBuilder();
+        this.outsideSensorPropertiesBuilder = new OutsideSensorPropertiesBuilder();
     }
 
     public async handle(): Promise<AlexaResponseEvent> {
@@ -74,6 +78,6 @@ export class AlexaDirective extends AbstractDirective {
         systemApi.addToken(token);
 
         const system: SystemStatusModel = await systemApi.get();
-        return this.systemStatusPropertiesBuilder.build(system);
+        return this.outsideSensorPropertiesBuilder.build(system);
     }
 }

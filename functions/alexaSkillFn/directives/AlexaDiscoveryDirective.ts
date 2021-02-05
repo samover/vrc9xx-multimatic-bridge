@@ -1,5 +1,6 @@
 import { LOGGER } from 'logger';
 import { RoomModel, ZoneModel } from 'models';
+import flatmap from 'lodash.flatmap';
 import { RoomEndpointsBuilder } from '../builders/RoomEndpointsBuilder';
 import { SystemEndpointsBuilder } from '../builders/SystemEndpointsBuilder';
 import { ZoneEndpointsBuilder } from '../builders/ZoneEndpointsBuilder';
@@ -47,7 +48,7 @@ export class AlexaDiscoveryDirective extends AbstractDirective {
         const systemEndpoints = systems.map((i) => this.systemEndpointsBuilder.build(i));
 
         LOGGER.debug(roomEndpoints, zoneEndpoints, '*** endpoints');
-        await this.addPayload({ endpoints: [...systemEndpoints, ...roomEndpoints, ...zoneEndpoints] });
+        await this.addPayload({ endpoints: flatmap([...systemEndpoints, ...roomEndpoints, ...zoneEndpoints]) });
 
         return this.getResponse();
     }
